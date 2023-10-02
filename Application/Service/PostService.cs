@@ -3,7 +3,7 @@ using Application.Interfaces;
 using Application.Mappings;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
+using Domain.Interfaces.Repository;
 
 namespace Application.Service;
 

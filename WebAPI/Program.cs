@@ -1,8 +1,10 @@
 using Application.Interfaces;
 using Application.Mappings;
 using Application.Service;
-using Domain.Interfaces;
+using Domain.Interfaces.Query;
+using Domain.Interfaces.Repository;
 using Infrastructure.Context;
+using Infrastructure.Queries;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostService, PostService>();
+
+builder.Services.AddScoped<IUserQuery,UserQuery>();
+
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton(AutoMapperConfig.Initialize());
 builder.Services.AddDbContext<AppDbContext>(options =>

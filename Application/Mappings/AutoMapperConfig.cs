@@ -1,4 +1,5 @@
 ﻿using Application.DTO.PostDTOs;
+using Application.DTO.UserDTOs;
 using AutoMapper;
 using Domain.Entities;
 
@@ -10,9 +11,12 @@ public static class AutoMapperConfig
     {
         var config = new MapperConfiguration(cfg =>
         {
+            //post
             cfg.CreateMap<Post, PostDTO>();
             cfg.CreateMap<CreatePostDTO, Post>();
             cfg.CreateMap<UpdatePostDTO, Post>();
+            //user
+            cfg.CreateMap<User, UserDTO>();
         }).CreateMapper();
         return config;
     }
