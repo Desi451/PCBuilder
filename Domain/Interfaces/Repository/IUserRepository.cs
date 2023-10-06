@@ -2,16 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Domain.Interfaces.Repository;
 
-internal interface IUserRepository
+public interface IUserRepository
 {
-    List<User> GetAll();
-    User GetById(int id);
-    User Add(User user);
-    void Update(User user);
-    void Delete(int id);
+    Task Add(User user);
+    Task Update(User user);
+    Task Delete(int id);
+    Task ConfirmMail(int id);
+    Task Save();
 }

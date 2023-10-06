@@ -1,6 +1,6 @@
 ﻿namespace Application.DTO.UserDTOs;
 
-public class ManageUserDTO
+public class AddUserDTO
 {
     public string Login { get; set; }
     public string Email { get; set; }

@@ -4,6 +4,6 @@ namespace Domain.Interfaces.Query;
 
 public interface IUserQuery
 {
-    public List<User> GetUsers();
-    public User GetById(int id);
+    public Task<List<User>> GetUsers();
+    public Task<User> GetById(int id);
 }

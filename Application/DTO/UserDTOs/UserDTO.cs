@@ -1,5 +1,6 @@
 ﻿namespace Application.DTO.UserDTOs;
 
+//for query and edit
 public class UserDTO
 {
     public int Id { get; set; }

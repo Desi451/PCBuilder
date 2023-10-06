@@ -11,10 +11,23 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<IPostRepository, PostRepository>();
-builder.Services.AddScoped<IPostService, PostService>();
 
+//user
 builder.Services.AddScoped<IUserQuery,UserQuery>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+//brands & series
+builder.Services.AddScoped<IBrandService, BrandService>();
+builder.Services.AddScoped<IBrandQuery, BrandQuery>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<ISeriesService, SeriesService>();
+builder.Services.AddScoped<ISeriesQuery, SeriesQuery>();
+builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
+
+#region Components
+
+#endregion
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton(AutoMapperConfig.Initialize());
@@ -26,6 +39,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

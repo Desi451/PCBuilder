@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Query;
+﻿using Application.DTO.UserDTOs;
+using Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -7,18 +8,52 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly IUserQuery _query;
+    private readonly IUserService _service;
 
-    public UserController(IUserQuery query)
+    public UserController(IUserService service)
     {
-        _query = query;
+        _service = service;
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var users = _query.GetUsers();
+        var users = await _service.GetAll();
         return Ok(users);
     }
-}
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id)
+    {
+        var res = await _service.GetById(id);
+        return Ok(res);
+    }
+
+    [HttpPost("add")]
+    public async Task<IActionResult> Create(AddUserDTO user)
+    {
+        await _service.Add(user);
+        return Ok();
+    }
+
+    [HttpPut("update")]
+    public async Task<IActionResult> Update(UserDTO user)
+    {
+        await _service.Update(user);
+        return Ok();
+    }
+
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _service.Delete(id);
+        return NoContent();
+    }
+
+    [HttpPost("checkmail")]
+    public async Task<IActionResult> ConfirmMail(int id)
+    {
+        await _service.CheckMail(id);
+        return Ok();
+    }
+}

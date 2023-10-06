@@ -29,4 +29,6 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; }
+    public DbSet<Brand> Brands { get; set; }
+    public DbSet<Series> Series { get; set; }
 }
