@@ -1,10 +1,10 @@
 using Application.Interfaces;
 using Application.Mappings;
 using Application.Service;
-using Domain.Interfaces.Query;
+using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
+using Infrastructure.Common;
 using Infrastructure.Context;
-using Infrastructure.Queries;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,17 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+//common
+builder.Services.AddScoped<ISaveData, SaveData>();
+
 //user
-builder.Services.AddScoped<IUserQuery,UserQuery>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 //brands & series
 builder.Services.AddScoped<IBrandService, BrandService>();
-builder.Services.AddScoped<IBrandQuery, BrandQuery>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ISeriesService, SeriesService>();
-builder.Services.AddScoped<ISeriesQuery, SeriesQuery>();
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 
 #region Components

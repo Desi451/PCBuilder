@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private AppDbContext _context;
+    private readonly AppDbContext _context;
 
     public UserRepository(AppDbContext context)
     {
@@ -49,16 +49,23 @@ public class UserRepository : IUserRepository
         res.IsEmailConfirmed = true;
     }
 
-    public async Task Save()
+    #region query
+    public async Task<User> GetById(int id)
     {
         try
         {
-            await _context.SaveChangesAsync();
+            var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return res;
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             throw ex;
         }
-        
     }
+
+    public async Task<List<User>> GetUsers()
+    {
+        return await _context.Users.ToListAsync();
+    }
+    #endregion
 }
