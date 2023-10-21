@@ -10,4 +10,6 @@ public interface IUserService
     public Task Update(UserDTO updateUser);
     public Task Delete(int id);
     public Task CheckMail(int id);
+    public Task Login(LoginUserDTO user);
+    public Task Register(AddUserDTO user);
 }

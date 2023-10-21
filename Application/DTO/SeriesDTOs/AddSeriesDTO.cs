@@ -8,6 +8,5 @@ namespace Application.DTO.SeriesDTOs;
 
 public class AddSeriesDTO
 {
-    public int Id { get; set; }
     public string Name { get; set; }
 }

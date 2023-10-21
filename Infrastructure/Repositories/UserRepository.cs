@@ -1,7 +1,10 @@
-﻿using Domain.Entities;
+﻿using Application.Service.Common;
+using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Web.Http;
 
 namespace Infrastructure.Repositories;
 
@@ -16,50 +19,77 @@ public class UserRepository : IUserRepository
 
     public async Task Add(User user)
     {
+        Rank r = await _context.Ranks.FirstOrDefaultAsync(x => x.Id == 2);
         try
         {
             user.IsDeleted = false;
             user.IsEmailConfirmed = false;
-            user.CreatedBy = user.Login;
-            _context.Add(user);
+            user.CreatedBy = user.Id;
+            user.Rank = r;
+            await _context.AddAsync(user);
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw;
         }
     }
 
     public async Task Delete(int id)
     {
         User res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        res.IsDeleted = true;
+        if (res.RankId == 5)
+            throw new AppException("Cannot Delete An HeadAdmin");
+        else if (res.IsDeleted == true)
+            throw new AppException("User has already the deleted status");
+        else
+            res.IsDeleted = true;
     }
 
     public async Task Update(User user)
     {
         var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
-        res.Login = user.Login;
-        res.Email = user.Email;
-        res.Password = user.Password;
+        if(res != null)
+        {
+            res.Login = user.Login;
+            res.Email = user.Email;
+            res.Password = user.Password;
+        }
+        else
+        {
+            var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+            {
+                Content = new StringContent(string.Format("No user with ID = {0}", user.Id)),
+                ReasonPhrase = "Product ID Not Found"
+            };
+            throw new HttpResponseException(resp);
+        }
     }
 
     public async Task ConfirmMail(int id)
     {
-        User res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        res.IsEmailConfirmed = true;
+        var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        if(res != null)
+        {
+            res.IsEmailConfirmed = true;
+        }
     }
 
     #region query
     public async Task<User> GetById(int id)
     {
-        try
+        var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+        if(res != null)
         {
-            var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             return res;
         }
-        catch (Exception ex)
+        else
         {
-            throw ex;
+            var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
+            {
+                Content = new StringContent(string.Format("No user with ID = {0}", id)),
+                ReasonPhrase = "Product ID Not Found"
+            };
+            throw new HttpResponseException(resp);
         }
     }
 

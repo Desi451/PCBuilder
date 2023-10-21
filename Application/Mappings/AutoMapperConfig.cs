@@ -16,6 +16,7 @@ public static class AutoMapperConfig
             cfg.CreateMap<User, UserDTO>();
             cfg.CreateMap<UserDTO, User>();
             cfg.CreateMap<AddUserDTO, User>();
+            cfg.CreateMap<LoginUserDTO, User>();
 
             //brand & series
             cfg.CreateMap<Brand, BrandDTO>();

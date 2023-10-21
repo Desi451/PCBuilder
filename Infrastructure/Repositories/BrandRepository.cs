@@ -14,19 +14,26 @@ public class BrandRepository : IBrandRepository
         _context = appDbContext;
     }
 
-    public Task Add(Brand brand)
+    public async Task Add(Brand brand)
     {
-        throw new NotImplementedException();
+        brand.IsDeleted = false;
+        brand.CreatedBy = 1;
+        await _context.AddAsync(brand);
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        var res = await GetById(id);
+        if (res != null)
+        {
+            res.IsDeleted = true;
+        }
     }
 
-    public Task Update(Brand brand)
+    public async  Task Update(Brand brand)
     {
-        throw new NotImplementedException();
+        var oldSeries = await GetById(brand.Id);
+        oldSeries.Name = brand.Name;
     }
 
     #region query

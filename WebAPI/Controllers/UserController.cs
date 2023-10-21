@@ -49,11 +49,4 @@ public class UserController : ControllerBase
         await _service.Delete(id);
         return NoContent();
     }
-
-    [HttpPost("checkmail")]
-    public async Task<IActionResult> ConfirmMail(int id)
-    {
-        await _service.CheckMail(id);
-        return Ok();
-    }
 }

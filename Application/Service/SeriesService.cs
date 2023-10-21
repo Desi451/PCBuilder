@@ -1,5 +1,4 @@
 ﻿using Application.DTO.SeriesDTOs;
-using Application.DTO.UserDTOs;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;

@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231006123541_BrandAndServices")]
-    partial class BrandAndServices
+    [Migration("20231019201313_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -36,9 +36,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -46,8 +45,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -56,6 +55,23 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Rank", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ranks");
                 });
 
             modelBuilder.Entity("Domain.Entities.Series", b =>
@@ -69,9 +85,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -79,8 +94,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -102,9 +117,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -119,8 +133,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -130,9 +144,25 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RankId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("RankId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Rank", "Rank")
+                        .WithMany()
+                        .HasForeignKey("RankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rank");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,7 +17,7 @@ namespace Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -33,9 +33,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -43,8 +42,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,6 +52,119 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Case.Case", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CaseSizeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Deepth")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Height")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SeriesId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Width")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("CaseSizeId");
+
+                    b.HasIndex("SeriesId");
+
+                    b.ToTable("Cases");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Case.CaseSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CaseSizes");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Rank", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ranks");
                 });
 
             modelBuilder.Entity("Domain.Entities.Series", b =>
@@ -66,9 +178,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -76,8 +187,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -99,9 +210,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -116,8 +226,8 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -127,9 +237,52 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RankId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("RankId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Case.Case", b =>
+                {
+                    b.HasOne("Domain.Entities.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.Case.CaseSize", "CaseSize")
+                        .WithMany()
+                        .HasForeignKey("CaseSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Series", "Series")
+                        .WithMany()
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("CaseSize");
+
+                    b.Navigation("Series");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.HasOne("Domain.Entities.Rank", "Rank")
+                        .WithMany()
+                        .HasForeignKey("RankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rank");
                 });
 #pragma warning restore 612, 618
         }

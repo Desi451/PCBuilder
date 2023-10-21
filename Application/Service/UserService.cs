@@ -75,4 +75,14 @@ public class UserService : IUserService
         await _repository.ConfirmMail(id);
         await _saveData.Save();
     }
+
+    public Task Login(LoginUserDTO user)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Register(AddUserDTO user)
+    {
+        throw new NotImplementedException();
+    }
 }

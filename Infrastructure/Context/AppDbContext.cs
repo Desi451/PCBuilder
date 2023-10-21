@@ -1,23 +1,27 @@
 ﻿using Domain.Entities;
+using Domain.Entities.Components.Case;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Context;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext()
+    public AppDbContext() { }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    { }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Rank);
 
-    }
+        modelBuilder.Entity<Case>()
+            .HasOne(b => b.Brand);
+        modelBuilder.Entity<Case>()
+            .HasOne(b => b.Series);
 
-    public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
-    {
-
+        base.OnModelCreating(modelBuilder);            
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,4 +35,6 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Series> Series { get; set; }
+    public DbSet<Rank> Ranks { get; set; }
+    public DbSet<Case> Cases { get; set; }
 }

@@ -14,25 +14,33 @@ public class SeriesRepository : ISeriesRepository
         _context = context;
     }
 
-    public Task Add(Series series)
+    public async Task Add(Series series)
     {
-        throw new NotImplementedException();
+        series.IsDeleted = false;
+        series.CreatedBy = 1;
+        await _context.AddAsync(series);
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        var res = await GetById(id);
+        if (res != null)
+        {
+            res.IsDeleted = true;
+        }
     }
 
-    public Task Update(Series series)
+    public async Task Update(Series series)
     {
-        throw new NotImplementedException();
+        var oldSeries = await GetById(series.Id);
+        oldSeries.Name = series.Name;
     }
 
     #region query
     public async Task<Series> GetById(int id)
     {
-        return await _context.Series.FirstOrDefaultAsync(x => x.Id == id);
+        Series? series = await _context.Series.FirstOrDefaultAsync(x => x.Id == id);
+        return series;
     }
 
     public async Task<List<Series>> GetSeries()
