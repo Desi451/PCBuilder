@@ -1,6 +1,7 @@
 using Application.Interfaces;
 using Application.Mappings;
 using Application.Service;
+using Domain.Entities;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
 using Infrastructure.Common;
@@ -26,6 +27,8 @@ builder.Services.AddScoped<ISeriesService, SeriesService>();
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 
 #region Components
+builder.Services.AddScoped<ICaseRepository, CaseRepository>();
+builder.Services.AddScoped<ICaseService, CaseService>();
 
 #endregion
 

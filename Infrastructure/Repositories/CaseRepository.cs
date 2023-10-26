@@ -1,32 +1,50 @@
-﻿using Domain.Entities.Components.Case;
+﻿using Application.Service.Common;
+using Domain.Entities.Components.Case;
 using Domain.Interfaces.Repository;
+using Infrastructure.Common;
+using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 public class CaseRepository : ICaseRepository
 {
-    public Task Add(Case box)
+    private AppDbContext _context;
+
+    public CaseRepository(AppDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Task Delete(int id)
+    public async Task Add(Case box)
     {
-        throw new NotImplementedException();
+        box.IsDeleted = false;
+        box.CreatedBy = 1;
+        await _context.AddAsync(box);
     }
 
-    public Task<List<Case>> GetBrands()
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        var res = await GetById(id);
+        res.IsDeleted = true;
     }
 
-    public Task<Case> GetById(int id)
+    public async Task<List<Case>> GetCases()
     {
-        throw new NotImplementedException();
+        return await _context.Cases.ToListAsync();
     }
 
-    public Task Update(Case box)
+    public async Task<Case> GetById(int id)
     {
-        throw new NotImplementedException();
+        var res = await _context.Cases.
+            FirstOrDefaultAsync(c => c.Id == id);
+        return res == null ?
+            throw new AppException("No case with this id") : res;
+    }
+
+    public async Task Update(Case box)
+    {
+        Case oldBox = await GetById(box.Id);
+        Helper.CopyProperties(box, oldBox);
     }
 }

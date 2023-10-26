@@ -1,6 +1,4 @@
-﻿using Domain.Common;
-
-namespace Domain.Entities.Components.Case;
+﻿namespace Domain.Entities.Components.Case;
 
 public enum CaseSize
 {

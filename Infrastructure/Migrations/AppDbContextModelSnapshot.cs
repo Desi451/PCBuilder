@@ -65,6 +65,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CaseSize")
+                        .HasColumnType("int");
+
                     b.Property<int>("CaseSizeId")
                         .HasColumnType("int");
 
@@ -111,43 +114,9 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("BrandId");
 
-                    b.HasIndex("CaseSizeId");
-
                     b.HasIndex("SeriesId");
 
                     b.ToTable("Cases");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Components.Case.CaseSize", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CaseSizes");
                 });
 
             modelBuilder.Entity("Domain.Entities.Rank", b =>
@@ -255,12 +224,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Components.Case.CaseSize", "CaseSize")
-                        .WithMany()
-                        .HasForeignKey("CaseSizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
@@ -268,8 +231,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Brand");
-
-                    b.Navigation("CaseSize");
 
                     b.Navigation("Series");
                 });

@@ -6,9 +6,7 @@ public class Case : AuditableEntity
 {
     public int Id { get; set; }
     public required string Name { get; set; }
-    public required string Model {  get; set; }
-    //public int SmallDriverBays {  get; set; }
-    //public int LargeDriverBays { get; set; }
+    public required string Model { get; set; }
     public float Height { get; set; }
     public float Width { get; set; }
     public float Deepth { get; set; }

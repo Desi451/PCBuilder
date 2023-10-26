@@ -9,6 +9,6 @@ public interface ICaseRepository
     Task Delete(int id);
 
     //query
-    Task<List<Case>> GetBrands();
+    Task<List<Case>> GetCases();
     Task<Case> GetById(int id);
 }
