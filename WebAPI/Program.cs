@@ -4,6 +4,7 @@ using Application.Service;
 using Domain.Entities;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
+using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
 using Infrastructure.Repositories;

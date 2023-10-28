@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Components.Case;
 
-namespace Domain.Interfaces.Repository;
+namespace Domain.Interfaces.Repository.Components;
 
 public interface ICaseRepository
 {

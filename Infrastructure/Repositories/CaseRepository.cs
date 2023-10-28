@@ -1,6 +1,6 @@
 ﻿using Application.Service.Common;
 using Domain.Entities.Components.Case;
-using Domain.Interfaces.Repository;
+using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;

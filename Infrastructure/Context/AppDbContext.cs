@@ -1,5 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Entities.Components.Case;
+using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.RamMemory;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context;
@@ -37,4 +39,8 @@ public class AppDbContext : DbContext
     public DbSet<Series> Series { get; set; }
     public DbSet<Rank> Ranks { get; set; }
     public DbSet<Case> Cases { get; set; }
+    public DbSet<RamMemory> RAMs {  get; set; }
+    public DbSet <MemorySpeed> MemorySpeeds { get; set; }
+    public DbSet <CPU> CPUs { get; set; }
+    public DbSet <SocketCPU> SocketCPUs { get; set; }
 }

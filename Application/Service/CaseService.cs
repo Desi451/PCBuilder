@@ -4,7 +4,7 @@ using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities.Components.Case;
 using Domain.Interfaces.Common;
-using Domain.Interfaces.Repository;
+using Domain.Interfaces.Repository.Components;
 
 namespace Application.Service;
 
