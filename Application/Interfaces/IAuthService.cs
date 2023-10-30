@@ -1,10 +1,12 @@
-﻿using Domain.Entities;
+﻿using Application.DTO.UserDTOs;
+using Domain.Entities;
 
-namespace Domain.Interfaces.Common;
+namespace Application.Interfaces;
 
 public interface IAuthService
 {
-    Task Login(User user);
-    Task Register(User user);
+    Task<bool> Login(LoginUserDTO user);
+    Task Register(AddUserDTO user);
     Task GetCurrentUser();
+    Task ChangeMailStatus(int id);
 }

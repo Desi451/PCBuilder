@@ -1,4 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.DTO.UserDTOs;
+using Application.Interfaces;
+using Domain.Interfaces.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -7,18 +9,35 @@ namespace WebAPI.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly IUserService _service;
+    private readonly IAuthService _service;
 
 
-    public AuthController(IUserService service)
+    public AuthController(IAuthService service)
     {
         _service = service;
     }
 
-    [HttpPost("checkmail")]
+    [HttpPost("confirmemail")]
     public async Task<IActionResult> ConfirmMail(int id)
     {
-        await _service.CheckMail(id);
+        await _service.ChangeMailStatus(id);
+        return Ok();
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginUserDTO login)
+    {
+        var res = await _service.Login(login);
+        if(res == true)
+            return Ok();
+        else
+            return BadRequest();
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(AddUserDTO user)
+    {
+        await _service.Register(user);
         return Ok();
     }
 }

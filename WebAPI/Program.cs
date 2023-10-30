@@ -20,6 +20,7 @@ builder.Services.AddScoped<ISaveData, SaveData>();
 //user
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //brands & series
 builder.Services.AddScoped<IBrandService, BrandService>();

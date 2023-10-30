@@ -1,4 +1,6 @@
-﻿using Application.Mappings;
+﻿using Application.DTO.UserDTOs;
+using Application.Interfaces;
+using Application.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Common;
@@ -21,18 +23,33 @@ public class AuthService : IAuthService
         AutoMapperConfig.Initialize();
     }
 
-    public async Task Login(User user)
+    public async Task<bool> Login(LoginUserDTO user)
     {
-        throw new NotImplementedException();
+        User res = new User();
+        if (user.LogOrMail.Contains("@"))
+            res.Email = user.LogOrMail;
+        else
+            res.Login = user.LogOrMail;
+        
+        res.Password = user.Password;
+
+        return await _repository.GetByLoginMail(res);
     }
 
-    public Task Register(User user)
+    public async Task Register(AddUserDTO user)
     {
-        throw new NotImplementedException();
+        await _repository.Add(_mapper.Map<User>(user));
+        await _saveData.Save();
     }
 
     public Task GetCurrentUser()
     {
         throw new NotImplementedException();
+    }
+
+    public async Task ChangeMailStatus(int id)
+    {
+        await _repository.ChangeMailStatus(id);
+        await _saveData.Save();
     }
 }

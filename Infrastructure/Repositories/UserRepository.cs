@@ -1,4 +1,5 @@
-﻿using Application.Service.Common;
+﻿using Application.DTO.UserDTOs;
+using Application.Service.Common;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
@@ -19,7 +20,7 @@ public class UserRepository : IUserRepository
 
     public async Task Add(User user)
     {
-        Rank r = await _context.Ranks.FirstOrDefaultAsync(x => x.Id == 2);
+        Rank r = await _context.Ranks.FirstOrDefaultAsync(x => x.Id == 2); // 2 => normal user
         try
         {
             user.IsDeleted = false;
@@ -65,7 +66,7 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task ConfirmMail(int id)
+    public async Task ChangeMailStatus(int id)
     {
         var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         if(res != null)
@@ -91,6 +92,16 @@ public class UserRepository : IUserRepository
             };
             throw new HttpResponseException(resp);
         }
+    }
+
+    public async Task<bool> GetByLoginMail(User log)
+    {
+        var res = await _context.Users.FirstOrDefaultAsync(x => x.Login == log.Login || x.Email == log.Email);
+
+        if (res.Password == log.Password && res.IsDeleted == false)
+            return true;
+        else
+            return false;
     }
 
     public async Task<List<User>> GetUsers()
