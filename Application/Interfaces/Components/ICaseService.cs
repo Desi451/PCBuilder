@@ -1,7 +1,7 @@
 ﻿using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
 
-namespace Application.Interfaces;
+namespace Application.Interfaces.Components;
 
 public interface ICaseService
 {

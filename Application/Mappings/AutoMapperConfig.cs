@@ -1,11 +1,17 @@
 ﻿using Application.DTO.BrandDTOs;
 using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
+using Application.DTO.Components.CPU;
+using Application.DTO.Components.PowerSupllyDTOs;
+using Application.DTO.Components.RAM;
 using Application.DTO.SeriesDTOs;
 using Application.DTO.UserDTOs;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
+using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.RamMemory;
 
 namespace Application.Mappings;
 
@@ -36,6 +42,29 @@ public static class AutoMapperConfig
             cfg.CreateMap<CaseDTO, Case>();
             cfg.CreateMap<AddCaseDTO, Case>();
 
+            //ram
+            cfg.CreateMap<RamMemory, RamDTO>();
+            cfg.CreateMap<RamDTO, RamMemory>();
+            cfg.CreateMap<AddRamDTO, RamMemory>();
+
+            cfg.CreateMap<RamSpeed, RamSpeedDTO>();
+            cfg.CreateMap<RamSpeedDTO, RamSpeed>();
+            cfg.CreateMap<AddRamSpeedDTO, RamSpeed>();
+            //cpu
+            cfg.CreateMap<CPU, CpuDTO>();
+            cfg.CreateMap<CpuDTO, CPU>();
+            cfg.CreateMap<AddCpuDTO, CPU>();
+            cfg.CreateMap<AddCpuDTO, CpuDTO>();
+
+            cfg.CreateMap<SocketCPU, SocketCpuDTO>();
+            cfg.CreateMap<SocketCpuDTO, SocketCPU>();
+            cfg.CreateMap<AddSocketCpuDTO, SocketCPU>();
+            cfg.CreateMap<AddSocketCpuDTO, SocketCpuDTO>();
+
+            //psu
+            cfg.CreateMap<PowerSupply, PowerSupplyDTO>();
+            cfg.CreateMap<PowerSupplyDTO, PowerSupply>();
+            cfg.CreateMap<AddPowerSupplyDTO, PowerSupply>();
             #endregion
 
         }).CreateMapper();

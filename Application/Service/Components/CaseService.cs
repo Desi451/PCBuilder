@@ -1,12 +1,12 @@
 ﻿using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
-using Application.Interfaces;
+using Application.Interfaces.Components;
 using AutoMapper;
 using Domain.Entities.Components.Case;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository.Components;
 
-namespace Application.Service;
+namespace Application.Service.Components;
 
 public class CaseService : ICaseService
 {

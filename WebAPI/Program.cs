@@ -1,6 +1,8 @@
 using Application.Interfaces;
+using Application.Interfaces.Components;
 using Application.Mappings;
 using Application.Service;
+using Application.Service.Components;
 using Domain.Entities;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
@@ -29,8 +31,19 @@ builder.Services.AddScoped<ISeriesService, SeriesService>();
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 
 #region Components
-builder.Services.AddScoped<ICaseRepository, CaseRepository>();
-builder.Services.AddScoped<ICaseService, CaseService>();
+
+    builder.Services.AddScoped<ICaseRepository, CaseRepository>();
+    builder.Services.AddScoped<ICaseService, CaseService>();
+
+    builder.Services.AddScoped<IRamRepository, RamMemoryRepository>();
+    builder.Services.AddScoped<IRAMService, RamService>();
+
+    builder.Services.AddScoped<ICPURepository, CPURepository>();
+    builder.Services.AddScoped<ICPUService, CPUService>();
+
+    builder.Services.AddScoped<IPowerSupplyService, PowerSupplyService>();
+    builder.Services.AddScoped<IPowerSupplyRepository, PowerSupplyRepository>();
+
 
 #endregion
 

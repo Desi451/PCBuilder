@@ -1,5 +1,8 @@
 ﻿using Domain.Entities.Components.CPU;
 using Domain.Interfaces.Repository.Components;
+using Infrastructure.Common;
+using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +13,76 @@ namespace Infrastructure.Repositories;
 
 public class CPURepository : ICPURepository
 {
-    public Task Add(CPU Cpu)
+    private AppDbContext _context;
+
+    public CPURepository(AppDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Task Delete(int id)
+    public async Task Add(CPU Cpu)
     {
-        throw new NotImplementedException();
+        Cpu.IsDeleted = false;
+        Cpu.CreatedBy = 1;
+        await _context.AddAsync(Cpu);
     }
 
-    public Task<CPU> GetById(int id)
+    public async Task AddSocket(SocketCPU socket)
     {
-        throw new NotImplementedException();
+        socket.IsDeleted = false;
+        socket.CreatedBy = 1;
+        await _context.AddAsync(socket);
     }
 
-    public Task<List<CPU>> GetCases()
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        var res = await GetById(id);
+        if(res != null)
+        {
+            res.IsDeleted = true;
+        }
     }
 
-    public Task Update(CPU Cpu)
+    public async Task DeleteSocket(int id)
     {
-        throw new NotImplementedException();
+        var res = await GetSocketById(id);
+        if (res != null)
+        {
+            res.IsDeleted = true;
+        }
+    }
+
+    public async Task<CPU> GetById(int id)
+    {
+        CPU Cpu = await _context.CPUs.FirstOrDefaultAsync(x => x.Id == id);
+        return Cpu;
+    }
+
+    public async Task<List<CPU>> GetCPUs()
+    {
+        return await _context.CPUs.ToListAsync();
+    }
+
+    public async Task<SocketCPU> GetSocketById(int id)
+    {
+        SocketCPU res = await _context.SocketCPUs.FirstOrDefaultAsync(_ => _.Id == id);
+        return res;
+    }
+
+    public async Task<List<SocketCPU>> GetSockets()
+    {
+        return await _context.SocketCPUs.ToListAsync();
+    }
+
+    public async Task Update(CPU Cpu)
+    {
+        var oldCpu = await _context.CPUs.FirstOrDefaultAsync(r  => r.Id == Cpu.Id);
+        Helper.CopyProperties(Cpu, oldCpu);
+    }
+
+    public async Task UpdateSocket(SocketCPU socket)
+    {
+        var oldCpu = await _context.SocketCPUs.FirstOrDefaultAsync(r => r.Id == socket.Id);
+        Helper.CopyProperties(socket, oldCpu);
     }
 }

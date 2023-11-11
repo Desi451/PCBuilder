@@ -8,17 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\net7.0\Infrastructure.AssemblyInfo.cs" />
-    <Compile Include="obj\Debug\net7.0\Infrastructure.GlobalUsings.g.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="bin\Debug\net7.0\Infrastructure.deps.json" />
-    <Content Include="bin\Debug\net7.0\Infrastructure.runtimeconfig.json" />
-    <Content Include="obj\Debug\net7.0\Infrastructure.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Infrastructure.csproj.nuget.dgspec.json" />
-    <Content Include="obj\project.assets.json" />
+    <Compile Remove="bin\**" />
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="bin\**" />
+    <None Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,30 +38,6 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="bin\Debug\net7.0\Application.dll" />
-    <None Include="bin\Debug\net7.0\Application.pdb" />
-    <None Include="bin\Debug\net7.0\Domain.dll" />
-    <None Include="bin\Debug\net7.0\Domain.pdb" />
-    <None Include="bin\Debug\net7.0\Infrastructure.dll" />
-    <None Include="bin\Debug\net7.0\Infrastructure.pdb" />
-    <None Include="obj\Debug\net7.0\Infrastructure.AssemblyInfoInputs.cache" />
-    <None Include="obj\Debug\net7.0\Infrastructure.assets.cache" />
-    <None Include="obj\Debug\net7.0\Infrastructure.csproj.AssemblyReference.cache" />
-    <None Include="obj\Debug\net7.0\Infrastructure.csproj.BuildWithSkipAnalyzers" />
-    <None Include="obj\Debug\net7.0\Infrastructure.csproj.CopyComplete" />
-    <None Include="obj\Debug\net7.0\Infrastructure.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\Debug\net7.0\Infrastructure.dll" />
-    <None Include="obj\Debug\net7.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="obj\Debug\net7.0\Infrastructure.genruntimeconfig.cache" />
-    <None Include="obj\Debug\net7.0\Infrastructure.pdb" />
-    <None Include="obj\Debug\net7.0\refint\Infrastructure.dll" />
-    <None Include="obj\Debug\net7.0\ref\Infrastructure.dll" />
-    <None Include="obj\Infrastructure.csproj.nuget.g.props" />
-    <None Include="obj\Infrastructure.csproj.nuget.g.targets" />
-    <None Include="obj\project.nuget.cache" />
   </ItemGroup>
 
 </Project>

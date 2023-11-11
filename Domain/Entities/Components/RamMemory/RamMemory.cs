@@ -12,7 +12,10 @@ public class RamMemory : AuditableEntity
     public string Description { get; set; }
     public string Latency { get; set; }
     public int BrandId { get; set; }
+    public int MemorySpeedId { get; set; }
+    public int SeriesId { get; set; }
 
-    public MemorySpeed MemorySpeed { get; set; }
+    public Series series { get; set; }
+    public RamSpeed MemorySpeed { get; set; }
     public Brand Brand { get; set; }
 }
