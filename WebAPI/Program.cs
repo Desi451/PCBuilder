@@ -44,7 +44,8 @@ builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
     builder.Services.AddScoped<IPowerSupplyService, PowerSupplyService>();
     builder.Services.AddScoped<IPowerSupplyRepository, PowerSupplyRepository>();
 
-
+    builder.Services.AddScoped<IMotherBoardRepository, MotherboardRepository>();
+    builder.Services.AddScoped<IMotherBoardService, MotherboardService>();
 #endregion
 
 builder.Services.AddAutoMapper(typeof(Program));

@@ -2,6 +2,7 @@
 using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
 using Application.DTO.Components.CPU;
+using Application.DTO.Components.Motherboard;
 using Application.DTO.Components.PowerSupllyDTOs;
 using Application.DTO.Components.RAM;
 using Application.DTO.SeriesDTOs;
@@ -11,6 +12,7 @@ using Domain.Entities;
 using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 
 namespace Application.Mappings;
@@ -43,9 +45,9 @@ public static class AutoMapperConfig
             cfg.CreateMap<AddCaseDTO, Case>();
 
             //ram
-            cfg.CreateMap<RamMemory, RamDTO>();
-            cfg.CreateMap<RamDTO, RamMemory>();
-            cfg.CreateMap<AddRamDTO, RamMemory>();
+            cfg.CreateMap<RamMemories, RamDTO>();
+            cfg.CreateMap<RamDTO, RamMemories>();
+            cfg.CreateMap<AddRamDTO, RamMemories>();
 
             cfg.CreateMap<RamSpeed, RamSpeedDTO>();
             cfg.CreateMap<RamSpeedDTO, RamSpeed>();
@@ -65,6 +67,15 @@ public static class AutoMapperConfig
             cfg.CreateMap<PowerSupply, PowerSupplyDTO>();
             cfg.CreateMap<PowerSupplyDTO, PowerSupply>();
             cfg.CreateMap<AddPowerSupplyDTO, PowerSupply>();
+
+            //motherboard
+            cfg.CreateMap<Motherboard, MotherboardDTO>();
+            cfg.CreateMap<MotherboardDTO, Motherboard>();
+            cfg.CreateMap<AddMotherboardDTO, Motherboard>();
+
+            cfg.CreateMap<MotheboardMemory, MotherboardMemoryDTO>();
+            cfg.CreateMap<MotherboardMemoryDTO, MotheboardMemory>();
+            cfg.CreateMap<AddMotherboardMemoryDTO, MotheboardMemory>();
             #endregion
 
         }).CreateMapper();

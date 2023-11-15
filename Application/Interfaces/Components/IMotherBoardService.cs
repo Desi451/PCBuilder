@@ -17,6 +17,6 @@ public interface IMotherBoardService
     public Task DeleteMemory(int id);
 
     //query
-    public Task<List<MotherboardMemoryDTO>> GetMemories();
-    public Task<List<MotherboardMemoryDTO>> GetMemoryById(int id);
+    public Task<List<MotherboardMemoryDTO>> GetMemories(int id);
+    public Task<MotherboardMemoryDTO> GetMemoryById(int id);
 }

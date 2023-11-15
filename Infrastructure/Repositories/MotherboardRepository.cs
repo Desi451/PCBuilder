@@ -3,6 +3,7 @@ using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Infrastructure.Repositories;
 
@@ -47,21 +48,34 @@ public class MotherboardRepository : IMotherBoardRepository
         }
     }
 
+    public async Task DeleteMemoryForMotherBoard(int id)
+    {
+        var res = await GetMemories(id);
+        foreach(var item in res)
+        {
+            if (item != null)
+            {
+                item.IsDeleted = true;
+            }
+        }
+    }
+
     public async Task<Motherboard> GetById(int id)
     {
         var res = await _context.Motherboards.FirstOrDefaultAsync(x => x.Id == id);
         return res;
     }
 
-    public async Task<List<MotheboardMemory>> GetMemoryById(int id)
+    public async Task<MotheboardMemory> GetMemoryById(int id)
     {
-        var res = await _context.MotherboardMemories.Where(x => x.MotherBoardId == id).ToListAsync();
+        var res = await _context.MotherboardMemories.FirstOrDefaultAsync(x => x.Id == id);
         return res;
     }
 
-    public async Task<List<MotheboardMemory>> GetMemories()
+    public async Task<List<MotheboardMemory>> GetMemories(int id)
     {
-        var res = await _context.MotherboardMemories.ToListAsync();
+        var res = await _context.MotherboardMemories.Where(x => x.MotherBoardId == id)
+            .ToListAsync();
         return res;
     }
 
@@ -79,7 +93,7 @@ public class MotherboardRepository : IMotherBoardRepository
 
     public async Task UpdateMemory(List<MotheboardMemory> mobo, int id)
     {
-        var res = await GetMemoryById(id);
+        var res = await GetMemories(id);
         foreach (var i in res)
         {
             Helper.CopyProperties(mobo, res);

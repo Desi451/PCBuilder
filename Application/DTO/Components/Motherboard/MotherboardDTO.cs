@@ -14,4 +14,5 @@ public class MotherboardDTO
     public int M2Slots { get; set; }
     public int CaseSizeId { get; set; }
     public string Description { get; set; }
+    public List<MotherboardMemoryDTO> Memory { get; set; }
 }

@@ -17,6 +17,6 @@ public interface IMotherBoardRepository
     Task DeleteMemory(int id);
 
     //query
-    Task<List<MotheboardMemory>> GetMemories();
-    Task<List<MotheboardMemory>> GetMemoryById(int id);
+    Task<List<MotheboardMemory>> GetMemories(int id);
+    Task<MotheboardMemory> GetMemoryById(int id);
 }

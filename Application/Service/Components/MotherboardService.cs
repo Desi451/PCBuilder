@@ -1,6 +1,7 @@
 ﻿using Application.DTO.Components.Motherboard;
 using Application.Interfaces.Components;
 using AutoMapper;
+using Domain.Entities.Components.Motherboard;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository.Components;
 
@@ -19,53 +20,75 @@ public class MotherboardService : IMotherBoardService
         _mapper = mapper;
     }
 
-    public Task Add(AddMotherboardDTO mobo)
+    public async Task Add(AddMotherboardDTO mobo)
     {
-        throw new NotImplementedException();
+        var res = _mapper.Map<Motherboard>(mobo);
+        await _repo.Add(res);
+        foreach(var item in mobo.Memory)
+        {
+            var i = _mapper.Map<MotheboardMemory>(item);
+            await _repo.AddMemory(i);
+        }
+        await _saveData.Save();
     }
 
-    public Task AddMemory(AddMotherboardMemoryDTO mobo)
+    public async Task AddMemory(AddMotherboardMemoryDTO mobo)
     {
-        throw new NotImplementedException();
+        var i = _mapper.Map<MotheboardMemory>(mobo);
+        await _repo.AddMemory(i);
+        await _saveData.Save();
     }
 
-    public Task Delete(int id)
+    public async Task Delete(int id)
     {
-        throw new NotImplementedException();
+        await _repo.Delete(id);
+        await _repo.DeleteMemory(id);
+        await _saveData.Save();
     }
 
-    public Task DeleteMemory(int id)
+    public async Task DeleteMemory(int id)
     {
-        throw new NotImplementedException();
+        await _repo.DeleteMemory(id);
+        await _saveData.Save();
     }
 
-    public Task<MotherboardDTO> GetById(int id)
+    public async Task<MotherboardDTO> GetById(int id)
     {
-        throw new NotImplementedException();
+        var res = await _repo.GetById(id);
+        return _mapper.Map<MotherboardDTO>(res);
     }
 
-    public Task<List<MotherboardMemoryDTO>> GetMemories()
+    public async Task<List<MotherboardMemoryDTO>> GetMemories(int id)
     {
-        throw new NotImplementedException();
+        var res = await _repo.GetMemories(id);
+        List<MotherboardMemoryDTO> memories = new List<MotherboardMemoryDTO>();
+        foreach (var mem in res)
+        {
+            var item = _mapper.Map<MotherboardMemoryDTO>(mem);
+            memories.Add(item);
+        }
+        return memories;
     }
 
-    public Task<List<MotherboardMemoryDTO>> GetMemoryById(int id)
+    public async Task<MotherboardMemoryDTO> GetMemoryById(int id)
     {
-        throw new NotImplementedException();
+        var res = await _repo.GetMemoryById(id);
+        return _mapper.Map<MotherboardMemoryDTO>(res);
     }
 
-    public Task<List<MotherboardDTO>> GetMotherboards()
+    public async Task<List<MotherboardDTO>> GetMotherboards()
     {
-        throw new NotImplementedException();
+        var res = await _repo.GetMotherboards();
+        return _mapper.Map<List<MotherboardDTO>>(res);
     }
 
-    public Task Update(MotherboardDTO mobo)
+    public async Task Update(MotherboardDTO mobo)
     {
-        throw new NotImplementedException();
+        await _saveData.Save();
     }
 
-    public Task UpdateMemory(List<MotherboardMemoryDTO> mobo, int id)
+    public async Task UpdateMemory(List<MotherboardMemoryDTO> mobo, int id)
     {
-        throw new NotImplementedException();
+        await _saveData.Save();
     }
 }
