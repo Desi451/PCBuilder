@@ -96,14 +96,14 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("LastModifiedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("MaxFreq")
-                        .HasColumnType("int");
+                    b.Property<double>("MaxFreq")
+                        .HasColumnType("float");
 
                     b.Property<int>("MaxRam")
                         .HasColumnType("int");
 
-                    b.Property<int>("MinFreq")
-                        .HasColumnType("int");
+                    b.Property<double>("MinFreq")
+                        .HasColumnType("float");
 
                     b.Property<string>("Model")
                         .IsRequired()

@@ -1,14 +1,8 @@
-﻿using Domain.Entities;
-using Domain.Entities.Components.RamMemory;
+﻿using Domain.Entities.Components.RamMemory;
 using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories;
 
@@ -21,7 +15,7 @@ public class RamMemoryRepository : IRamRepository
         _context = context;
     }
 
-    public async Task Add(RamMemory ram)
+    public async Task Add(RamMemories ram)
     {
         ram.IsDeleted = false;
         ram.CreatedBy = 1;
@@ -53,13 +47,13 @@ public class RamMemoryRepository : IRamRepository
         }
     }
 
-    public async Task<RamMemory> GetById(int id)
+    public async Task<RamMemories> GetById(int id)
     {
-        RamMemory? ram = await _context.RAMs.FirstOrDefaultAsync(x => x.Id == id);
+        RamMemories? ram = await _context.RAMs.FirstOrDefaultAsync(x => x.Id == id);
         return ram;
     }
 
-    public async Task<List<RamMemory>> GetRams()
+    public async Task<List<RamMemories>> GetRams()
     {
         return await _context.RAMs.ToListAsync();
     }
@@ -75,13 +69,13 @@ public class RamMemoryRepository : IRamRepository
         return res;
     }
 
-    public async Task Update(RamMemory ram)
+    public async Task Update(RamMemories ram)
     {
         var oldRam = await _context.RAMs.Where(r => r.Id == ram.Id).FirstOrDefaultAsync();
         Helper.CopyProperties(ram, oldRam);
     }
 
-    public async  Task UpdateSpeed(RamSpeed ram)
+    public async Task UpdateSpeed(RamSpeed ram)
     {
         var oldRam = await _context.RamSpeeds.Where(r => r.Id == ram.Id).FirstOrDefaultAsync();
         Helper.CopyProperties(ram, oldRam);

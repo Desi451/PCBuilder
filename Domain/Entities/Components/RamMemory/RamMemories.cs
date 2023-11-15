@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.Components.RamMemory;
 
-public class RamMemory : AuditableEntity
+public class RamMemories : AuditableEntity
 {
     public int Id { get; set; }
     public string Name { get; set; }

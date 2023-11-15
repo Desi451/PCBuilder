@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Components;
-using Domain.Entities.Components.CPU;
 using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;

@@ -4,13 +4,13 @@ namespace Domain.Interfaces.Repository.Components;
 
 public interface IRamRepository
 {
-    Task Add(RamMemory ram);
-    Task Update(RamMemory ram);
+    Task Add(RamMemories ram);
+    Task Update(RamMemories ram);
     Task Delete(int id);
 
     //query
-    Task<List<RamMemory>> GetRams();
-    Task<RamMemory> GetById(int id);
+    Task<List<RamMemories>> GetRams();
+    Task<RamMemories> GetById(int id);
 
     //RamMemory
     Task AddSpeed(RamSpeed ram);

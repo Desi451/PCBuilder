@@ -3,11 +3,6 @@ using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories;
 
@@ -37,7 +32,7 @@ public class CPURepository : ICPURepository
     public async Task Delete(int id)
     {
         var res = await GetById(id);
-        if(res != null)
+        if (res != null)
         {
             res.IsDeleted = true;
         }
@@ -54,7 +49,7 @@ public class CPURepository : ICPURepository
 
     public async Task<CPU> GetById(int id)
     {
-        CPU Cpu = await _context.CPUs.FirstOrDefaultAsync(x => x.Id == id);
+        CPU? Cpu = await _context.CPUs.FirstOrDefaultAsync(x => x.Id == id);
         return Cpu;
     }
 
@@ -65,8 +60,7 @@ public class CPURepository : ICPURepository
 
     public async Task<SocketCPU> GetSocketById(int id)
     {
-        SocketCPU res = await _context.SocketCPUs.FirstOrDefaultAsync(_ => _.Id == id);
-        return res;
+        return await _context.SocketCPUs.FirstOrDefaultAsync(_ => _.Id == id);
     }
 
     public async Task<List<SocketCPU>> GetSockets()
@@ -76,7 +70,7 @@ public class CPURepository : ICPURepository
 
     public async Task Update(CPU Cpu)
     {
-        var oldCpu = await _context.CPUs.FirstOrDefaultAsync(r  => r.Id == Cpu.Id);
+        var oldCpu = await _context.CPUs.FirstOrDefaultAsync(r => r.Id == Cpu.Id);
         Helper.CopyProperties(Cpu, oldCpu);
     }
 

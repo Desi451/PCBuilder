@@ -2,6 +2,7 @@
 using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,11 +41,13 @@ public class AppDbContext : DbContext
     public DbSet<Series> Series { get; set; }
     public DbSet<Rank> Ranks { get; set; }
     public DbSet<Case> Cases { get; set; }
-    public DbSet<RamMemory> RAMs {  get; set; }
+    public DbSet<RamMemories> RAMs {  get; set; }
     public DbSet <RamSpeed> RamSpeeds { get; set; }
     public DbSet <CPU> CPUs { get; set; }
     public DbSet <SocketCPU> SocketCPUs { get; set; }
     public DbSet <PowerSupply> PSUs { get; set; }
     public DbSet <SlotInterface> SlotInterfaces { get; set; }
     public DbSet <GPU> GPUs { get; set; }
+    public DbSet <Motherboard> Motherboards { get; set; }
+    public DbSet <MotheboardMemory> MotherboardMemories { get; set; }
 }

@@ -9,8 +9,8 @@ public class CPU : AuditableEntity
     public string Model { get; set; }
     public int Cores { get; set; }
     public int Threads { get; set; }
-    public int MinFreq { get; set; }
-    public int MaxFreq { get; set; }
+    public double MinFreq { get; set; }
+    public double MaxFreq { get; set; }
     public int L2Cache { get; set; }
     public int L3Cache { get; set; }
     public int MaxRam { get; set; }
