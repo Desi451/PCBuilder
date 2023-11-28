@@ -30,7 +30,7 @@ public class RamService : IRAMService
 
     public async  Task<RamDTO> Add(AddRamDTO post)
     {
-        var res = _mapper.Map<RamMemory>(post);
+        var res = _mapper.Map<RamMemories>(post);
         await _repo.Add(res);
         await _saveData.Save();
         return _mapper.Map<RamDTO>(res);
@@ -58,7 +58,7 @@ public class RamService : IRAMService
     {
         try
         {
-            var res = _mapper.Map<RamMemory>(updateRam);
+            var res = _mapper.Map<RamMemories>(updateRam);
             await _repo.Update(res);
             await _saveData.Save();
         }
