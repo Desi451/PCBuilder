@@ -24,9 +24,11 @@ public class MotherboardService : IMotherBoardService
     {
         var res = _mapper.Map<Motherboard>(mobo);
         await _repo.Add(res);
+        await _saveData.Save();
         foreach(var item in mobo.Memory)
         {
             var i = _mapper.Map<MotheboardMemory>(item);
+            i.MotherBoardId = res.Id;
             await _repo.AddMemory(i);
         }
         await _saveData.Save();
@@ -84,11 +86,15 @@ public class MotherboardService : IMotherBoardService
 
     public async Task Update(MotherboardDTO mobo)
     {
+        var res = _mapper.Map<Motherboard>(mobo);
+        await _repo.Update(res);
         await _saveData.Save();
     }
 
     public async Task UpdateMemory(List<MotherboardMemoryDTO> mobo, int id)
     {
+        var res = _mapper.Map<List<MotheboardMemory>>(mobo);
+        await _repo.UpdateMemory(res, id);
         await _saveData.Save();
     }
 }

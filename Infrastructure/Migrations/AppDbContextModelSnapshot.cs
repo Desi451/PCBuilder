@@ -320,6 +320,121 @@ namespace Infrastructure.Migrations
                     b.ToTable("GPUs");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Components.Motherboard.MotheboardMemory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MemoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MotherBoardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RamMemoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemoryId");
+
+                    b.HasIndex("MotherBoardId");
+
+                    b.ToTable("MotherboardMemories");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CaseSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CaseSizeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Chipset")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("M2Slots")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxMemory")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SATASlots")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SocketCPUId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("SeriesId");
+
+                    b.HasIndex("SocketCPUId");
+
+                    b.ToTable("Motherboards");
+                });
+
             modelBuilder.Entity("Domain.Entities.Components.PowerSupply", b =>
                 {
                     b.Property<int>("Id")
@@ -410,7 +525,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("PSUs");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Components.RamMemory.RamMemory", b =>
+            modelBuilder.Entity("Domain.Entities.Components.RamMemory.RamMemories", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -685,6 +800,50 @@ namespace Infrastructure.Migrations
                     b.Navigation("Series");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Components.Motherboard.MotheboardMemory", b =>
+                {
+                    b.HasOne("Domain.Entities.Components.RamMemory.RamMemories", "Memory")
+                        .WithMany()
+                        .HasForeignKey("MemoryId");
+
+                    b.HasOne("Domain.Entities.Components.Motherboard.Motherboard", "Motherboard")
+                        .WithMany("Memories")
+                        .HasForeignKey("MotherBoardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Memory");
+
+                    b.Navigation("Motherboard");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>
+                {
+                    b.HasOne("Domain.Entities.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Series", "Series")
+                        .WithMany()
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.CPU.SocketCPU", "SocketCPU")
+                        .WithMany()
+                        .HasForeignKey("SocketCPUId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Series");
+
+                    b.Navigation("SocketCPU");
+                });
+
             modelBuilder.Entity("Domain.Entities.Components.PowerSupply", b =>
                 {
                     b.HasOne("Domain.Entities.Brand", "Brand")
@@ -704,7 +863,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Series");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Components.RamMemory.RamMemory", b =>
+            modelBuilder.Entity("Domain.Entities.Components.RamMemory.RamMemories", b =>
                 {
                     b.HasOne("Domain.Entities.Brand", "Brand")
                         .WithMany()
@@ -740,6 +899,11 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Rank");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>
+                {
+                    b.Navigation("Memories");
                 });
 #pragma warning restore 612, 618
         }
