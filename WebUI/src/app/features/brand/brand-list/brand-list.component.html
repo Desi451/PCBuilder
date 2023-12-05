@@ -1,0 +1,6 @@
+
+<p>brand-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="brandList" [columns]="['id', 'name']"></app-uni-table>
+</ng-container>
