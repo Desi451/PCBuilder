@@ -1,19 +1,18 @@
 <form>
-	<div class="mb-3 row">
-		<div class="col-xs-3 col-sm-auto">
-			<input
-				id="table-complete-search"
-				type="text"
-				class="form-control bg-dark border-primary text-light"
-				name="searchTerm"
-			/>
-		</div>
-      <div class="col-12 col-md-auto fw-bold ">
-        <button type="button" class="btn btn-dark border-primary">
-          <i class="bi bi-search"></i>
-        </button>
-      </div>
-	</div>
+  <div class="mb-3 row">
+    <div class="col-xs-3 col-sm-auto">
+      <input id="table-complete-search"
+             type="text"
+             class="form-control bg-dark border-primary text-light"
+             name="searchTerm" />
+    </div>
+    <div class="col-12 col-md-auto fw-bold ">
+      <button type="button"
+              class="btn btn-dark border-primary">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </div>
 </form>
 
 <table class="table table-bordered table-dark border-primary rounded-1 overflow-hidden">
@@ -25,20 +24,41 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of data">
+    <tr *ngFor="let row of slicedData">
       <td class="col-1 text-center">{{ row[columns[0]] }}</td>
       <td *ngFor="let column of columns.slice(1)">{{ row[column] }}</td>
       <td class="col-1 text-center">
-        <button type="button" class="btn btn-link btn-sm px-1" mdbRipple rippleColor="dark">
+        <button type="button"
+                class="btn btn-link btn-sm px-1"
+                mdbRipple
+                rippleColor="dark"
+                (click)="onEditClick(row)">
           <i class="bi bi-pencil-square"></i>
         </button>
-        <button type="button" class="btn btn-link btn-sm px-1" mdbRipple rippleColor="dark">
+        <button type="button"
+                class="btn btn-link btn-sm px-1"
+                mdbRipple
+                rippleColor="dark"
+                (click)="onDeleteClick(row)">
           <i class="bi bi-trash3"></i>
         </button>
-        <button type="button" class="btn btn-link btn-sm px-1" mdbRipple rippleColor="dark">
+        <button type="button"
+                class="btn btn-link btn-sm px-1"
+                mdbRipple
+                rippleColor="dark"
+                (click)="onViewClick(row)">
           <i class="bi bi-eye"></i>
         </button>
       </td>
     </tr>
   </tbody>
 </table>
+
+<ngb-pagination [collectionSize]="data.length"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [maxSize]="maxSize"
+                [rotate]="rotate"
+                [ellipses]="ellipses"
+                (pageChange)="onPageChange($event)">
+</ngb-pagination>

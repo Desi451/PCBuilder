@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.34114.132
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{91A3855B-FA06-424C-B9F5-F8606DBBEE26}"
 EndProject
@@ -11,24 +11,25 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "WebAPI\API.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{A2D49A64-1A47-4D37-A943-2040DD0C0CB3}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebUI(1)", "WebUI\", "{E4FD8A50-10A3-4277-9D50-8E3F1AD52262}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebUI", "WebUI\", "{E4FD8A50-10A3-4277-9D50-8E3F1AD52262}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_51399"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_55712"
 		Debug.AspNetCompiler.PhysicalPath = "WebUI\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51399\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55712\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_51399"
+		Release.AspNetCompiler.VirtualPath = "/localhost_55712"
 		Release.AspNetCompiler.PhysicalPath = "WebUI\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_51399\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_55712\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "51399"
+		VWDPort = "55712"
+		SlnRelativePath = "WebUI\"
 	EndProjectSection
 EndProject
 Global

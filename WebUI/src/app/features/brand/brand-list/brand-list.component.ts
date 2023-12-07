@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { BrandService } from "src/app/core/service/brand.service";
 import { brand } from "src/app/shared/models/brand.model";
 
@@ -12,13 +12,18 @@ export class BrandListComponent implements OnInit {
   brandList: brand[] = [];
   isDataLoaded = false;
 
-  constructor(public _brandService: BrandService) {}
+  constructor(
+    public _brandService: BrandService,
+    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this._brandService.getBrands().subscribe(
       (brands: brand[]) => {
         this.brandList = brands;
-        this.isDataLoaded = true; // Ustaw flagę na true po pomyślnym pobraniu danych
+        this.isDataLoaded = true;
+
+        this.cdr.detectChanges();
       },
       (error) => {
         console.error('Error fetching brands:', error);
