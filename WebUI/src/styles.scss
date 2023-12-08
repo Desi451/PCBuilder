@@ -3,4 +3,8 @@
 @import 'bootstrap/scss/bootstrap';
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-body { background-color: rgb(228, 66, 66) !important; }
+body {
+  background-color: rgb(66, 66, 66) !important;
+  font-family: 'Fira Code', monospace;
+}
+

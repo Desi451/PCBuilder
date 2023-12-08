@@ -12,5 +12,11 @@ export class AppComponent {
     console.log(environment.production); // Logs false for development environment
   }
 
+  isOffcanvasOpen = true;
+
   title = 'PCBuilder';
+
+  closeOffcanvas() {
+    this.isOffcanvasOpen = false;
+  }
 }

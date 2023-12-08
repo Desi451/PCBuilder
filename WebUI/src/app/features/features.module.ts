@@ -11,7 +11,6 @@ import { SeriesModule } from "./series/series.module";
     imports: [
         CommonModule,
         FeaturesRoutingModule,
-
         SharedModule,
 
         BrandModule,

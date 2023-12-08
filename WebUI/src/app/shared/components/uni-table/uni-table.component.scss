@@ -1,0 +1,25 @@
+/* W arkuszu stylów (CSS lub SCSS) */
+
+.pagination-custom {
+  background-color: #343a40; /* Dzikie tło - kolor ciemny */
+  color: #0a0a0a; /* Kolor czcionki - biały */
+  border: 1px solid #007bff; /* Kolor obramowania - niebieski */
+}
+
+.pagination-custom a {
+  color: rgb(3, 3, 3); /* Kolor linków - biały */
+}
+
+.pagination-custom a:hover {
+  background-color: #007bff; /* Działa, gdy najedziesz kursorem na link - niebieski */
+  color: #080707; /* Kolor tekstu na linku - biały */
+}
+
+.pagination-custom .active a {
+  background-color: #007bff; /* Działa, gdy strona jest aktywna - niebieski */
+  color: #070606; /* Kolor tekstu na aktywnej stronie - biały */
+}
+
+.pagination-custom .disabled {
+  color: #020202; /* Kolor wyłączonego tekstu - szary */
+}

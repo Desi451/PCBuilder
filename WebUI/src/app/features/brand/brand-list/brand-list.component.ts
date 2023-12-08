@@ -11,7 +11,6 @@ import { brand } from "src/app/shared/models/brand.model";
 export class BrandListComponent implements OnInit {
   brandList: brand[] = [];
   isDataLoaded = false;
-
   constructor(
     public _brandService: BrandService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
@@ -22,7 +21,6 @@ export class BrandListComponent implements OnInit {
       (brands: brand[]) => {
         this.brandList = brands;
         this.isDataLoaded = true;
-
         this.cdr.detectChanges();
       },
       (error) => {
