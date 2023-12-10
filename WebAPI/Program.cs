@@ -72,6 +72,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors( options => options.WithOrigins("https://localhost:7214")
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+    );
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

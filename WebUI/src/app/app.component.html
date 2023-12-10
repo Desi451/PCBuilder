@@ -1,0 +1,50 @@
+<div class="d-flex flex-column" style="min-height: 100vh;">
+
+  <nav class="navbar navbar-light bg-dark border-bottom border-info-subtle">
+    <div class="container-fluid">
+      <a class="navbar-brand mx-4" href="#">
+        <div class="text-primary">
+          <i class="bi bi-pc-display"></i>
+          <small class="fw-bold p-3 text-light"> PCBuilder</small>
+        </div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="d-flex flex-grow-1">
+
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; position: sticky; top: 0; overflow-y: auto;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <svg class="bi pe-none me-2" width="40" height="3"><use xlink:href="#bootstrap"/></svg>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="brand" class="nav-link text-white" aria-current="page">
+            <i class="bi bi-building"></i>
+            Brand
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="series" class="nav-link text-white" aria-current="page">
+            <i class="bi bi-buildings"></i>
+            Series
+          </a>
+        </li>
+      </ul>
+      <hr>
+    </div>
+
+    <div class="p-2 flex-grow-1 mx-5">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-dark border-top border-info-subtle">
+    <div class="container">
+      <span class="text-body-secondary">Place sticky footer content here.</span>
+    </div>
+  </footer>
+
+</div>

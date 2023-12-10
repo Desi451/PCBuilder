@@ -1,0 +1,18 @@
+/* uni-table.component.scss */
+
+::ng-deep .pagination-container .pagination {
+  background-color: black; /* Dark background color */
+  color: white; /* Light text color */
+  border: none; /* Remove border */
+}
+
+::ng-deep .pagination-container .pagination .page-link {
+  background-color: black; /* Dark background color for page links */
+  color: white !important; /* Important to override Bootstrap styles */
+  border: 1px solid black; /* Add border for page links */
+}
+
+::ng-deep .pagination-container .pagination .page-item.active .page-link {
+  background-color: blue; /* Color for the active page link */
+  border-color: blue; /* Border color for the active page link */
+}
