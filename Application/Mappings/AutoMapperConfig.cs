@@ -52,6 +52,7 @@ public static class AutoMapperConfig
             cfg.CreateMap<RamSpeed, RamSpeedDTO>();
             cfg.CreateMap<RamSpeedDTO, RamSpeed>();
             cfg.CreateMap<AddRamSpeedDTO, RamSpeed>();
+
             //cpu
             cfg.CreateMap<CPU, CpuDTO>();
             cfg.CreateMap<CpuDTO, CPU>();
@@ -72,10 +73,14 @@ public static class AutoMapperConfig
             cfg.CreateMap<Motherboard, MotherboardDTO>();
             cfg.CreateMap<MotherboardDTO, Motherboard>();
             cfg.CreateMap<AddMotherboardDTO, Motherboard>();
+            cfg.CreateMap<UpdateMotherboardDTO, Motherboard>();
 
             cfg.CreateMap<MotheboardMemory, MotherboardMemoryDTO>();
             cfg.CreateMap<MotherboardMemoryDTO, MotheboardMemory>();
             cfg.CreateMap<AddMotherboardMemoryDTO, MotheboardMemory>();
+
+            //gpu
+
             #endregion
 
         }).CreateMapper();

@@ -236,7 +236,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Cases");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Components.GPU", b =>
+            modelBuilder.Entity("Domain.Entities.Components.GPU.GPU", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,15 +247,18 @@ namespace Infrastructure.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CaseSizeId")
+                    b.Property<int>("ChipsetBrandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ChipsetBrandId")
+                    b.Property<int>("ChipsetSeriesId")
                         .HasColumnType("int");
 
                     b.Property<string>("CoreClock")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CoresetId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -293,9 +296,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ModelSeriesId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -309,13 +309,18 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SeriesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SlotInterfaceId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TDP")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("ChipsetBrandId");
+
+                    b.HasIndex("ChipsetSeriesId");
+
+                    b.HasIndex("SeriesId");
 
                     b.ToTable("GPUs");
                 });
@@ -328,28 +333,10 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MemoryId")
+                    b.Property<int>("MemoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("MotherBoardId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RamMemoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -464,11 +451,13 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Fans")
-                        .HasColumnType("int");
+                    b.Property<string>("Fans")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Freq")
-                        .HasColumnType("int");
+                    b.Property<string>("Freq")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("HasCrossFire")
                         .HasColumnType("bit");
@@ -488,8 +477,9 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("LastModifiedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("MainConnPins")
-                        .HasColumnType("int");
+                    b.Property<string>("MainConnPins")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -506,8 +496,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SeriesId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Voltage")
-                        .HasColumnType("float");
+                    b.Property<string>("Voltage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("maxPower")
                         .HasColumnType("int");
@@ -688,6 +679,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int?>("GPUId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -702,6 +696,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GPUId");
 
                     b.ToTable("SlotInterfaces");
                 });
@@ -800,11 +796,48 @@ namespace Infrastructure.Migrations
                     b.Navigation("Series");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Components.GPU.GPU", b =>
+                {
+                    b.HasOne("Domain.Entities.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Brand", "ChipsetBrand")
+                        .WithMany()
+                        .HasForeignKey("ChipsetBrandId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Series", "ChipsetSeries")
+                        .WithMany()
+                        .HasForeignKey("ChipsetSeriesId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Series", "Series")
+                        .WithMany()
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("ChipsetBrand");
+
+                    b.Navigation("ChipsetSeries");
+
+                    b.Navigation("Series");
+                });
+
             modelBuilder.Entity("Domain.Entities.Components.Motherboard.MotheboardMemory", b =>
                 {
-                    b.HasOne("Domain.Entities.Components.RamMemory.RamMemories", "Memory")
+                    b.HasOne("Domain.Entities.Components.RamMemory.RamSpeed", "Memory")
                         .WithMany()
-                        .HasForeignKey("MemoryId");
+                        .HasForeignKey("MemoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Components.Motherboard.Motherboard", "Motherboard")
                         .WithMany("Memories")
@@ -890,6 +923,13 @@ namespace Infrastructure.Migrations
                     b.Navigation("series");
                 });
 
+            modelBuilder.Entity("Domain.Entities.SlotInterface", b =>
+                {
+                    b.HasOne("Domain.Entities.Components.GPU.GPU", null)
+                        .WithMany("Slots")
+                        .HasForeignKey("GPUId");
+                });
+
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.HasOne("Domain.Entities.Rank", "Rank")
@@ -899,6 +939,11 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Rank");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.GPU.GPU", b =>
+                {
+                    b.Navigation("Slots");
                 });
 
             modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>

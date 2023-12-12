@@ -2,6 +2,7 @@
 using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,21 @@ public class AppDbContext : DbContext
             .HasOne(b => b.Brand);
         modelBuilder.Entity<Case>()
             .HasOne(b => b.Series);
+
+        modelBuilder.Entity<GPU>()
+            .HasOne(c => c.Brand);
+        modelBuilder.Entity<GPU>()
+            .HasOne(d => d.Series);
+
+        modelBuilder.Entity<GPU>()
+            .HasOne(c => c.ChipsetBrand)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<GPU>()
+            .HasOne(c => c.ChipsetSeries)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
 
         base.OnModelCreating(modelBuilder);            
     }

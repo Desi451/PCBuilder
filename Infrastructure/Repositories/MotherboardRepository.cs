@@ -25,8 +25,6 @@ public class MotherboardRepository : IMotherBoardRepository
 
     public async Task AddMemory(MotheboardMemory mobo)
     {
-        mobo.IsDeleted = false;
-        mobo.CreatedBy = 1;
         await _context.AddAsync(mobo);
     }
 
@@ -51,13 +49,13 @@ public class MotherboardRepository : IMotherBoardRepository
     public async Task DeleteMemoryForMotherBoard(int id)
     {
         var res = await GetMemories(id);
-        foreach(var item in res)
-        {
-            if (item != null)
-            {
-                item.IsDeleted = true;
-            }
-        }
+        //foreach(var item in res)
+        //{
+        //    if (item != null)
+        //    {
+        //        item.IsDeleted = true;
+        //    }
+        //} tutaj dac usuwanie?
     }
 
     public async Task<Motherboard> GetById(int id)
@@ -85,11 +83,37 @@ public class MotherboardRepository : IMotherBoardRepository
         return res;
     }
 
-    public async Task Update(Motherboard mobo)
+    public async Task Update(Motherboard mobo, List<int> Rams)
     {
         var res = await GetById(mobo.Id);
+
         Helper.CopyProperties(mobo, res);
+        // Pobieranie starej listy pamięci z bazy danych
+        var oldRams = await _context.MotherboardMemories
+            .Where(x => x.MotherBoardId == mobo.Id)
+            .Select(x => x.MemoryId)
+            .ToListAsync();
+
+        var newRamsNotInOldRams = Rams.Except(oldRams).ToList();
+        foreach (var ram in newRamsNotInOldRams) 
+        {
+            MotheboardMemory item = new MotheboardMemory();
+            item.MotherBoardId = mobo.Id;
+            item.MemoryId = ram;
+            await AddMemory(item);
+        }
+
+        var oldRamsNotInRams = oldRams.Except(Rams).ToList();
+
+        var memoriesToRemove = await _context.MotherboardMemories
+            .Where(x => x.MotherBoardId == mobo.Id && oldRamsNotInRams.Contains(x.MemoryId))
+            .ToListAsync();
+
+        _context.MotherboardMemories.RemoveRange(memoriesToRemove);
+        
+        // dodac sam obiekt jeszcze
     }
+
 
     public async Task UpdateMemory(List<MotheboardMemory> mobo, int id)
     {

@@ -5,7 +5,7 @@ namespace Domain.Interfaces.Repository.Components;
 public interface IMotherBoardRepository
 {
     Task Add(Motherboard mobo);
-    Task Update(Motherboard mobo);
+    Task Update(Motherboard mobo, List<int> Rams);
     Task Delete(int id);
 
     //query

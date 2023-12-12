@@ -1,4 +1,4 @@
-﻿using Domain.Entities.Components;
+﻿using Domain.Entities.Components.GPU;
 using System;
 using System.Collections.Generic;
 using System.Linq;

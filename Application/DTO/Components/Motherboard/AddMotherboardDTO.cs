@@ -2,6 +2,7 @@
 
 public class AddMotherboardDTO
 {
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Model { get; set; }
     public int BrandId { get; set; }
@@ -13,5 +14,5 @@ public class AddMotherboardDTO
     public int M2Slots { get; set; }
     public int CaseSizeId { get; set; }
     public string Description { get; set; }
-    public List<AddMotherboardMemoryDTO> Memory { get; set; }
+    public List<int> MemoryIds { get; set; }
 }

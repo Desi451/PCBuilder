@@ -12,7 +12,7 @@ export class UniTableComponent implements OnInit {
   @Input() formLink!: string;
   @Input() viewLink!: string;
   page = 1; // init page
-  pageSize = 9;
+  pageSize = 10;
   maxSize = 15;
   rotate = true;
   ellipses = true;
@@ -20,11 +20,12 @@ export class UniTableComponent implements OnInit {
   searchTerm = '';
   sortColumn: string | null = null;
   sortDirection: 'asc' | 'desc' = 'asc';
+  loading = true;
 
   constructor(private _router: Router) { }
 
   ngOnInit(): void {
-    this.updateSlicedData();
+      this.updateSlicedData();
   }
 
   onPageChange(page: number): void {
@@ -60,7 +61,7 @@ export class UniTableComponent implements OnInit {
     this.updateSlicedData();
   }
 
-  private updateSlicedData(): void {
+  updateSlicedData(): void {
     const startIndex = (this.page - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
 
@@ -89,5 +90,6 @@ export class UniTableComponent implements OnInit {
     }
 
     this.slicedData = filteredData.slice(startIndex, endIndex);
+    this.loading = false;
   }
 }

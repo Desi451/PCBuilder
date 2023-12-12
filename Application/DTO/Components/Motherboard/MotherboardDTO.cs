@@ -1,4 +1,6 @@
-﻿namespace Application.DTO.Components.Motherboard;
+﻿using Application.DTO.Components.RAM;
+
+namespace Application.DTO.Components.Motherboard;
 
 public class MotherboardDTO
 {
@@ -14,5 +16,5 @@ public class MotherboardDTO
     public int M2Slots { get; set; }
     public int CaseSizeId { get; set; }
     public string Description { get; set; }
-    public List<MotherboardMemoryDTO> Memory { get; set; }
+    public List<RamSpeedDTO> Memory { get; set; }
 }
