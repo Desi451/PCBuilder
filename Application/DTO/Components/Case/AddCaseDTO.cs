@@ -9,6 +9,5 @@ public class AddCaseDTO
     public float Deepth { get; set; }
     public required string Description { get; set; }
     public int CaseSizeId { get; set; }
-    public int BrandId { get; set; }
     public int SeriesId { get; set; }
 }

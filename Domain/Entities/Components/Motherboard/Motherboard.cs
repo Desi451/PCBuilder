@@ -9,7 +9,6 @@ public class Motherboard : AuditableEntity
     public int Id { get; set; }
     public string Name { get; set; }
     public string Model { get; set; }
-    public int BrandId { get; set; }
     public int SeriesId { get; set; }
     public int SocketCPUId { get; set; }
     public string Chipset { get; set; }
@@ -20,7 +19,6 @@ public class Motherboard : AuditableEntity
     public string Description { get; set; }
 
     public CaseSize CaseSize { get; set; }
-    public Brand Brand { get; set; }
     public Series Series { get; set; }
     public SocketCPU SocketCPU { get; set; }
     public List<MotheboardMemory> Memories { get; set; }

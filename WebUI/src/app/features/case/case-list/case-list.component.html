@@ -1,0 +1,7 @@
+<p>case-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="caseList"
+                 [columns]="['id', 'name', 'model']"
+                 [formLink]="'case/form'"></app-uni-table>
+</ng-container>

@@ -5,7 +5,6 @@ public class AddMotherboardDTO
     public int Id { get; set; }
     public string Name { get; set; }
     public string Model { get; set; }
-    public int BrandId { get; set; }
     public int SeriesId { get; set; }
     public int SocketCPUId { get; set; }
     public string Chipset { get; set; }

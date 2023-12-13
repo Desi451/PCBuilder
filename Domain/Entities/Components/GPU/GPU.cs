@@ -5,8 +5,6 @@ namespace Domain.Entities.Components.GPU;
 public class GPU : AuditableEntity
 {
     public int Id { get; set; }
-    public int BrandId { get; set; } // Producent gpu
-    public int ChipsetBrandId { get; set; }   // Producent chipsetu
 
     public int SeriesId { get; set; }
     public int ChipsetSeriesId { get; set; }   // Seria chipsetu
@@ -22,9 +20,6 @@ public class GPU : AuditableEntity
     public int RecommendedPsuPower { get; set; }
     public int Length { get; set; }
     public string Description { get; set; }
-
-    public Brand Brand { get; set; } // Producent procesora
-    public Brand ChipsetBrand { get; set; }  // Producent chipsetu
 
     public Series Series { get; set; }
     public Series ChipsetSeries { get; set; }

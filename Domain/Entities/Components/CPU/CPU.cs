@@ -17,12 +17,10 @@ public class CPU : AuditableEntity
     public bool IsAPU { get; set; }
     public int Technology { get; set; } //nm
     public int TDP { get; set; }
-    public int BrandId { get; set; }
     public int SeriesId { get; set; }
     public int SocketCPUId { get; set; }
     public string Description { get; set; }
 
-    public Brand Brand { get; set; }
     public Series Series { get; set; }
     public SocketCPU SocketCPU { get; set; }
 }

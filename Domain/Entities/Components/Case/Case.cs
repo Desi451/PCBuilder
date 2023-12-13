@@ -14,9 +14,7 @@ public class Case : AuditableEntity
 
     //relations
     public int CaseSizeId { get; set; }
-    public int BrandId { get; set; }
     public int SeriesId { get; set; }
     public CaseSize CaseSize { get; set; }
-    public Brand Brand { get; set; }
     public Series Series { get; set; }
 }

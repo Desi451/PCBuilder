@@ -2,6 +2,7 @@
 using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
 using Application.DTO.Components.CPU;
+using Application.DTO.Components.GPU;
 using Application.DTO.Components.Motherboard;
 using Application.DTO.Components.PowerSupllyDTOs;
 using Application.DTO.Components.RAM;
@@ -12,6 +13,7 @@ using Domain.Entities;
 using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 
@@ -80,6 +82,10 @@ public static class AutoMapperConfig
             cfg.CreateMap<AddMotherboardMemoryDTO, MotheboardMemory>();
 
             //gpu
+            cfg.CreateMap<GPU, GpuDTO>();
+            cfg.CreateMap<GpuDTO, GPU>();
+            cfg.CreateMap<AddGpuDTO, GPU>();
+            cfg.CreateMap<AddGpuDTO, GpuDTO>();
 
             #endregion
 

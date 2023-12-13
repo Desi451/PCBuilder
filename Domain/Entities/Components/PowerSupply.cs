@@ -21,8 +21,6 @@ public class PowerSupply : AuditableEntity
     public required string Description { get; set; }
     public required string Dimensions { get; set; }
 
-    public int BrandId { get; set; }
     public int SeriesId { get; set; }
-    public Brand? Brand { get; set; }
     public Series? Series { get; set; }
 }

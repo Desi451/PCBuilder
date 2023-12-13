@@ -22,22 +22,18 @@ public class AppDbContext : DbContext
             .HasOne(u => u.Rank);
 
         modelBuilder.Entity<Case>()
-            .HasOne(b => b.Brand);
-        modelBuilder.Entity<Case>()
             .HasOne(b => b.Series);
 
-        modelBuilder.Entity<GPU>()
-            .HasOne(c => c.Brand);
         modelBuilder.Entity<GPU>()
             .HasOne(d => d.Series);
 
         modelBuilder.Entity<GPU>()
-            .HasOne(c => c.ChipsetBrand)
+            .HasOne(c => c.ChipsetSeries)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<GPU>()
-            .HasOne(c => c.ChipsetSeries)
+        modelBuilder.Entity<SocketCPU>()
+            .HasOne(c => c.Brand)
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 

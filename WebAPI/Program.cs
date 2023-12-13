@@ -46,6 +46,9 @@ builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 
     builder.Services.AddScoped<IMotherBoardRepository, MotherboardRepository>();
     builder.Services.AddScoped<IMotherBoardService, MotherboardService>();
+
+    builder.Services.AddScoped<IGPURepository, GpuRepository>();
+    builder.Services.AddScoped<IGpuService, GpuService>();
 #endregion
 
 builder.Services.AddAutoMapper(typeof(Program));

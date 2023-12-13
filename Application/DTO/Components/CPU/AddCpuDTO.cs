@@ -13,7 +13,6 @@ public class AddCpuDTO
     public bool IsAPU { get; set; }
     public int Technology { get; set; } //nm
     public int TDP { get; set; }
-    public int BrandId { get; set; }
     public int SeriesId { get; set; }
     public int SocketCPUId { get; set; }
     public string Description { get; set; }

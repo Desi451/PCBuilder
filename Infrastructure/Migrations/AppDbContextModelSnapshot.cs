@@ -62,9 +62,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Cores")
                         .HasColumnType("int");
 
@@ -130,8 +127,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("SeriesId");
 
                     b.HasIndex("SocketCPUId");
@@ -146,6 +141,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -168,6 +166,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BrandId");
+
                     b.ToTable("SocketCPUs");
                 });
 
@@ -178,9 +178,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
 
                     b.Property<int>("CaseSize")
                         .HasColumnType("int");
@@ -229,8 +226,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("SeriesId");
 
                     b.ToTable("Cases");
@@ -243,12 +238,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChipsetBrandId")
-                        .HasColumnType("int");
 
                     b.Property<int>("ChipsetSeriesId")
                         .HasColumnType("int");
@@ -314,10 +303,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
-                    b.HasIndex("ChipsetBrandId");
-
                     b.HasIndex("ChipsetSeriesId");
 
                     b.HasIndex("SeriesId");
@@ -355,9 +340,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
 
                     b.Property<int>("CaseSize")
                         .HasColumnType("int");
@@ -413,8 +395,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("SeriesId");
 
                     b.HasIndex("SocketCPUId");
@@ -429,9 +409,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Connectors")
                         .IsRequired()
@@ -509,8 +486,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("SeriesId");
 
                     b.ToTable("PSUs");
@@ -523,9 +498,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
@@ -571,8 +543,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
 
                     b.HasIndex("MemorySpeedId");
 
@@ -641,6 +611,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -661,6 +634,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.ToTable("Series");
                 });
@@ -752,12 +727,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Components.CPU.CPU", b =>
                 {
-                    b.HasOne("Domain.Entities.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
@@ -770,46 +739,35 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("Series");
 
                     b.Navigation("SocketCPU");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Components.Case.Case", b =>
+            modelBuilder.Entity("Domain.Entities.Components.CPU.SocketCPU", b =>
                 {
                     b.HasOne("Domain.Entities.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Case.Case", b =>
+                {
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("Series");
                 });
 
             modelBuilder.Entity("Domain.Entities.Components.GPU.GPU", b =>
                 {
-                    b.HasOne("Domain.Entities.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Brand", "ChipsetBrand")
-                        .WithMany()
-                        .HasForeignKey("ChipsetBrandId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Series", "ChipsetSeries")
                         .WithMany()
                         .HasForeignKey("ChipsetSeriesId")
@@ -821,10 +779,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("SeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Brand");
-
-                    b.Navigation("ChipsetBrand");
 
                     b.Navigation("ChipsetSeries");
 
@@ -852,12 +806,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>
                 {
-                    b.HasOne("Domain.Entities.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
@@ -870,8 +818,6 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("Series");
 
                     b.Navigation("SocketCPU");
@@ -879,31 +825,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Components.PowerSupply", b =>
                 {
-                    b.HasOne("Domain.Entities.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("Series");
                 });
 
             modelBuilder.Entity("Domain.Entities.Components.RamMemory.RamMemories", b =>
                 {
-                    b.HasOne("Domain.Entities.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Components.RamMemory.RamSpeed", "MemorySpeed")
                         .WithMany()
                         .HasForeignKey("MemorySpeedId")
@@ -916,11 +848,20 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
-
                     b.Navigation("MemorySpeed");
 
                     b.Navigation("series");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Series", b =>
+                {
+                    b.HasOne("Domain.Entities.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
                 });
 
             modelBuilder.Entity("Domain.Entities.SlotInterface", b =>
