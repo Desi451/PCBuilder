@@ -39,13 +39,17 @@ public class SeriesRepository : ISeriesRepository
     #region query
     public async Task<Series> GetById(int id)
     {
-        Series? series = await _context.Series.FirstOrDefaultAsync(x => x.Id == id);
-        return series;
+        return await _context.Series.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<Series>> GetSeries()
     {
         return await _context.Series.ToListAsync();
+    }
+
+    public async Task<List<Series>> GetByBrandId(int id)
+    {
+        return await _context.Series.Where(x => x.BrandId == id).ToListAsync();
     }
     #endregion
 }

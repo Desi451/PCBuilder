@@ -25,7 +25,7 @@ export class UniTableComponent implements OnInit {
   constructor(private _router: Router) { }
 
   ngOnInit(): void {
-      this.updateSlicedData();
+    this.updateSlicedData();
   }
 
   onPageChange(page: number): void {
@@ -34,15 +34,16 @@ export class UniTableComponent implements OnInit {
   }
 
   onEditClick(row: any): void {
-    this._router.navigateByUrl( this.formLink + "/" + row.id);
+    this._router.navigateByUrl(this.formLink + "/" + row.id);
   }
 
   onViewClick(row: any): void {
+    this._router.navigateByUrl(this.viewLink + "/" + row.id);
   }
 
   onAddClick(): void {
     console.log("test")
-    this._router.navigateByUrl( this.formLink);
+    this._router.navigateByUrl(this.formLink);
   }
 
   onSearchTermChange(): void {
@@ -76,7 +77,7 @@ export class UniTableComponent implements OnInit {
       filteredData.sort((a, b) => {
         let valueA = "";
         let valueB = "";
-        if(this.sortColumn != null){
+        if (this.sortColumn != null) {
           valueA = String(a[this.sortColumn]);
           valueB = String(b[this.sortColumn]);
         }

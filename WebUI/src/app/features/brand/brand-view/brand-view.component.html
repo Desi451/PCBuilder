@@ -1,0 +1,10 @@
+<p>brand-view works!</p>
+
+<H1> {{brand.name}}</H1>
+
+<h5> Series for brand list:</h5>
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="seriesList"
+                 [columns]="['id', 'name']"
+                 [formLink]="'series/form'"></app-uni-table>
+</ng-container>

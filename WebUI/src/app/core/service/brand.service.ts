@@ -6,30 +6,29 @@ import { environment } from "src/environments/environment";
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class BrandService {
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-    getBrands(): Observable<brand[]> {
-      return this.http.get<brand[]>(`${environment.apiUrl}Brand`);
-    }
+  getBrands(): Observable<brand[]> {
+    return this.http.get<brand[]>(`${environment.apiUrl}Brand`);
+  }
 
-    getBrand(id: number): Observable<brand> {
-      return this.http.get<brand>(`${environment.apiUrl}Brand/` + id);
-    }
+  getBrand(id: number): Observable<brand> {
+    return this.http.get<brand>(`${environment.apiUrl}Brand/` + id);
+  }
 
-    addBrand(brand: addBrand): Observable<addBrand> {
-      return this.http.post<brand>(`${environment.apiUrl}Brand/add`, brand);
-    }
+  addBrand(brand: addBrand): Observable<addBrand> {
+    return this.http.post<brand>(`${environment.apiUrl}Brand/add`, brand);
+  }
 
-    updateBrand(brand: brand): Observable<brand> {
-      return this.http.put<brand>(`${environment.apiUrl}Brand/update`, brand);
-    }
+  updateBrand(brand: brand): Observable<brand> {
+    return this.http.put<brand>(`${environment.apiUrl}Brand/update`, brand);
+  }
 
-    deleteBrand(id: number): Observable<Object> {
-      console.log("work");
-      return this.http.delete(`${environment.apiUrl}Brand/delete/` + id);
-    }
+  deleteBrand(id: number): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}Brand/delete/` + id);
+  }
 }

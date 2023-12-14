@@ -11,4 +11,6 @@ public interface ISeriesRepository
     //query
     Task<List<Series>> GetSeries();
     Task<Series> GetById(int id);
+
+    Task<List<Series>> GetByBrandId(int id);
 }

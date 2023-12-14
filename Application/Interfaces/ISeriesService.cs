@@ -12,6 +12,7 @@ public interface ISeriesService
 {
     public Task<List<SeriesDTO>> GetAll();
     public Task<SeriesDTO> GetById(int id);
+    public Task<List<SeriesDTO>> GetByBrandId(int id);
     public Task<SeriesDTO> Add(AddSeriesDTO post);
     public Task Update(SeriesDTO updateSeries);
     public Task Delete(int id);

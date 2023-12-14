@@ -62,4 +62,10 @@ public class SeriesService : ISeriesService
         var res = await _repository.GetById(id);
         return _mapper.Map<SeriesDTO>(res);
     }
+
+    public async Task<List<SeriesDTO>> GetByBrandId(int id)
+    {
+        var res = await _repository.GetByBrandId(id);
+        return _mapper.Map<List<SeriesDTO>>(res);
+    }
 }
