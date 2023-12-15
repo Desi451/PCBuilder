@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { CaseFormComponent } from "./case-form/case-form.component";
 import { CaseListComponent } from "./case-list/case-list.component";
+import { CaseViewComponent } from "./case-view/case-view.component";
 
 
 const routes: Routes = [
@@ -18,6 +19,10 @@ const routes: Routes = [
     path: 'form/:id',
     component: CaseFormComponent
   },
+  {
+    path: 'view/:id',
+    component: CaseViewComponent
+  }
 ];
 
 @NgModule({

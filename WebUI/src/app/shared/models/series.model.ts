@@ -4,8 +4,7 @@ export class series {
   brandId?: number;
 }
 
-export type addSeries =
-  {
+export type addSeries ={
     name?: string;
     brandId?: number;
-  }
+}

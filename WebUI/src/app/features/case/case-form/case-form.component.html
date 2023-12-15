@@ -1,1 +1,84 @@
 <p>case-form works!</p>
+
+<form  [formGroup]="caseForm">
+  <div class="form-group">
+    <div class="row">
+      <div class="col">
+        <input type="text" class="form-control" id="caseName" formControlName="caseName" placeholder="Case name">
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" id="caseModel" formControlName="caseModel" placeholder="Case model">
+      </div>
+    </div>
+
+    <div class="row my-2">
+      <div class="col">
+        <input type="number" class="form-control" id="caseHeight" formControlName="caseHeight" placeholder="Height">
+      </div>
+      <div class="col">
+        <input type="number" class="form-control" id="caseWidth" formControlName="caseWidth" placeholder="Width">
+      </div>
+      <div class="col">
+        <input type="number" class="form-control" id="caseDeepth" formControlName="caseDeepth" placeholder="Deepth">
+      </div>
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col" style="width: 100px;">
+      <div ngbDropdown class="d-inline-block">
+        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+          Case Size
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button *ngFor="let item of caseSizesList" formControlName="caseSizeId" (click)="updateCaseSize(item)" ngbDropdownItem>{{item.name}}</button>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p> {{caseSizeData.name}}</p>
+      </div>
+    </div>
+
+    <div class="col" style="width: 100px;">
+      <div ngbDropdown class="d-inline-block">
+        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+          Brand list
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button *ngFor="let item of brandList" (click)="udpateBrand(item)" formControlName="brandId" ngbDropdownItem>{{item.name}}</button>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p> {{brnd.name}}</p>
+      </div>
+    </div>
+
+    <div class="col" >
+      <div ngbDropdown class="d-inline-block">
+        <button type="button" class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle [attr.disabled]="enableSeries  ? true : null">
+          Series list
+        </button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <div *ngIf="seriesList">
+            <button  *ngFor="let item of seriesList" (click)="updateSeries(item)" ngbDropdownItem>{{item.name}}</button>
+          </div>
+          <div *ngIf="seriesList.length < 1">
+              <button ngbDropdownItem> no series </button>
+          </div>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p> {{srs.name}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <textarea class="form-control" id="floatingTextarea" *ngIf="res.description" [(ngModel)]="res.description" [value]="res.description"></textarea>
+    <textarea class="form-control" id="floatingTextarea" *ngIf="!res.description" [(ngModel)]="res.description">Default Text</textarea>
+    <label for="floatingTextarea">Description</label>
+  </div>
+
+  <button type="submit" class="btn btn-dark my-2 border border-primary">Submit</button>
+  <button *ngIf="res.id != null" (click)="delete(res.id)" class="btn btn-danger m-2 border border-secondary">Delete</button>
+</form>

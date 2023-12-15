@@ -27,7 +27,6 @@ export class CaseService {
   }
 
   deleteCases(id: number): Observable<Object> {
-    console.log("work");
     return this.http.delete(`${environment.apiUrl}Case/delete/` + id);
   }
 }

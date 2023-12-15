@@ -23,3 +23,15 @@ export type addCase = {
   caseSizeId: number;
   seriesId: number;
 }
+
+export enum CaseSizes {
+  ATX = 0,
+  ITX = 1,
+  MicroATX = 2,
+  EATX = 3
+}
+
+export interface CaseSize {
+  name: string;
+  value: number;
+}

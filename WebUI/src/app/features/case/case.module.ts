@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { SharedModule } from "src/app/shared/shared.module";
 
 import { CaseFormComponent } from "./case-form/case-form.component";
@@ -16,7 +17,9 @@ import { CaseRoutingModule } from "./case-routing.module";
     CommonModule,
     CaseRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    NgbDropdownModule,
+    ReactiveFormsModule
   ]
 })
 export class CaseModule { }

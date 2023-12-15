@@ -3,5 +3,6 @@
 <ng-container *ngIf="isDataLoaded">
   <app-uni-table [data]="caseList"
                  [columns]="['id', 'name', 'model']"
-                 [formLink]="'case/form'"></app-uni-table>
+                 [formLink]="'case/form'"
+                 [viewLink]="'case/view'"></app-uni-table>
 </ng-container>
