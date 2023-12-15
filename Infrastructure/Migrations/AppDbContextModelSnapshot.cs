@@ -246,7 +246,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CoresetId")
+                    b.Property<int>("CoresQuantity")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")

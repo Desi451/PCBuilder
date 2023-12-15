@@ -1,1 +1,11 @@
 <p>series-form works!</p>
+
+<form #myForm="ngForm">
+  <div class="form-group">
+    <label class="my-1" for="brandName">Enter series name</label>
+    <input type="text" class="form-control" id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Series name">
+  </div>
+
+  <button (click)="executeForm()" type="submit" class="btn btn-dark my-2 border border-primary">Submit</button>
+  <button *ngIf="res.id != null" (click)="delete(res.id)" class="btn btn-danger m-2 border border-secondary">Delete</button>
+</form>

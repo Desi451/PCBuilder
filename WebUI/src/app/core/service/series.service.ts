@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { addSeries, series } from "src/app/shared/models/series.model";
 import { environment } from "src/environments/environment";
 
@@ -10,6 +10,13 @@ import { environment } from "src/environments/environment";
 export class SeriesService {
 
   constructor(private http: HttpClient) { }
+
+  private brandIdSource = new BehaviorSubject<number>(0);
+  currentBrandId = this.brandIdSource.asObservable();
+
+  changeBrandId(newBrandId: number) {
+    this.brandIdSource.next(newBrandId);
+  }
 
   getSeries(): Observable<series[]> {
     return this.http.get<series[]>(`${environment.apiUrl}Series`);
@@ -23,15 +30,15 @@ export class SeriesService {
     return this.http.get<series[]>(`${environment.apiUrl}Series/brandId/` + id);
   }
 
-  addSeries(brand: addSeries): Observable<addSeries> {
-    return this.http.post<series>(`${environment.apiUrl}Series/add`, brand);
+  addSeries(series: addSeries): Observable<addSeries> {
+    return this.http.post<series>(`${environment.apiUrl}Series/add`, series);
   }
 
-  updateBrand(brand: series): Observable<series> {
+  updateSeries(brand: series): Observable<series> {
     return this.http.put<series>(`${environment.apiUrl}Series/update`, brand);
   }
 
-  deleteBrand(id: number): Observable<Object> {
+  deleteSeries(id: number): Observable<Object> {
     return this.http.delete(`${environment.apiUrl}Series/delete/` + id);
   }
 }

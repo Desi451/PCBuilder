@@ -24,6 +24,14 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Case>()
             .HasOne(b => b.Series);
 
+        modelBuilder.Entity<Series>()
+            .HasOne(b => b.Brand);
+
+        modelBuilder.Entity<SocketCPU>()
+            .HasOne(b => b.Brand)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
+
         modelBuilder.Entity<GPU>()
             .HasOne(d => d.Series);
 
@@ -32,10 +40,7 @@ public class AppDbContext : DbContext
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 
-        modelBuilder.Entity<SocketCPU>()
-            .HasOne(c => c.Brand)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
+
 
         base.OnModelCreating(modelBuilder);            
     }

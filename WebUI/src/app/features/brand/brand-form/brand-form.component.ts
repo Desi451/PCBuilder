@@ -25,7 +25,6 @@ export class BrandFormComponent implements OnInit {
     if (this.id != null) {
       this._brandService.getBrand(this.id).subscribe(
         (res: brand) => {
-          console.log("res= ", res);
           this.res.id = res.id;
           this.res = res;
         },
@@ -37,9 +36,7 @@ export class BrandFormComponent implements OnInit {
   }
 
   executeForm(): void {
-    console.log(this.id);
     if (this.id != null) {
-      console.log(this.res);
       this._brandService.updateBrand(this.res).subscribe(() => {
         console.log("yes");
         this._router.navigateByUrl(`brand`);

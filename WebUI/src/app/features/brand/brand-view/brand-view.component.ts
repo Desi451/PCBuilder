@@ -25,12 +25,10 @@ export class BrandViewComponent implements OnInit {
   ) { this.id = this._route.snapshot.params['id']; }
 
   ngOnInit(): void {
-
+    this._seriesService.changeBrandId(this.id);
     this._brandService.getBrand(this.id).subscribe(
       (res: brand) => {
         this.brand = res;
-        console.log(this.brand);
-
       },
       (error) => {
         console.error('Error fetching brands:', error);
@@ -48,5 +46,4 @@ export class BrandViewComponent implements OnInit {
       }
     )
   }
-
 }

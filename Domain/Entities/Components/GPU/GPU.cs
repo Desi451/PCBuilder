@@ -9,7 +9,7 @@ public class GPU : AuditableEntity
     public int SeriesId { get; set; }
     public int ChipsetSeriesId { get; set; }   // Seria chipsetu
     public string Name { get; set; }
-    public int CoresetId { get; set; }
+    public int CoresQuantity { get; set; }
     public string CoreClock { get; set; }
     public int MemorySize { get; set; }
     public int MemoryInterface { get; set; } //szyna
