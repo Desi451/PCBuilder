@@ -1,16 +1,15 @@
-<p>case-form works!</p>
-
 <form [formGroup]="caseForm"
       (ngSubmit)="executeForm()">
-  <div class="d-flex flex-row my-2">
-    <div class="d-flex flex-column">
+  <!-- First row -->
+  <div class="row">
+    <div class="col-md-6 my-2">
       <input type="text"
              class="form-control"
              id="name"
              formControlName="name"
              placeholder="Case name">
     </div>
-    <div class="d-flex flex-column">
+    <div class="col-md-6 my-2">
       <input type="text"
              class="form-control"
              id="model"
@@ -19,33 +18,34 @@
     </div>
   </div>
 
-  <div class="d-flex flex-row my-2">
-    <div class="d-flex flex-column">
+  <!-- Second row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
       <input type="number"
              class="form-control"
              id="height"
              formControlName="height"
              placeholder="Height">
     </div>
-    <div class="d-flex flex-column">
+    <div class="col-md-4 my-2">
       <input type="number"
              class="form-control"
              id="width"
              formControlName="width"
              placeholder="Width">
     </div>
-    <div class="d-flex flex-column">
+    <div class="col-md-4 my-2">
       <input type="number"
              class="form-control"
              id="deepth"
              formControlName="deepth"
-             placeholder="Deepth">
+             placeholder="Depth">
     </div>
   </div>
 
-  <div class="d-flex flex-row my-2">
-    <div class="d-flex flex-column"
-         style="width: 200px;">
+  <!-- Third row -->
+  <div class="row">
+    <div class="col-md-4">
       <div ngbDropdown
            class="d-inline-block">
         <button type="button"
@@ -68,9 +68,7 @@
         <p>{{ caseSizeData.name }}</p>
       </div>
     </div>
-
-    <div class="d-flex flex-column"
-         style="width: 200px;">
+    <div class="col-md-4">
       <div ngbDropdown
            class="d-inline-block">
         <button type="button"
@@ -93,8 +91,7 @@
         <p>{{ brnd.name }}</p>
       </div>
     </div>
-
-    <div class="d-flex flex-column">
+    <div class="col-md-4">
       <div ngbDropdown
            class="d-inline-block">
         <button class="btn btn-outline-primary"
@@ -126,15 +123,25 @@
     </div>
   </div>
 
-  <div>
-    <textarea class="form-control"
-              id="floatingTextarea"
-              formControlName="description"></textarea>
+  <!-- Description -->
+  <div class="row">
+    <div class="col-12">
+      <textarea class="form-control"
+                id="floatingTextarea"
+                formControlName="description"></textarea>
+    </div>
   </div>
 
-  <button type="submit"
-          class="form-group btn btn-dark my-2 border border-primary">Submit</button>
-  <button *ngIf="res?.id"
-          (click)="delete(id)"
-          class="btn btn-danger m-2 border border-secondary">Delete</button>
+  <!-- Buttons -->
+  <div class="row mt-2">
+    <div class="col-md-6">
+      <button type="submit"
+              class="form-group btn btn-dark border border-primary btn-block">Submit</button>
+    </div>
+    <div class="col-md-6">
+      <button *ngIf="res?.id"
+              (click)="delete(id)"
+              class="btn btn-danger border border-secondary btn-block">Delete</button>
+    </div>
+  </div>
 </form>
