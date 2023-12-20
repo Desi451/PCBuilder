@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { BrandService } from "src/app/core/service/brand.service";
 import { CaseService } from "src/app/core/service/case.service";
@@ -18,14 +18,15 @@ export class CaseFormComponent implements OnInit {
   res: casePc = new casePc();
   brnd: brand = new brand();
   srs: series = new series();
-  brandList: brand[] = [];
-  seriesList: series[] = [];
-  caseSizesList: CaseSize[] = [];
   caseSizeData: CaseSize = {
     name: '',
     value: -1
   };
-  enableSeries= true;
+
+  brandList: brand[] = [];
+  seriesList: series[] = [];
+  caseSizesList: CaseSize[] = [];
+  enableSeries = true;
   caseForm!: FormGroup;
 
   constructor(
@@ -33,8 +34,10 @@ export class CaseFormComponent implements OnInit {
     private _router: Router,
     public _caseService: CaseService,
     public _brandService: BrandService,
-    private _seriesService: SeriesService
+    private _seriesService: SeriesService,
+    private formBuilder: FormBuilder
   ) {
+    this.initForm();
     this.id = this._route.snapshot.params['id'];
     for (const key in CaseSizes) {
       if (!isNaN(Number(CaseSizes[key]))) {
@@ -43,8 +46,20 @@ export class CaseFormComponent implements OnInit {
     }
   }
 
+  initForm() {
+    this.caseForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      model: ['', Validators.required],
+      height: [null, [Validators.required, Validators.min(1)]],
+      width: [null, [Validators.required, Validators.min(1)]],
+      deepth: [null, [Validators.required, Validators.min(1)]],
+      caseSizeId: [null, [Validators.required, Validators.min(0)]],
+      seriesId: [null, [Validators.required, Validators.min(1)]],
+      description: ['Default description', Validators.required],
+    });
+  }
+
   ngOnInit(): void {
-    console.log(this.caseSizesList);
     this._brandService.getBrands().subscribe(
       (brands: brand[]) => {
         this.brandList = brands;
@@ -59,53 +74,64 @@ export class CaseFormComponent implements OnInit {
         (res: casePc) => {
           this.res.id = res.id;
           this.res = res;
+          this.caseForm.patchValue(res);
+
+          this.caseSizeData.name = getCaseSizeName(this.res.caseSizeId);
+          this.caseSizeData.value = this.res.caseSizeId;
+          this.updateCaseSize(this.caseSizeData);
+
+          this._seriesService.getSeriesById(res.seriesId).subscribe(
+            (resSeries: series) => {
+              this.srs = res;
+              this.updateSeries(resSeries);
+
+              if (resSeries.brandId) {
+                this._brandService.getBrand(resSeries.brandId).subscribe(
+                  (resBrand: brand) => {
+                    this.brnd = resBrand;
+                    this.updateBrand(resBrand);
+                  }
+                )
+              }
+
+            }
+          );
         },
         (error) => {
           console.error('Error fetching brands:', error);
         }
       );
     }
-
-    this.caseForm = new FormGroup({
-      name: new FormControl('Sammy'),
-      email: new FormControl(''),
-      message: new FormControl('')
-    });
   }
 
   executeForm(): void {
-    if (this.id != null) {
-      this._caseService.updateCase(this.res).subscribe(() => {
-        console.log("yes");
-        this._router.navigateByUrl(`brand`);
-      },
-      (error) => {
-        console.log("no: " + error);
-      });
-    } else {
+    if (this.caseForm.valid) {
 
-      let res: addCase = {
-        name: this.res.name,
-        model: this.res.model,
-        height: this.res.height,
-        width: this.res.width,
-        deepth: this.res.deepth,
-        description: this.res.description,
-        caseSizeId: this.res.caseSizeId,
-        seriesId: 0
-      };
-
-      if(this.srs.id){
-        res.seriesId = this.srs.id;
+      if (this.id != null) {
+        let updateForm = this.caseForm.value as casePc;
+        updateForm.id = this.id;
+        console.log(updateForm);
+        this._caseService.updateCase(updateForm).subscribe(() => {
+          console.log("yes");
+          this._router.navigateByUrl(`case`);
+        },
+          (error) => {
+            console.log("no: " + error);
+          });
+      } else {
+        const addForm = this.caseForm.value as addCase;
+        if (this.srs.id && this.caseSizeData.value) {
+          addForm.seriesId = this.srs.id;
+          addForm.caseSizeId = this.caseSizeData.value;
+        }
+        this._caseService.addCase(addForm).subscribe(() => {
+          console.log("yes");
+          this._router.navigateByUrl(`case`);
+        },
+          (error) => {
+            console.log("no: " + error.value);
+          });
       }
-
-      this._caseService.addCase(res).subscribe(() => {
-        console.log("yes");
-        this._router.navigateByUrl(`brand`);
-      },
-      (error) => {
-        console.log("no: " + error);
-      });
     }
   }
 
@@ -121,29 +147,43 @@ export class CaseFormComponent implements OnInit {
     );
   }
 
-  udpateBrand(brand: brand): void {
+  updateBrand(brand: brand): void {
     this.brnd.id = brand.id;
+    this.caseForm.value.brandId = brand.id;
     this.enableSeries = false;
-      if(this.brnd.id){
-        this._seriesService.getSeriesByBrand(this.brnd.id).subscribe(
-          (res: series[]) => {
-            this.seriesList = res;
-          },
-          (error) => {
-            console.error('Error fetching brands:', error);
-          }
-        );
-        this.brnd.name = "selected: " + brand.name;
-      }
+
+    if (this.brnd.id != this.srs.brandId) {
+      this.srs.id = undefined;
+      this.srs.name = '';
+    }
+
+    if (this.brnd.id) {
+      this._seriesService.getSeriesByBrand(this.brnd.id).subscribe(
+        (res: series[]) => {
+          this.seriesList = res;
+        },
+        (error) => {
+          console.error('Error fetching brands:', error);
+        }
+      );
+      this.brnd.name = "selected: " + brand.name;
+    }
   }
 
   updateSeries(series: series): void {
-      this.srs.id = series.id;
-      this.srs.name = "selected: " + series.name;
+    this.caseForm.value.seriesId = series.id;
+    this.srs = series;
+    this.srs.name = "selected: " + series.name;
   }
 
   updateCaseSize(caseS: CaseSize): void {
-    this.caseSizeData = caseS;
-    this.caseSizeData.name = "selected: " + this.caseSizeData.name;
+    this.caseForm.value.caseSizeId = caseS.value;
+    this.caseSizeData.value = caseS.value;
+    this.caseSizeData.name = "selected: " + caseS.name;
   }
+}
+
+function getCaseSizeName(enumValue: number): string {
+  const keys = Object.keys(CaseSizes).filter((x) => CaseSizes[x as keyof typeof CaseSizes] === enumValue);
+  return keys[0];
 }

@@ -1,0 +1,8 @@
+<p>psu-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="['id', 'name', 'model', 'maxPower']"
+                 [formLink]="'psu/form'"
+                 [viewLink]="'psu/view'"></app-uni-table>
+</ng-container>

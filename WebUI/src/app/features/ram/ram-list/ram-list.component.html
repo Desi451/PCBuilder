@@ -1,0 +1,8 @@
+<p>ram-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="[ 'name', 'model','capacity']"
+                 [formLink]="'mobo/form'"
+                 [viewLink]="'mobo/view'"></app-uni-table>
+</ng-container>

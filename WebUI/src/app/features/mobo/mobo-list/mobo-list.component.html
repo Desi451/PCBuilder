@@ -1,0 +1,8 @@
+<p>mobo-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="[ 'name', 'model','chipset']"
+                 [formLink]="'mobo/form'"
+                 [viewLink]="'mobo/view'"></app-uni-table>
+</ng-container>

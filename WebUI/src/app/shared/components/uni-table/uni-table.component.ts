@@ -42,7 +42,6 @@ export class UniTableComponent implements OnInit {
   }
 
   onAddClick(): void {
-    console.log("test")
     this._router.navigateByUrl(this.formLink);
   }
 

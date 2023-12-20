@@ -36,25 +36,29 @@ export class BrandFormComponent implements OnInit {
   }
 
   executeForm(): void {
-    if (this.id != null) {
-      this._brandService.updateBrand(this.res).subscribe(() => {
-        console.log("yes");
-        this._router.navigateByUrl(`brand`);
-      },
-      (error) => {
-        console.log("no: " + error);
-      });
-    } else {
-      let res: addBrand = {};
-      res.name = this.res.name;
-      this._brandService.addBrand(res).subscribe(() => {
-        console.log("yes");
-        this._router.navigateByUrl(`brand`);
-      },
-      (error) => {
-        console.log("no: " + error);
-      });
+
+    if (this.res.name) {
+      if (this.id != null) {
+        this._brandService.updateBrand(this.res).subscribe(() => {
+          console.log("yes");
+          this._router.navigateByUrl(`brand`);
+        },
+          (error) => {
+            console.log("no: " + error);
+          });
+      } else {
+        let res: addBrand = {};
+        res.name = this.res.name;
+        this._brandService.addBrand(res).subscribe(() => {
+          console.log("yes");
+          this._router.navigateByUrl(`brand`);
+        },
+          (error) => {
+            console.log("no: " + error);
+          });
+      }
     }
+
   }
 
   delete(id: number): void {

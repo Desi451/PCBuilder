@@ -6,7 +6,7 @@ public class RamDTO
     public string Name { get; set; }
     public string Model { get; set; }
     public int Capacity { get; set; }
-    public int NoELements { get; set; }
+    public int NoElements { get; set; }
     public string Description { get; set; }
     public string Latency { get; set; }
     public int BrandId { get; set; }

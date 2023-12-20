@@ -8,7 +8,7 @@ export class casePc {
   deepth!: number;
   description!: string;
 
-  caseSizeId!: number;
+  caseSizeId!: CaseSizes;
   seriesId!: number;
 }
 
@@ -20,7 +20,7 @@ export type addCase = {
   deepth: number;
   description: string;
 
-  caseSizeId: number;
+  caseSizeId: CaseSizes;
   seriesId: number;
 }
 
