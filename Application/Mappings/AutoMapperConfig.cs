@@ -2,10 +2,12 @@
 using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
 using Application.DTO.Components.CPU;
+using Application.DTO.Components.Drive;
 using Application.DTO.Components.GPU;
 using Application.DTO.Components.Motherboard;
 using Application.DTO.Components.PowerSupllyDTOs;
 using Application.DTO.Components.RAM;
+using Application.DTO.Components.Slot;
 using Application.DTO.SeriesDTOs;
 using Application.DTO.UserDTOs;
 using AutoMapper;
@@ -13,9 +15,11 @@ using Domain.Entities;
 using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.Drives;
 using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
+using Domain.Entities.Slots;
 
 namespace Application.Mappings;
 
@@ -39,6 +43,10 @@ public static class AutoMapperConfig
             cfg.CreateMap<Series, SeriesDTO>();
             cfg.CreateMap<SeriesDTO, Series>();
             cfg.CreateMap<AddSeriesDTO, Series>();
+
+            cfg.CreateMap<SlotInterface, SlotDTO>();
+            cfg.CreateMap<SlotDTO, SlotInterface>();
+            cfg.CreateMap<AddSlotDTO, SlotInterface>();
 
             #region components
             //case
@@ -87,6 +95,15 @@ public static class AutoMapperConfig
             cfg.CreateMap<AddGpuDTO, GPU>();
             cfg.CreateMap<AddGpuDTO, GpuDTO>();
 
+            //ssd
+            cfg.CreateMap<Ssd, SsdDTO>();
+            cfg.CreateMap<SsdDTO, Ssd>();
+            cfg.CreateMap<AddSsdDTO, Ssd>();
+
+            //hdd
+            cfg.CreateMap<Hdd, HddDTO>();
+            cfg.CreateMap<HddDTO, Hdd>();
+            cfg.CreateMap<AddHddDTO, Hdd>();
             #endregion
 
         }).CreateMapper();

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,6 +68,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -77,6 +78,12 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Series", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Series_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,6 +93,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BrandId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -95,6 +103,11 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SocketCPUs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SocketCPUs_Brands_BrandId",
+                        column: x => x.BrandId,
+                        principalTable: "Brands",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -104,6 +117,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SlotName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsEmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
@@ -138,7 +152,6 @@ namespace Infrastructure.Migrations
                     Deepth = table.Column<float>(type: "real", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CaseSizeId = table.Column<int>(type: "int", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false),
                     SeriesId = table.Column<int>(type: "int", nullable: false),
                     CaseSize = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -150,12 +163,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cases", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cases_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cases_Series_SeriesId",
                         column: x => x.SeriesId,
@@ -170,11 +177,10 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProcessorBrandId = table.Column<int>(type: "int", nullable: false),
-                    ChipsetBrandId = table.Column<int>(type: "int", nullable: false),
                     SeriesId = table.Column<int>(type: "int", nullable: false),
+                    ChipsetSeriesId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CoresetId = table.Column<int>(type: "int", nullable: false),
+                    CoresQuantity = table.Column<int>(type: "int", nullable: false),
                     CoreClock = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MemorySize = table.Column<int>(type: "int", nullable: false),
                     MemoryInterface = table.Column<int>(type: "int", nullable: false),
@@ -195,16 +201,10 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_GPUs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GPUs_Brands_ChipsetBrandId",
-                        column: x => x.ChipsetBrandId,
-                        principalTable: "Brands",
+                        name: "FK_GPUs_Series_ChipsetSeriesId",
+                        column: x => x.ChipsetSeriesId,
+                        principalTable: "Series",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_GPUs_Brands_ProcessorBrandId",
-                        column: x => x.ProcessorBrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_GPUs_Series_SeriesId",
                         column: x => x.SeriesId,
@@ -223,18 +223,17 @@ namespace Infrastructure.Migrations
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     maxPower = table.Column<int>(type: "int", nullable: false),
-                    Fans = table.Column<int>(type: "int", nullable: false),
+                    Fans = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HasPFC = table.Column<bool>(type: "bit", nullable: false),
-                    MainConnPins = table.Column<int>(type: "int", nullable: false),
+                    MainConnPins = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PCIExpressConn = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HasSLI = table.Column<bool>(type: "bit", nullable: false),
                     HasCrossFire = table.Column<bool>(type: "bit", nullable: false),
-                    Voltage = table.Column<double>(type: "float", nullable: false),
-                    Freq = table.Column<int>(type: "int", nullable: false),
+                    Voltage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Freq = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Connectors = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Dimensions = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false),
                     SeriesId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
@@ -245,12 +244,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PSUs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PSUs_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PSUs_Series_SeriesId",
                         column: x => x.SeriesId,
@@ -271,7 +264,6 @@ namespace Infrastructure.Migrations
                     NoELements = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Latency = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false),
                     MemorySpeedId = table.Column<int>(type: "int", nullable: false),
                     SeriesId = table.Column<int>(type: "int", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -283,12 +275,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RAMs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RAMs_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RAMs_RamSpeeds_MemorySpeedId",
                         column: x => x.MemorySpeedId,
@@ -321,7 +307,6 @@ namespace Infrastructure.Migrations
                     IsAPU = table.Column<bool>(type: "bit", nullable: false),
                     Technology = table.Column<int>(type: "int", nullable: false),
                     TDP = table.Column<int>(type: "int", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false),
                     SeriesId = table.Column<int>(type: "int", nullable: false),
                     SocketCPUId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -334,12 +319,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CPUs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CPUs_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CPUs_Series_SeriesId",
                         column: x => x.SeriesId,
@@ -362,7 +341,6 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BrandId = table.Column<int>(type: "int", nullable: false),
                     SeriesId = table.Column<int>(type: "int", nullable: false),
                     SocketCPUId = table.Column<int>(type: "int", nullable: false),
                     Chipset = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -381,12 +359,6 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Motherboards", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Motherboards_Brands_BrandId",
-                        column: x => x.BrandId,
-                        principalTable: "Brands",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Motherboards_Series_SeriesId",
                         column: x => x.SeriesId,
@@ -407,7 +379,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SlotName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GPUId = table.Column<int>(type: "int", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
@@ -431,14 +403,8 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RamMemoryId = table.Column<int>(type: "int", nullable: false),
-                    MemoryId = table.Column<int>(type: "int", nullable: true),
-                    MotherBoardId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: false),
-                    LastModified = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifiedBy = table.Column<int>(type: "int", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                    MemoryId = table.Column<int>(type: "int", nullable: false),
+                    MotherBoardId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -450,26 +416,43 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MotherboardMemories_RAMs_MemoryId",
+                        name: "FK_MotherboardMemories_RamSpeeds_MemoryId",
                         column: x => x.MemoryId,
-                        principalTable: "RAMs",
-                        principalColumn: "Id");
+                        principalTable: "RamSpeeds",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Cases_BrandId",
-                table: "Cases",
-                column: "BrandId");
+            migrationBuilder.CreateTable(
+                name: "SlotGpus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SlotId = table.Column<int>(type: "int", nullable: false),
+                    GpuId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SlotGpus", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SlotGpus_GPUs_GpuId",
+                        column: x => x.GpuId,
+                        principalTable: "GPUs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SlotGpus_SlotInterfaces_SlotId",
+                        column: x => x.SlotId,
+                        principalTable: "SlotInterfaces",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cases_SeriesId",
                 table: "Cases",
                 column: "SeriesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CPUs_BrandId",
-                table: "CPUs",
-                column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CPUs_SeriesId",
@@ -482,14 +465,9 @@ namespace Infrastructure.Migrations
                 column: "SocketCPUId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GPUs_ChipsetBrandId",
+                name: "IX_GPUs_ChipsetSeriesId",
                 table: "GPUs",
-                column: "ChipsetBrandId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GPUs_ProcessorBrandId",
-                table: "GPUs",
-                column: "ProcessorBrandId");
+                column: "ChipsetSeriesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GPUs_SeriesId",
@@ -507,11 +485,6 @@ namespace Infrastructure.Migrations
                 column: "MotherBoardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Motherboards_BrandId",
-                table: "Motherboards",
-                column: "BrandId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Motherboards_SeriesId",
                 table: "Motherboards",
                 column: "SeriesId");
@@ -522,19 +495,9 @@ namespace Infrastructure.Migrations
                 column: "SocketCPUId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PSUs_BrandId",
-                table: "PSUs",
-                column: "BrandId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PSUs_SeriesId",
                 table: "PSUs",
                 column: "SeriesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RAMs_BrandId",
-                table: "RAMs",
-                column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RAMs_MemorySpeedId",
@@ -547,9 +510,29 @@ namespace Infrastructure.Migrations
                 column: "SeriesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Series_BrandId",
+                table: "Series",
+                column: "BrandId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SlotGpus_GpuId",
+                table: "SlotGpus",
+                column: "GpuId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SlotGpus_SlotId",
+                table: "SlotGpus",
+                column: "SlotId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SlotInterfaces_GPUId",
                 table: "SlotInterfaces",
                 column: "GPUId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SocketCPUs_BrandId",
+                table: "SocketCPUs",
+                column: "BrandId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RankId",
@@ -573,7 +556,10 @@ namespace Infrastructure.Migrations
                 name: "PSUs");
 
             migrationBuilder.DropTable(
-                name: "SlotInterfaces");
+                name: "RAMs");
+
+            migrationBuilder.DropTable(
+                name: "SlotGpus");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -582,10 +568,10 @@ namespace Infrastructure.Migrations
                 name: "Motherboards");
 
             migrationBuilder.DropTable(
-                name: "RAMs");
+                name: "RamSpeeds");
 
             migrationBuilder.DropTable(
-                name: "GPUs");
+                name: "SlotInterfaces");
 
             migrationBuilder.DropTable(
                 name: "Ranks");
@@ -594,13 +580,13 @@ namespace Infrastructure.Migrations
                 name: "SocketCPUs");
 
             migrationBuilder.DropTable(
-                name: "RamSpeeds");
-
-            migrationBuilder.DropTable(
-                name: "Brands");
+                name: "GPUs");
 
             migrationBuilder.DropTable(
                 name: "Series");
+
+            migrationBuilder.DropTable(
+                name: "Brands");
         }
     }
 }

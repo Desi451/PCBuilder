@@ -1,6 +1,5 @@
 ﻿using Application.DTO.UserDTOs;
 using Application.Interfaces;
-using Domain.Interfaces.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;

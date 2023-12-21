@@ -7,14 +7,14 @@ public class Case : AuditableEntity
     public int Id { get; set; }
     public required string Name { get; set; }
     public required string Model { get; set; }
-    public float Height { get; set; }
-    public float Width { get; set; }
-    public float Deepth { get; set; }
+    public required float Height { get; set; }
+    public required float Width { get; set; }
+    public required float Deepth { get; set; }
     public required string Description { get; set; }
 
     //relations
-    public int CaseSizeId { get; set; }
-    public int SeriesId { get; set; }
+    public required int CaseSizeId { get; set; }
+    public required int SeriesId { get; set; }
     public CaseSize CaseSize { get; set; }
     public Series Series { get; set; }
 }

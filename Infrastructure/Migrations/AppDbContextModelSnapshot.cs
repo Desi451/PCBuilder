@@ -231,6 +231,124 @@ namespace Infrastructure.Migrations
                     b.ToTable("Cases");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Components.Drives.Hdd", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Cache")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Capacity")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rpm")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SeriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SlotInterfaceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeriesId");
+
+                    b.HasIndex("SlotInterfaceId");
+
+                    b.ToTable("Hdds");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Drives.Ssd", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("Capacity")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxRead")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxWrite")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SeriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SlotInterfaceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SeriesId");
+
+                    b.HasIndex("SlotInterfaceId");
+
+                    b.ToTable("Ssds");
+                });
+
             modelBuilder.Entity("Domain.Entities.Components.GPU.GPU", b =>
                 {
                     b.Property<int>("Id")
@@ -640,7 +758,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Series");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SlotInterface", b =>
+            modelBuilder.Entity("Domain.Entities.Slots.SlotInterface", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -666,7 +784,7 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("LastModifiedBy")
                         .HasColumnType("int");
 
-                    b.Property<string>("SlotName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -675,6 +793,29 @@ namespace Infrastructure.Migrations
                     b.HasIndex("GPUId");
 
                     b.ToTable("SlotInterfaces");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Slots.SlotsGPU", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("GpuId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SlotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GpuId");
+
+                    b.HasIndex("SlotId");
+
+                    b.ToTable("SlotGpus");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -717,6 +858,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("RankId")
                         .HasColumnType("int");
+
+                    b.Property<string>("SlotName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -764,6 +909,44 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Series");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Drives.Hdd", b =>
+                {
+                    b.HasOne("Domain.Entities.Series", "Series")
+                        .WithMany()
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Slots.SlotInterface", "Slot")
+                        .WithMany()
+                        .HasForeignKey("SlotInterfaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Series");
+
+                    b.Navigation("Slot");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Components.Drives.Ssd", b =>
+                {
+                    b.HasOne("Domain.Entities.Series", "Series")
+                        .WithMany()
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Slots.SlotInterface", "Slot")
+                        .WithMany()
+                        .HasForeignKey("SlotInterfaceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Series");
+
+                    b.Navigation("Slot");
                 });
 
             modelBuilder.Entity("Domain.Entities.Components.GPU.GPU", b =>
@@ -864,11 +1047,30 @@ namespace Infrastructure.Migrations
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("Domain.Entities.SlotInterface", b =>
+            modelBuilder.Entity("Domain.Entities.Slots.SlotInterface", b =>
                 {
                     b.HasOne("Domain.Entities.Components.GPU.GPU", null)
                         .WithMany("Slots")
                         .HasForeignKey("GPUId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Slots.SlotsGPU", b =>
+                {
+                    b.HasOne("Domain.Entities.Components.GPU.GPU", "Gpu")
+                        .WithMany()
+                        .HasForeignKey("GpuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Slots.SlotInterface", "Slot")
+                        .WithMany()
+                        .HasForeignKey("SlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gpu");
+
+                    b.Navigation("Slot");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

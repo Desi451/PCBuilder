@@ -3,7 +3,6 @@ using Application.Interfaces.Components;
 using Application.Mappings;
 using Application.Service;
 using Application.Service.Components;
-using Domain.Entities;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
 using Domain.Interfaces.Repository.Components;
@@ -24,15 +23,17 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-//brands & series
+//brands & series & slots
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
 builder.Services.AddScoped<ISeriesService, SeriesService>();
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
+builder.Services.AddScoped<ISlotRepository, SlotRepository>();
+builder.Services.AddScoped<ISlotService, SlotService>();
 
 #region Components
 
-    builder.Services.AddScoped<ICaseRepository, CaseRepository>();
+builder.Services.AddScoped<ICaseRepository, CaseRepository>();
     builder.Services.AddScoped<ICaseService, CaseService>();
 
     builder.Services.AddScoped<IRamRepository, RamMemoryRepository>();
@@ -49,6 +50,12 @@ builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 
     builder.Services.AddScoped<IGPURepository, GpuRepository>();
     builder.Services.AddScoped<IGpuService, GpuService>();
+
+    builder.Services.AddScoped<ISsdService, SsdService>();
+    builder.Services.AddScoped<ISsdRepository, SsdRepository>();
+
+    builder.Services.AddScoped<IHddRepository, HddRepository>();
+    builder.Services.AddScoped<IHddService, HddService>();
 #endregion
 
 builder.Services.AddAutoMapper(typeof(Program));

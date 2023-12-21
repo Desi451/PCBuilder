@@ -2,9 +2,11 @@
 using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
+using Domain.Entities.Components.Drives;
 using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
+using Domain.Entities.Slots;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context;
@@ -40,8 +42,6 @@ public class AppDbContext : DbContext
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 
-
-
         base.OnModelCreating(modelBuilder);            
     }
 
@@ -64,7 +64,10 @@ public class AppDbContext : DbContext
     public DbSet <SocketCPU> SocketCPUs { get; set; }
     public DbSet <PowerSupply> PSUs { get; set; }
     public DbSet <SlotInterface> SlotInterfaces { get; set; }
+    public DbSet<SlotsGPU> SlotGpus { get; set; }
     public DbSet <GPU> GPUs { get; set; }
     public DbSet <Motherboard> Motherboards { get; set; }
     public DbSet <MotheboardMemory> MotherboardMemories { get; set; }
+    public DbSet <Hdd> Hdds { get; set; }
+    public DbSet <Ssd> Ssds { get; set; }
 }
