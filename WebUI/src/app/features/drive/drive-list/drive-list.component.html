@@ -1,1 +1,8 @@
 <p>drive-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="[ 'name', 'model','capacity']"
+                 [formLink]="'cpu/form'"
+                 [viewLink]="'cpu/view'"></app-uni-table>
+</ng-container>

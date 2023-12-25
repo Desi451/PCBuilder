@@ -13,6 +13,7 @@ import { PsuModule } from "./psu/psu.module";
 import { RamModule } from "./ram/ram.module";
 import { SeriesModule } from "./series/series.module";
 import { SlotModule } from "./slot/slot.module";
+import { SsdModule } from "./ssd/ssd.module";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { SlotModule } from "./slot/slot.module";
     SlotModule,
     MoboModule,
     PsuModule,
-    RamModule
+    RamModule,
+    SsdModule
   ],
   declarations: [
 

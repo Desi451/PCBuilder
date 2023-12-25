@@ -1,0 +1,8 @@
+<p>ssd-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="[ 'name', 'model','capacity']"
+                 [formLink]="'ssd/form'"
+                 [viewLink]="'ssd/view'"></app-uni-table>
+</ng-container>

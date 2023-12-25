@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { psu } from "src/app/shared/models/psu.model";
+import { addPsu, psu } from "src/app/shared/models/psu.model";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -18,15 +18,15 @@ export class PsuService {
     return this.http.get<psu>(`${environment.apiUrl}PowerSupply/` + id);
   }
 
-  // addBrand(brand: addBrand): Observable<addBrand> {
-  //   return this.http.post<brand>(`${environment.apiUrl}Cpu/add`, brand);
-  // }
+  add(res: addPsu): Observable<addPsu> {
+    return this.http.post<addPsu>(`${environment.apiUrl}PowerSupply/add`, res);
+  }
 
-  // updateBrand(brand: brand): Observable<brand> {
-  //   return this.http.put<brand>(`${environment.apiUrl}Cpu/update`, brand);
-  // }
+  update(res: psu): Observable<psu> {
+    return this.http.put<psu>(`${environment.apiUrl}PowerSupply/update`, res);
+  }
 
-  // deleteBrand(id: number): Observable<Object> {
-  //   return this.http.delete(`${environment.apiUrl}Cpu/delete/` + id);
-  //}
+  delete(id: number): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}PowerSupply/delete/` + id);
+  }
 }

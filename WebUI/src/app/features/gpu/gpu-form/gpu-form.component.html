@@ -1,1 +1,82 @@
 <p>gpu-from works!</p>
+
+<form [formGroup]="gpuForm" (ngSubmit)="executeForm()">
+  <!-- First row -->
+  <div class="row">
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="GPU name">
+    </div>
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="model" formControlName="model" placeholder="GPU model">
+    </div>
+  </div>
+
+  <!-- Second row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="coreClock" formControlName="coreClock" placeholder="Core Clock">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="memorySize" formControlName="memorySize" placeholder="Memory Size">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="memoryInterface" formControlName="memoryInterface" placeholder="Memory Interface">
+    </div>
+  </div>
+
+  <!-- Third row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="memoryType" formControlName="memoryType" placeholder="Memory Type">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="directX" formControlName="directX" placeholder="DirectX">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="opengGL" formControlName="opengGL" placeholder="OpenGL">
+    </div>
+  </div>
+
+  <!-- Fourth row -->
+  <div class="row">
+    <div class="col-md-4">
+      <input type="number" class="form-control" id="tdp" formControlName="tdp" placeholder="TDP">
+    </div>
+    <div class="col-md-4">
+      <input type="number" class="form-control" id="recommendedPsuPower" formControlName="recommendedPsuPower" placeholder="Recommended PSU Power">
+    </div>
+    <div class="col-md-4">
+      <input type="number" class="form-control" id="length" formControlName="length" placeholder="Length">
+    </div>
+  </div>
+
+  <!-- Fifth row -->
+  <div class="row">
+    <div class="col-md-4">
+      <textarea class="form-control" id="description" formControlName="description" placeholder="Description"></textarea>
+    </div>
+    <div class="col-md-4">
+      <input type="number" class="form-control" id="seriesId" formControlName="seriesId" placeholder="Series ID">
+    </div>
+    <div class="col-md-4">
+      <input type="number" class="form-control" id="chipsetSeriesId" formControlName="chipsetSeriesId" placeholder="Chipset Series ID">
+    </div>
+  </div>
+
+  <!-- Sixth row -->
+  <div class="row">
+    <div class="col-md-4">
+      <input type="number" class="form-control" id="socketCpuId" formControlName="socketCpuId" placeholder="Socket CPU ID">
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="row mt-2">
+    <div class="col-md-6">
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
+    </div>
+    <div class="col-md-6">
+      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+    </div>
+  </div>
+</form>

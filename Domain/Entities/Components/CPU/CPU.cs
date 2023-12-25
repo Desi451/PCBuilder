@@ -18,7 +18,7 @@ public class CPU : AuditableEntity
     public required int Technology { get; set; } //nm
     public required int TDP { get; set; }
     public required int SeriesId { get; set; }
-    public required int SocketCPUId { get; set; }
+    public required int SocketCpuId { get; set; }
     public required string Description { get; set; }
 
     public Series Series { get; set; }

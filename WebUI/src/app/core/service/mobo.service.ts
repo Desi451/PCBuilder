@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { mobo } from "src/app/shared/models/mobo.model";
+import { addMobo, mobo } from "src/app/shared/models/mobo.model";
 import { environment } from "src/environments/environment";
 
 
@@ -20,15 +20,15 @@ export class MoboService {
     return this.http.get<mobo>(`${environment.apiUrl}Motherboard/` + id);
   }
 
-  // addBrand(brand: addBrand): Observable<addBrand> {
-  //   return this.http.post<brand>(`${environment.apiUrl}Brand/add`, brand);
-  // }
+  add(res: addMobo): Observable<addMobo> {
+    return this.http.post<addMobo>(`${environment.apiUrl}Motherboard/add`, res);
+  }
 
-  // updateBrand(brand: brand): Observable<brand> {
-  //   return this.http.put<brand>(`${environment.apiUrl}Brand/update`, brand);
-  // }
+  update(res: mobo): Observable<mobo> {
+    return this.http.put<mobo>(`${environment.apiUrl}Motherboard/update`, res);
+  }
 
-  // deleteBrand(id: number): Observable<Object> {
-  //   return this.http.delete(`${environment.apiUrl}Brand/delete/` + id);
-  //}
+  delete(id: number): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}Motherboard/delete/` + id);
+  }
 }

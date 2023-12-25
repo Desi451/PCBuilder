@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { gpu } from "src/app/shared/models/gpu.model";
+import { addGpu, gpu } from "src/app/shared/models/gpu.model";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -18,15 +18,15 @@ export class GpuService {
     return this.http.get<gpu>(`${environment.apiUrl}Gpu/` + id);
   }
 
-  // addBrand(brand: addBrand): Observable<addBrand> {
-  //   return this.http.post<brand>(`${environment.apiUrl}Cpu/add`, brand);
-  // }
+  add(res: addGpu): Observable<addGpu> {
+    return this.http.post<addGpu>(`${environment.apiUrl}Gpu/add`, res);
+  }
 
-  // updateBrand(brand: brand): Observable<brand> {
-  //   return this.http.put<brand>(`${environment.apiUrl}Cpu/update`, brand);
-  // }
+  update(res: gpu): Observable<gpu> {
+    return this.http.put<gpu>(`${environment.apiUrl}Gpu/update`, res);
+  }
 
-  // deleteBrand(id: number): Observable<Object> {
-  //   return this.http.delete(`${environment.apiUrl}Cpu/delete/` + id);
-  //}
+  delete(id: number): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}Gpu/delete/` + id);
+  }
 }

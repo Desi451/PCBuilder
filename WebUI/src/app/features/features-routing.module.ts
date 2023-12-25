@@ -26,6 +26,10 @@ const routes: Routes = [
         loadChildren: () => import('./drive/drive.module').then(m => m.DriveModule)
       },
       {
+        path: 'ssd',
+        loadChildren: () => import('./ssd/ssd.module').then(m => m.SsdModule)
+      },
+      {
         path: 'gpu',
         loadChildren: () => import('./gpu/gpu.module').then(m => m.GpuModule)
       },

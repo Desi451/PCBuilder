@@ -1,1 +1,138 @@
 <p>cpu-form works!</p>
+
+<form [formGroup]="cpuForm" (ngSubmit)="executeForm()">
+
+  <div class="row">
+    <div class="col-lg-4 my-2">
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="CPU name">
+    </div>
+    <div class="col-lg-4 my-2">
+      <input type="text" class="form-control" id="model" formControlName="model" placeholder="CPU model">
+    </div>
+    <div class="col-lg-4 my-2">
+      <input type="number" class="form-control" id="technology" formControlName="technology" placeholder="Technology (nm)">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 my-2">
+      <input type="text" class="form-control" id="cores" formControlName="cores" placeholder="Cores">
+    </div>
+    <div class="col-lg-3 my-2">
+      <input type="number" class="form-control" id="threads" formControlName="threads" placeholder="Threads">
+    </div>
+    <div class="col-lg-3 my-2">
+      <input type="number" class="form-control" id="minFreq" formControlName="minFreq" placeholder="Min Freq">
+    </div>
+    <div class="col-lg-3 my-2">
+      <input type="number" class="form-control" id="maxFreq" formControlName="maxFreq" placeholder="Max Freq">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3 my-2">
+      <input type="number" class="form-control" id="tdp" formControlName="tdp" placeholder="TDP">
+    </div>
+    <div class="col-lg-3 my-2">
+      <input type="number" class="form-control" id="maxRam" formControlName="maxRam" placeholder="Max RAM">
+    </div>
+    <div class="col-lg-3 my-2">
+      <input type="number" class="form-control" id="l2Cache" formControlName="l2Cache" placeholder="L2 Cache">
+    </div>
+    <div class="col-lg-3 my-2">
+      <input type="number" class="form-control" id="l3Cache" formControlName="l3Cache" placeholder="L3 Cache">
+    </div>
+  </div>
+
+  <div class="row mx-auto">
+    <div class="col-md-4 my-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBrand"
+                ngbDropdownToggle>
+          Brand list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <button type="button"
+                  *ngFor="let item of brandList"
+                  (click)="updateBrand(item)"
+                  ngbDropdownItem>
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p>{{ brnd.name }}</p>
+      </div>
+    </div>
+    <div class="col-sm-4 my-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button class="btn btn-outline-primary"
+                id="dropdownSeries"
+                type="button"
+                ngbDropdownToggle
+                [attr.disabled]="enableSeries ? true : null">
+          Series list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <div *ngIf="seriesList && seriesList.length > 0">
+            <button type="button"
+                    *ngFor="let item of seriesList"
+                    (click)="updateSeries(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+          <div *ngIf="!seriesList || seriesList.length < 1">
+            <button type="button"
+                    ngbDropdownItem>no series</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="srs.name" class="mx-3 my-2">
+        <p>selected: {{ srs.name }}</p>
+      </div>
+    </div>
+    <div class="col-md-4 my-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBrand"
+                ngbDropdownToggle>
+          Socket List
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <button type="button"
+                  *ngFor="let item of socketList"
+                  (click)="updateSocket(item)"
+                  ngbDropdownItem>
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+      <div *ngIf="socket.name" class="mx-3 my-2">
+        <p>selected: {{ socket.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10 mx-auto">
+      <textarea class="form-control" id="description" formControlName="description" placeholder="Description"></textarea>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-md-6">
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
+      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block mx-2">Delete</button>
+    </div>
+  </div>
+</form>

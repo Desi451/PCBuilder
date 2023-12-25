@@ -1,1 +1,53 @@
 <p>drive-from works!</p>
+
+<form [formGroup]="hddForm" (ngSubmit)="executeForm()">
+  <!-- First row -->
+  <div class="row">
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="HDD name">
+    </div>
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="model" formControlName="model" placeholder="HDD model">
+    </div>
+  </div>
+
+  <!-- Second row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="capacity" formControlName="capacity" placeholder="Capacity">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="rpm" formControlName="rpm" placeholder="RPM">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="cache" formControlName="cache" placeholder="Cache">
+    </div>
+  </div>
+
+  <!-- Third row -->
+  <div class="row">
+    <div class="col-md-12">
+      <textarea class="form-control" id="description" formControlName="description" placeholder="Description"></textarea>
+    </div>
+  </div>
+
+  <!-- Fourth row -->
+  <div class="row">
+    <div class="col-md-6">
+      <input type="number" class="form-control" id="seriesId" formControlName="seriesId" placeholder="Series ID">
+    </div>
+    <div class="col-md-6">
+      <input type="number" class="form-control" id="slotInterfaceId" formControlName="slotInterfaceId" placeholder="Slot Interface ID">
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="row mt-2">
+    <div class="col-md-6">
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
+    </div>
+    <div class="col-md-6">
+      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+    </div>
+  </div>
+</form>

@@ -59,6 +59,13 @@ public class CPUController : ControllerBase
         return Ok(brands);
     }
 
+    [HttpGet("socketsbrand/{id}")]
+    public async Task<IActionResult> GetAllSocketsByBrand(int id)
+    {
+        var brands = await _service.GetSocketsByBrandId(id);
+        return Ok(brands);
+    }
+
     [HttpGet("sockets/{id}")]
     public async Task<IActionResult> GetSocket(int id)
     {

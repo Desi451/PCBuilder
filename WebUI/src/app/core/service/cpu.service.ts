@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { cpu } from "src/app/shared/models/cpu.model";
+import { addCpu, addSocketCpu, cpu, socketCpu } from "src/app/shared/models/cpu.model";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -18,15 +18,39 @@ export class CpuService {
     return this.http.get<cpu>(`${environment.apiUrl}Cpu/` + id);
   }
 
-  // addBrand(brand: addBrand): Observable<addBrand> {
-  //   return this.http.post<brand>(`${environment.apiUrl}Cpu/add`, brand);
-  // }
+  add(res: addCpu): Observable<addCpu> {
+    return this.http.post<addCpu>(`${environment.apiUrl}Cpu/add`, res);
+  }
 
-  // updateBrand(brand: brand): Observable<brand> {
-  //   return this.http.put<brand>(`${environment.apiUrl}Cpu/update`, brand);
-  // }
+  update(res: cpu): Observable<cpu> {
+    return this.http.put<cpu>(`${environment.apiUrl}Cpu/update`, res);
+  }
 
-  // deleteBrand(id: number): Observable<Object> {
-  //   return this.http.delete(`${environment.apiUrl}Cpu/delete/` + id);
-  //}
+  delete(id: number): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}Cpu/delete/` + id);
+  }
+
+  getCpuSockets(): Observable<socketCpu[]> {
+    return this.http.get<socketCpu[]>(`${environment.apiUrl}Cpu/sockets`);
+  }
+
+  getCpuSocketsByBrand(id: number): Observable<socketCpu[]> {
+    return this.http.get<socketCpu[]>(`${environment.apiUrl}Cpu/socketsbrand/` + id);
+  }
+
+  getCpuSocket(id: number): Observable<socketCpu> {
+    return this.http.get<socketCpu>(`${environment.apiUrl}Cpu/sockets/` + id);
+  }
+
+  addSocket(res: addSocketCpu): Observable<addSocketCpu> {
+    return this.http.post<addSocketCpu>(`${environment.apiUrl}Cpu/addsocket`, res);
+  }
+
+  updateSocket(res: cpu): Observable<socketCpu> {
+    return this.http.put<socketCpu>(`${environment.apiUrl}Cpu/updatesocket`, res);
+  }
+
+  deleteSocket(id: number): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}Cpu/delete/sockets/` + id);
+  }
 }

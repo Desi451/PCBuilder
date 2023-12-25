@@ -1,1 +1,76 @@
 <p>psu-from works!</p>
+
+<form [formGroup]="psuForm" (ngSubmit)="executeForm()">
+  <!-- First row -->
+  <div class="row">
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="PSU name">
+    </div>
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="model" formControlName="model" placeholder="PSU model">
+    </div>
+  </div>
+
+  <!-- Second row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="type" formControlName="type" placeholder="Type">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="maxPower" formControlName="maxPower" placeholder="Max Power">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="Fans" formControlName="Fans" placeholder="Fans">
+    </div>
+  </div>
+
+  <!-- Third row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="MainConnPins" formControlName="MainConnPins" placeholder="Main Connection Pins">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="pciExpressConn" formControlName="pciExpressConn" placeholder="PCI Express Connection">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="voltage" formControlName="voltage" placeholder="Voltage">
+    </div>
+  </div>
+
+  <!-- Fourth row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="freq" formControlName="freq" placeholder="Frequency">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="connectors" formControlName="connectors" placeholder="Connectors">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="dimensions" formControlName="dimensions" placeholder="Dimensions">
+    </div>
+  </div>
+
+  <!-- Fifth row -->
+  <div class="row">
+    <div class="col-md-12">
+      <textarea class="form-control" id="description" formControlName="description" placeholder="Description"></textarea>
+    </div>
+  </div>
+
+  <!-- Sixth row -->
+  <div class="row">
+    <div class="col-md-6">
+      <input type="number" class="form-control" id="seriesId" formControlName="seriesId" placeholder="Series ID">
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="row mt-2">
+    <div class="col-md-6">
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
+    </div>
+    <div class="col-md-6">
+      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+    </div>
+  </div>
+</form>

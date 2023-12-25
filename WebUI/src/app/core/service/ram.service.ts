@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { ram } from "src/app/shared/models/ram.model";
+import { addRam, ram } from "src/app/shared/models/ram.model";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -18,15 +18,15 @@ export class RamService {
     return this.http.get<ram>(`${environment.apiUrl}Ram/` + id);
   }
 
-  // addBrand(brand: addBrand): Observable<addBrand> {
-  //   return this.http.post<brand>(`${environment.apiUrl}Cpu/add`, brand);
-  // }
+  add(res: addRam): Observable<addRam> {
+    return this.http.post<addRam>(`${environment.apiUrl}Ram/add`, res);
+  }
 
-  // updateBrand(brand: brand): Observable<brand> {
-  //   return this.http.put<brand>(`${environment.apiUrl}Cpu/update`, brand);
-  // }
+  update(res: ram): Observable<ram> {
+    return this.http.put<ram>(`${environment.apiUrl}Ram/update`, res);
+  }
 
-  // deleteBrand(id: number): Observable<Object> {
-  //   return this.http.delete(`${environment.apiUrl}Cpu/delete/` + id);
-  //}
+  delete(id: number): Observable<Object> {
+    return this.http.delete(`${environment.apiUrl}Ram/delete/` + id);
+  }
 }

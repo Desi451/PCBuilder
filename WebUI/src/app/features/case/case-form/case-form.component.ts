@@ -53,8 +53,8 @@ export class CaseFormComponent implements OnInit {
       height: [null, [Validators.required, Validators.min(1)]],
       width: [null, [Validators.required, Validators.min(1)]],
       deepth: [null, [Validators.required, Validators.min(1)]],
-      caseSizeId: [null, [Validators.required, Validators.min(0)]],
-      seriesId: [null, [Validators.required, Validators.min(1)]],
+      caseSizeId: [null],
+      seriesId: [null],
       description: ['Default description', Validators.required],
     });
   }
@@ -105,11 +105,12 @@ export class CaseFormComponent implements OnInit {
   }
 
   executeForm(): void {
-    if (this.caseForm.valid) {
-
+    if (this.caseForm.valid && this.srs.id && this.caseSizeData.value > -1) {
       if (this.id != null) {
         let updateForm = this.caseForm.value as casePc;
         updateForm.id = this.id;
+        updateForm.seriesId = this.srs.id;
+        updateForm.caseSizeId = this.caseSizeData.value;
         console.log(updateForm);
         this._caseService.updateCase(updateForm).subscribe(() => {
           console.log("yes");
@@ -119,11 +120,11 @@ export class CaseFormComponent implements OnInit {
             console.log("no: " + error);
           });
       } else {
-        const addForm = this.caseForm.value as addCase;
-        if (this.srs.id && this.caseSizeData.value) {
-          addForm.seriesId = this.srs.id;
-          addForm.caseSizeId = this.caseSizeData.value;
-        }
+        let addForm = this.caseForm.value as addCase;
+        addForm.seriesId = this.srs.id;
+        addForm.caseSizeId = this.caseSizeData.value;
+
+        console.log(addForm);
         this._caseService.addCase(addForm).subscribe(() => {
           console.log("yes");
           this._router.navigateByUrl(`case`);
@@ -136,7 +137,6 @@ export class CaseFormComponent implements OnInit {
   }
 
   delete(id: number): void {
-    console.log("im in")
     this._caseService.deleteCases(id).subscribe(
       () => {
         console.log('Brand deleted successfully');
@@ -172,11 +172,13 @@ export class CaseFormComponent implements OnInit {
 
   updateSeries(series: series): void {
     this.caseForm.value.seriesId = series.id;
+    console.log(series.id);
     this.srs = series;
-    this.srs.name = "selected: " + series.name;
+    this.srs.id = series.id;
   }
 
   updateCaseSize(caseS: CaseSize): void {
+    console.log(caseS.value);
     this.caseForm.value.caseSizeId = caseS.value;
     this.caseSizeData.value = caseS.value;
     this.caseSizeData.name = "selected: " + caseS.name;

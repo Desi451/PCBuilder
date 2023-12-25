@@ -15,7 +15,17 @@ import { series } from "src/app/shared/models/series.model";
 export class CaseViewComponent implements OnInit {
 
   id: number;
-  res: casePc = new casePc();
+  res: casePc = {
+    id: 0,
+    name: "",
+    model: "",
+    height: 0,
+    width: 0,
+    deepth: 0,
+    description: "",
+    caseSizeId: 0,
+    seriesId: 0
+  };
   brnd: brand = new brand();
   srs: series = new series();
   caseSizeData: CaseSize = {

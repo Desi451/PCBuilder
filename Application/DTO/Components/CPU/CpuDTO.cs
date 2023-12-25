@@ -16,6 +16,6 @@ public class CpuDTO
     public int Technology { get; set; } //nm
     public int TDP { get; set; }
     public int SeriesId { get; set; }
-    public int SocketCPUId { get; set; }
+    public int SocketCpuId { get; set; }
     public string Description { get; set; }
 }

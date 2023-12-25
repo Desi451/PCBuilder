@@ -1,15 +1,15 @@
 
 export class casePc {
-  id?: number;
-  name!: string;
-  model!: string;
-  height!: number;
-  width!: number;
-  deepth!: number;
-  description!: string;
+  id: number;
+  name: string;
+  model: string;
+  height: number;
+  width: number;
+  deepth: number;
+  description: string;
 
-  caseSizeId!: CaseSizes;
-  seriesId!: number;
+  caseSizeId: number;
+  seriesId: number;
 }
 
 export type addCase = {

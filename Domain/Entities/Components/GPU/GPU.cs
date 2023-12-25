@@ -24,6 +24,4 @@ public class GPU : AuditableEntity
 
     public Series Series { get; set; }
     public Series ChipsetSeries { get; set; }
-
-    public List<SlotInterface> Slots { get; set; }
 }

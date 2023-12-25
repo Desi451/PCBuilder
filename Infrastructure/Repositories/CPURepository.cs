@@ -49,7 +49,8 @@ public class CPURepository : ICPURepository
 
     public async Task<CPU> GetById(int id)
     {
-        CPU? Cpu = await _context.CPUs.FirstOrDefaultAsync(x => x.Id == id);
+        CPU? Cpu = await _context.CPUs
+            .FirstOrDefaultAsync(x => x.Id == id);
         return Cpu;
     }
 
@@ -60,7 +61,15 @@ public class CPURepository : ICPURepository
 
     public async Task<SocketCPU> GetSocketById(int id)
     {
-        return await _context.SocketCPUs.FirstOrDefaultAsync(_ => _.Id == id);
+        return await _context.SocketCPUs
+            .FirstOrDefaultAsync(_ => _.Id == id);
+    }
+
+    public async Task<List<SocketCPU>> GetSocketsByBrandId(int id)
+    {
+        return await _context.SocketCPUs
+        .Where(x => x.BrandId == id)
+        .ToListAsync();
     }
 
     public async Task<List<SocketCPU>> GetSockets()
@@ -70,13 +79,15 @@ public class CPURepository : ICPURepository
 
     public async Task Update(CPU Cpu)
     {
-        var oldCpu = await _context.CPUs.FirstOrDefaultAsync(r => r.Id == Cpu.Id);
+        var oldCpu = await _context.CPUs
+            .FirstOrDefaultAsync(r => r.Id == Cpu.Id);
         Helper.CopyProperties(Cpu, oldCpu);
     }
 
     public async Task UpdateSocket(SocketCPU socket)
     {
-        var oldCpu = await _context.SocketCPUs.FirstOrDefaultAsync(r => r.Id == socket.Id);
+        var oldCpu = await _context.SocketCPUs
+            .FirstOrDefaultAsync(r => r.Id == socket.Id);
         Helper.CopyProperties(socket, oldCpu);
     }
 }

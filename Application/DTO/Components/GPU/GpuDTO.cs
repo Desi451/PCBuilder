@@ -24,6 +24,4 @@ public class GpuDTO
     public int RecommendedPsuPower { get; set; }
     public int Length { get; set; }
     public string Description { get; set; }
-
-    public List<int> SlotsId { get; set; }
 }

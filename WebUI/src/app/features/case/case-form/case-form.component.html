@@ -117,8 +117,8 @@
           </div>
         </div>
       </div>
-      <div class="mx-3 my-2">
-        <p>{{ srs.name }}</p>
+      <div *ngIf="srs.name" class="mx-3 my-2">
+        <p>selected: {{ srs.name }}</p>
       </div>
     </div>
   </div>
