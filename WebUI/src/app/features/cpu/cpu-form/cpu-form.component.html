@@ -45,7 +45,7 @@
   </div>
 
   <div class="row mx-auto">
-    <div class="col-md-4 my-2">
+    <div class="col-md-3 my-2">
       <div ngbDropdown
            class="d-inline-block">
         <button type="button"
@@ -68,7 +68,7 @@
         <p>{{ brnd.name }}</p>
       </div>
     </div>
-    <div class="col-sm-4 my-2">
+    <div class="col-md-3 my-2">
       <div ngbDropdown
            class="d-inline-block">
         <button class="btn btn-outline-primary"
@@ -98,7 +98,7 @@
         <p>selected: {{ srs.name }}</p>
       </div>
     </div>
-    <div class="col-md-4 my-2">
+    <div class="col-md-3 my-2">
       <div ngbDropdown
            class="d-inline-block">
         <button type="button"
@@ -119,6 +119,36 @@
       </div>
       <div *ngIf="socket.name" class="mx-3 my-2">
         <p>selected: {{ socket.name }}</p>
+      </div>
+    </div>
+    <div class="col-md-3 my-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBrand"
+                ngbDropdownToggle>
+          Select APU
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <button type="button"
+                  (click)="updateApu(false)"
+                  ngbDropdownItem>
+            No
+          </button>
+          <button type="button"
+            (click)="updateApu(true)"
+            ngbDropdownItem>
+              Yes
+          </button>
+        </div>
+      </div>
+      <div *ngIf="res.isApu" class="mx-3 my-2">
+        <p>selected: Yes</p>
+      </div>
+      <div *ngIf="!res.isApu" class="mx-3 my-2">
+        <p>selected: No</p>
       </div>
     </div>
   </div>

@@ -1,8 +1,12 @@
 <p>ram-list works!</p>
 
-<ng-container *ngIf="isDataLoaded">
+<ng-container *ngIf="isDataLoaded && isSpeedLoaded">
   <app-uni-table [data]="list"
                  [columns]="[ 'name', 'model','capacity']"
                  [formLink]="'ram/form'"
                  [viewLink]="'ram/view'"></app-uni-table>
+
+  <app-uni-table  [data]="speedList"
+                 [columns]="[ 'standard', 'freq']"
+                 [formLink]="'ram/speedform'"></app-uni-table>
 </ng-container>

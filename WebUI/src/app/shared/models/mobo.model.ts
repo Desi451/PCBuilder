@@ -5,11 +5,13 @@ export class mobo {
   chipset: string;
   maxMemory: number;
   m2Slots: number;
-  caseSizeId: number;
+  sataSlots: number;
   description: string;
 
+  caseSizeId: number;
   seriesId: number;
   socketCpuId: number;
+  MemoryIds: number[] = [];
 }
 
 export type addMobo = {
@@ -19,9 +21,11 @@ export type addMobo = {
   chipset: string,
   maxMemory: number,
   m2Slots: number,
-  caseSizeId: number,
+  sataSlots: number;
   description: string,
 
+  caseSizeId: number,
   seriesId: number,
-  socketCpuId: number
+  socketCpuId: number,
+  MemoryIds: number[]
 }

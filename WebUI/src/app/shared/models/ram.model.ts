@@ -8,10 +8,16 @@ export class ram {
   latency: string;
 
   seriesId: number;
+  memorySpeedId: number;
 }
 
-export type ramSpeed = {
-  id: number,
+export class ramSpeed {
+  id: number;
+  standard: string;
+  freq: number;
+}
+
+export type addRamSpeed = {
   standard: string,
   freq: number
 }
@@ -26,4 +32,5 @@ export type addRam = {
   latency: string,
 
   seriesId: number
+  memorySpeedId: number;
 }

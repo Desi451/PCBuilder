@@ -46,7 +46,7 @@ export class CpuService {
     return this.http.post<addSocketCpu>(`${environment.apiUrl}Cpu/addsocket`, res);
   }
 
-  updateSocket(res: cpu): Observable<socketCpu> {
+  updateSocket(res: socketCpu): Observable<socketCpu> {
     return this.http.put<socketCpu>(`${environment.apiUrl}Cpu/updatesocket`, res);
   }
 

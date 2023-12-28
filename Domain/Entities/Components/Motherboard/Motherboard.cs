@@ -10,7 +10,7 @@ public class Motherboard : AuditableEntity
     public required string Name { get; set; }
     public required string Model { get; set; }
     public required int SeriesId { get; set; }
-    public required int SocketCPUId { get; set; }
+    public required int SocketCpuId { get; set; }
     public required string Chipset { get; set; }
     public required int MaxMemory { get; set; }
     public required int SATASlots { get; set; }

@@ -115,7 +115,6 @@ export class CpuFormComponent implements OnInit {
         updateForm.socketCpuId = this.socket.id;
         updateForm.id = this.id;
         updateForm.seriesId = this.srs.id;
-        console.log(updateForm);
         this._cpuService.update(updateForm).subscribe(() => {
           console.log("yes");
           this._router.navigateByUrl(`cpu`);
@@ -146,6 +145,7 @@ export class CpuFormComponent implements OnInit {
   }
 
   updateBrand(brand: brand): void {
+
     this.brnd.id = brand.id;
     this.enableSeries = false;
 
@@ -156,7 +156,7 @@ export class CpuFormComponent implements OnInit {
       this.socket.name = "";
       this.socket.id = 0;
     }
-    
+
     if (this.brnd.id) {
       this._seriesService.getSeriesByBrand(this.brnd.id).subscribe(
         (res: series[]) => {

@@ -3,7 +3,6 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { SsdFormComponent } from "./ssd-form/ssd-form.component";
 import { SsdListComponent } from "./ssd-list/ssd-list.component";
-import { SsdViewComponent } from "./ssd-view/ssd-view.component";
 
 const routes: Routes = [
   {
@@ -16,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'form/:id',
-    component: SsdViewComponent
+    component: SsdFormComponent
   },
 ];
 

@@ -21,6 +21,7 @@ export class MoboService {
   }
 
   add(res: addMobo): Observable<addMobo> {
+    console.log(res);
     return this.http.post<addMobo>(`${environment.apiUrl}Motherboard/add`, res);
   }
 

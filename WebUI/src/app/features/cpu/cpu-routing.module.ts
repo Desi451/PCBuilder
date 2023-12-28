@@ -4,6 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { CpuFormComponent } from "./cpu-form/cpu-form.component";
 import { CpuListComponent } from "./cpu-list/cpu-list.component";
 import { CpuViewComponent } from "./cpu-view/cpu-view.component";
+import { SocketFormComponent } from "./socket-form/socket-form.component";
 
 
 const routes: Routes = [
@@ -22,6 +23,14 @@ const routes: Routes = [
   {
     path: 'view/:id',
     component: CpuViewComponent
+  },
+  {
+    path: 'formsocket',
+    component: SocketFormComponent
+  },
+  {
+    path: 'formsocket/:id',
+    component: SocketFormComponent
   }
 ];
 

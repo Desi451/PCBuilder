@@ -16,7 +16,7 @@ export class PsuListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._psuService.getCpus().subscribe(
+    this._psuService.getPsus().subscribe(
       (brands: psu[]) => {
         this.list = brands;
         this.isDataLoaded = true;

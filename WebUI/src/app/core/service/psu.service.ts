@@ -10,11 +10,11 @@ import { environment } from "src/environments/environment";
 export class PsuService {
   constructor(private http: HttpClient) { }
 
-  getCpus(): Observable<psu[]> {
+  getPsus(): Observable<psu[]> {
     return this.http.get<psu[]>(`${environment.apiUrl}PowerSupply`);
   }
 
-  getCpu(id: number): Observable<psu> {
+  getPsu(id: number): Observable<psu> {
     return this.http.get<psu>(`${environment.apiUrl}PowerSupply/` + id);
   }
 

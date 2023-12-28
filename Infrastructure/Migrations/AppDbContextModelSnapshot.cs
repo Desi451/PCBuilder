@@ -113,7 +113,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("SeriesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SocketCPUId")
+                    b.Property<int>("SocketCpuId")
                         .HasColumnType("int");
 
                     b.Property<int>("TDP")
@@ -129,7 +129,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SeriesId");
 
-                    b.HasIndex("SocketCPUId");
+                    b.HasIndex("SocketCpuId");
 
                     b.ToTable("CPUs");
                 });
@@ -772,9 +772,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GPUId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -789,8 +786,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GPUId");
 
                     b.ToTable("SlotInterfaces");
                 });
@@ -859,10 +854,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("RankId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SlotName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RankId");
@@ -880,7 +871,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Components.CPU.SocketCPU", "SocketCPU")
                         .WithMany()
-                        .HasForeignKey("SocketCPUId")
+                        .HasForeignKey("SocketCpuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1047,13 +1038,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Brand");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Slots.SlotInterface", b =>
-                {
-                    b.HasOne("Domain.Entities.Components.GPU.GPU", null)
-                        .WithMany("Slots")
-                        .HasForeignKey("GPUId");
-                });
-
             modelBuilder.Entity("Domain.Entities.Slots.SlotsGPU", b =>
                 {
                     b.HasOne("Domain.Entities.Components.GPU.GPU", "Gpu")
@@ -1082,11 +1066,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Rank");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Components.GPU.GPU", b =>
-                {
-                    b.Navigation("Slots");
                 });
 
             modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>

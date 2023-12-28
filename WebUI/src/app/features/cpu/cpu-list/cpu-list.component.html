@@ -1,8 +1,12 @@
 <p>cpu-list works!</p>
 
-<ng-container *ngIf="isDataLoaded">
+<ng-container *ngIf="isDataLoaded && isSocketLoaded">
   <app-uni-table [data]="cpuList"
                  [columns]="['id', 'name', 'model']"
                  [formLink]="'cpu/form'"
                  [viewLink]="'cpu/view'"></app-uni-table>
+
+  <app-uni-table [data]="socketList"
+                 [columns]="['id', 'name']"
+                 [formLink]="'cpu/formsocket'"></app-uni-table>
 </ng-container>

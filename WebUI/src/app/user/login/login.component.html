@@ -1,0 +1,22 @@
+<p>login works!</p>
+
+<form [formGroup]="loginForm" (ngSubmit)="executeForm()" style="max-width: 400px" class="mx-auto">
+
+  <div class="form-outline mb-4">
+    <input type="email" id="log" class="form-control" />
+    <label class="form-label" for="log">Email address</label>
+  </div>
+
+  <div class="form-outline mb-4">
+    <input type="password" id="pass" class="form-control" />
+    <label class="form-label" for="pass">Password</label>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col mx-start">
+      <a href="resetpass">Forgot password?</a>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-primary btn-block mb-4">Sign in</button>
+</form>

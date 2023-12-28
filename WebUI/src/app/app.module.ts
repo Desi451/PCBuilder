@@ -6,15 +6,17 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FeaturesModule } from "./features/features.module";
+import { UserModule } from "./user/user.module";
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FeaturesModule,
+    UserModule,
     HttpClientModule,
     NgbModule
   ],

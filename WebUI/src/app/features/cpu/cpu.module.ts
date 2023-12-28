@@ -8,13 +8,15 @@ import { CpuFormComponent } from "./cpu-form/cpu-form.component";
 import { CpuListComponent } from "./cpu-list/cpu-list.component";
 import { CpuRoutingModule } from "./cpu-routing.module";
 import { CpuViewComponent } from "./cpu-view/cpu-view.component";
+import { SocketFormComponent } from './socket-form/socket-form.component';
 
 
 @NgModule({
   declarations: [
     CpuFormComponent,
     CpuListComponent,
-    CpuViewComponent
+    CpuViewComponent,
+    SocketFormComponent
   ],
   imports: [
     CommonModule,

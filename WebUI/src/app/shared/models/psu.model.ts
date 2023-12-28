@@ -8,8 +8,6 @@ export class psu {
   hasPFC: boolean;
   MainConnPins: string;
   pciExpressConn: string;
-  hasSLI: boolean;
-  hasCrossFire: boolean;
   voltage: string;
   freq: string;
   connectors: string;
@@ -28,8 +26,6 @@ export type addPsu = {
   hasPFC: boolean,
   MainConnPins: string,
   pciExpressConn: string,
-  hasSLI: boolean,
-  hasCrossFire: boolean,
   voltage: string,
   freq: string,
   connectors: string,

@@ -8,13 +8,15 @@ import { RamFormComponent } from "./ram-form/ram-form.component";
 import { RamListComponent } from "./ram-list/ram-list.component";
 import { RamRoutingModule } from "./ram-routing.module";
 import { RamViewComponent } from "./ram-view/ram-view.component";
+import { RamSpeedFormComponent } from './ram-speed-form/ram-speed-form.component';
 
 
 @NgModule({
   declarations: [
     RamListComponent,
     RamFormComponent,
-    RamViewComponent
+    RamViewComponent,
+    RamSpeedFormComponent
   ],
   imports: [
     CommonModule,

@@ -12,7 +12,7 @@ export class SsdListComponent implements OnInit {
   isDataLoaded = false;
   constructor(
     public _ssdService: SsdService,
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {

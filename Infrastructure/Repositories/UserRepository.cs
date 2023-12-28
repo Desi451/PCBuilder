@@ -25,8 +25,9 @@ public class UserRepository : IUserRepository
         {
             user.IsDeleted = false;
             user.IsEmailConfirmed = false;
-            user.CreatedBy = user.Id;
+            user.CreatedBy = 1;
             user.Rank = r;
+            user.RankId = r.Id;
             await _context.AddAsync(user);
         }
         catch
