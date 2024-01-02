@@ -26,10 +26,10 @@ public class AuthService : IAuthService
     public async Task<bool> Login(LoginUserDTO user)
     {
         User res = new User();
-        if (user.LogOrMail.Contains("@"))
-            res.Email = user.LogOrMail;
+        if (user.Login.Contains("@"))
+            res.Email = user.Login;
         else
-            res.Login = user.LogOrMail;
+            res.Login = user.Login;
         
         res.Password = user.Password;
 

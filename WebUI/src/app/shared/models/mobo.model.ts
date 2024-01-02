@@ -1,3 +1,5 @@
+import { ramSpeed } from "./ram.model";
+
 export class mobo {
   id: number;
   name: string;
@@ -11,7 +13,7 @@ export class mobo {
   caseSizeId: number;
   seriesId: number;
   socketCpuId: number;
-  MemoryIds: number[] = [];
+  memories: ramSpeed[] = [];
 }
 
 export type addMobo = {
@@ -27,5 +29,5 @@ export type addMobo = {
   caseSizeId: number,
   seriesId: number,
   socketCpuId: number,
-  MemoryIds: number[]
+  memories: ramSpeed[]
 }

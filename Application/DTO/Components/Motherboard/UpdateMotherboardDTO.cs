@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Application.DTO.Components.RAM;
+using Domain.Entities.Components.RamMemory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +21,5 @@ public class UpdateMotherboardDTO
     public int M2Slots { get; set; }
     public int CaseSizeId { get; set; }
     public string Description { get; set; }
-    public List<int> MemoryIds { get; set; }
+    public List<RamSpeedDTO> Memories { get; set; }
 }

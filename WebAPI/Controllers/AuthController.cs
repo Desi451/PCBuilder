@@ -27,7 +27,7 @@ public class AuthController : ControllerBase
     {
         var res = await _service.Login(login);
         if(res == true)
-            return Ok();
+            return Ok(res);
         else
             return BadRequest();
     }

@@ -55,7 +55,7 @@
           </button>
         </div>
       </div>
-      <div class="mx-3 my-2">
+      <div *ngIf="brnd.name" class="mx-3 my-2">
         <p>selected: {{ brnd.name }}</p>
       </div>
     </div>
@@ -110,8 +110,8 @@
           </button>
         </div>
       </div>
-      <div class="mx-3 my-2">
-        <p>selected: {{ socketBrnd.name }}</p>
+      <div  *ngIf="socketBrnd.name" class="mx-3 my-2">
+        <p >selected: {{ socketBrnd.name }}</p>
       </div>
     </div>
 

@@ -3,6 +3,7 @@ using Application.DTO.Components.RAM;
 using Application.Interfaces.Components;
 using AutoMapper;
 using Domain.Entities.Components.Motherboard;
+using Domain.Entities.Components.RamMemory;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository.Components;
 
@@ -29,10 +30,10 @@ public class MotherboardService : IMotherBoardService
         var res = _mapper.Map<Motherboard>(mobo);
         await _repo.Add(res);
         await _saveData.Save();
-        foreach(var item in mobo.MemoryIds)
+        foreach(var item in mobo.Memories)
         {
             MotheboardMemory mem = new MotheboardMemory();
-            var ram = await _ramRepository.GetSpeedById(item);
+            var ram = await _ramRepository.GetSpeedById(item.Id);
             mem.Memory = ram;
             mem.MemoryId = ram.Id;
             mem.Motherboard = res;
@@ -66,7 +67,7 @@ public class MotherboardService : IMotherBoardService
     {
         var res = await _repo.GetById(id);
         var mobo = _mapper.Map<MotherboardDTO>(res);
-        mobo.Memory = await GetMemories(id);
+        mobo.Memories = await GetMemories(id);
         return mobo;
     }
 
@@ -95,7 +96,7 @@ public class MotherboardService : IMotherBoardService
         foreach(var i in res)
         {
             var mobo = _mapper.Map<MotherboardDTO>(i);
-            mobo.Memory = await GetMemories(i.Id);
+            mobo.Memories = await GetMemories(i.Id);
         }
         return _mapper.Map<List<MotherboardDTO>>(res);
     }
@@ -103,7 +104,7 @@ public class MotherboardService : IMotherBoardService
     public async Task Update(UpdateMotherboardDTO mobo)
     {
         var res = _mapper.Map<Motherboard>(mobo);
-        await _repo.Update(res, mobo.MemoryIds);
+        await _repo.Update(res, _mapper.Map<List<RamSpeed>>(mobo.Memories));
         await _saveData.Save();
     }
 

@@ -1,5 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Component } from "@angular/core";
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "src/app/core/auth/auth.service";
+import { login } from "src/app/shared/models/user.model";
 
 @Component({
   selector: 'app-login',
@@ -8,17 +11,44 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule]
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   loginForm!: FormGroup;
 
-  ngOnInit(): void {
-    throw new Error("Method not implemented.");
+  constructor(
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private formBuilder: FormBuilder,
+    private _authService: AuthService
+  ) {
+    this.initForm();
   }
 
 
+  initForm() {
+    this.loginForm = this.formBuilder.group({
+      login: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
   executeForm() {
+    console.log(this.loginForm.value.login);
+    console.log(this.loginForm.value.password);
+    if(this.loginForm.valid){
+      const log = this.loginForm.value as login;
+      this._authService.login(log).subscribe(
 
+        (res: boolean) => {
+          console.log(res);
+        },
+        (error) => {
+          console.error('Error fetching user:', error);
+        }
+      );
+    }
+    else{
+      console.error("Data not valid");
+    }
   }
 
 

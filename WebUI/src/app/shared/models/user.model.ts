@@ -10,9 +10,8 @@ export class user
 export type addUser =
 {
   login: string;
+  email: string;
   password: string;
-  isEmailConfirmed: boolean;
-  rankId: number;
 }
 
 export type login = {

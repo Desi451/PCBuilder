@@ -7,7 +7,7 @@ import { environment } from "src/environments/environment";
 @Injectable({
   providedIn: 'root'
 })
-export class BrandService {
+export class AuthService {
 
   constructor(private http: HttpClient) { }
 
@@ -19,4 +19,7 @@ export class BrandService {
     return this.http.post<boolean>(`${environment.apiUrl}Auth/register`, res);
   }
 
+  confirmMail(res: number): Observable<boolean> {
+    return this.http.post<boolean>(`${environment.apiUrl}Auth/confirmMail`, res);
+  }
 }

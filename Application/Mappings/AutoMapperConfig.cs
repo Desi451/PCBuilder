@@ -80,10 +80,10 @@ public static class AutoMapperConfig
             cfg.CreateMap<AddPowerSupplyDTO, PowerSupply>();
 
             //motherboard
-            cfg.CreateMap<Motherboard, MotherboardDTO>();
-            cfg.CreateMap<MotherboardDTO, Motherboard>();
-            cfg.CreateMap<AddMotherboardDTO, Motherboard>();
-            cfg.CreateMap<UpdateMotherboardDTO, Motherboard>();
+            cfg.CreateMap<Motherboard, MotherboardDTO>().ForMember(dest => dest.Memories, opt => opt.Ignore());
+            cfg.CreateMap<MotherboardDTO, Motherboard>().ForMember(dest => dest.Memories, opt => opt.Ignore());
+            cfg.CreateMap<AddMotherboardDTO, Motherboard>().ForMember(dest => dest.Memories, opt => opt.Ignore());
+            cfg.CreateMap<UpdateMotherboardDTO, Motherboard>().ForMember(dest => dest.Memories, opt => opt.Ignore());
 
             cfg.CreateMap<MotheboardMemory, MotherboardMemoryDTO>();
             cfg.CreateMap<MotherboardMemoryDTO, MotheboardMemory>();
@@ -105,6 +105,8 @@ public static class AutoMapperConfig
             cfg.CreateMap<HddDTO, Hdd>();
             cfg.CreateMap<AddHddDTO, Hdd>();
             #endregion
+
+
 
         }).CreateMapper();
         return config;

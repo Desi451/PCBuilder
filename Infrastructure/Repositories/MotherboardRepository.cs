@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Components.Motherboard;
+using Domain.Entities.Components.RamMemory;
 using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
@@ -83,35 +84,38 @@ public class MotherboardRepository : IMotherBoardRepository
         return res;
     }
 
-    public async Task Update(Motherboard mobo, List<int> Rams)
+    public async Task Update(Motherboard mobo, List<RamSpeed> Rams)
     {
         var res = await GetById(mobo.Id);
 
         Helper.CopyProperties(mobo, res);
-        // Pobieranie starej listy pamięci z bazy danych
+
         var oldRams = await _context.MotherboardMemories
             .Where(x => x.MotherBoardId == mobo.Id)
             .Select(x => x.MemoryId)
             .ToListAsync();
 
-        var newRamsNotInOldRams = Rams.Except(oldRams).ToList();
-        foreach (var ram in newRamsNotInOldRams) 
+        var newRamsNotInOldRams = Rams.Select(ram => ram.Id).Except(oldRams).ToList();
+
+        foreach (var ramId in newRamsNotInOldRams)
         {
-            MotheboardMemory item = new MotheboardMemory();
-            item.MotherBoardId = mobo.Id;
-            item.MemoryId = ram;
+            MotheboardMemory item = new MotheboardMemory
+            {
+                MotherBoardId = mobo.Id,
+                MemoryId = ramId
+            };
+
             await AddMemory(item);
         }
 
-        var oldRamsNotInRams = oldRams.Except(Rams).ToList();
+        var oldRamsNotInRams = oldRams.Except(Rams.Select(ram => ram.Id)).ToList();
 
         var memoriesToRemove = await _context.MotherboardMemories
             .Where(x => x.MotherBoardId == mobo.Id && oldRamsNotInRams.Contains(x.MemoryId))
             .ToListAsync();
 
         _context.MotherboardMemories.RemoveRange(memoriesToRemove);
-        
-        // dodac sam obiekt jeszcze
+        await _context.SaveChangesAsync();
     }
 
 

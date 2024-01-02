@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { map } from "rxjs";
 import { BrandService } from "src/app/core/service/brand.service";
 import { CpuService } from "src/app/core/service/cpu.service";
 import { MoboService } from "src/app/core/service/mobo.service";
@@ -69,9 +68,6 @@ export class MoboFormComponent implements OnInit {
       m2Slots: [null, [Validators.required, Validators.min(1)]],
       sataSlots: [null, [Validators.required, Validators.min(1)]],
       description: ['Default description', Validators.required],
-      // caseSizeId: [null, Validators.required],
-      // seriesId: [null, Validators.required],
-      // socketCpuId: [null, Validators.required],
     });
   }
 
@@ -99,26 +95,15 @@ export class MoboFormComponent implements OnInit {
 
       this._moboService.getMobo(this.id).subscribe(
         (res: mobo) => {
+          console.log(res);
           this.res.id = res.id;
           this.res = res;
           this.moboForm.patchValue(res);
+          this.ramMemoryListUserData = res.memories;
 
           this.caseSizeData.name = getCaseSizeName(this.res.caseSizeId);
           this.caseSizeData.value = this.res.caseSizeId;
           this.updateCaseSize(this.caseSizeData);
-
-          res.MemoryIds.forEach(e => {
-            console.log(e);
-            this._ramService.getSpeed(e).pipe(
-              map((item: ramSpeed) => {
-                this.updateRam(item, this.ramMemoryListUserData);
-                console.log(this.ramMemoryListUserData);
-                // Możesz zwrócić item, jeśli chcesz coś z nim zrobić dalej
-                // return item;
-              })
-            ).subscribe();
-          });
-
 
           this._seriesService.getSeriesById(res.seriesId).subscribe(
             (resSeries: series) => {
@@ -155,6 +140,9 @@ export class MoboFormComponent implements OnInit {
         }
       );
 
+        console.log(this.ramMemoryListUserData);
+        console.log(this.res.memories);
+        this.ramMemoryListUserData = this.res.memories;
     }
     else{
 
@@ -162,8 +150,6 @@ export class MoboFormComponent implements OnInit {
   }
 
   executeForm(): void {
-    debugger;
-    const list = this.createIdList(this.ramMemoryListUserData);
     if(this.moboForm.valid && this.srs.id
       && this.caseSizeData.value > -1 && this.socket.id){
 
@@ -172,11 +158,11 @@ export class MoboFormComponent implements OnInit {
             data.caseSizeId = this.caseSizeData.value;
             data.socketCpuId = this.socket.id;
             data.seriesId = this.srs.id;
-            data.MemoryIds = list;
+            data.memories = this.ramMemoryListUserData
             data.id = this.id;
             this._moboService.update(data).subscribe(() => {
               console.log("yes");
-              this._router.navigateByUrl(`case`);
+              this._router.navigateByUrl(`mobo`);
             },
               (error) => {
                 console.log("no: " + error.value);
@@ -187,16 +173,15 @@ export class MoboFormComponent implements OnInit {
             data.caseSizeId = this.caseSizeData.value;
             data.socketCpuId = this.socket.id;
             data.seriesId = this.srs.id;
-            data.MemoryIds = list;
+            data.memories = this.ramMemoryListUserData
             this._moboService.add(data).subscribe(() => {
               console.log("yes");
-              this._router.navigateByUrl(`case`);
+              this._router.navigateByUrl(`mobo`);
             },
               (error) => {
                 console.log("no: " + error.value);
             });
           }
-
     }
     else{
       console.log("form not valid");
@@ -209,13 +194,13 @@ export class MoboFormComponent implements OnInit {
 
   updateBrandSocket(brand: brand): void {
 
+    this.socketBrnd = brand;
     this.socketBrnd.id = brand.id;
 
     if (this.socketBrnd.id) {
       this._cpuService.getCpuSocketsByBrand(this.socketBrnd.id).subscribe(
         (res: socketCpu[]) => {
           this.socketList = res;
-          console.log(res);
         },
         (error) => {
           console.error('Error fetching brands:', error);
@@ -225,7 +210,7 @@ export class MoboFormComponent implements OnInit {
   }
 
   updateBrand(brand: brand): void {
-
+    this.brnd = brand;
     this.brnd.id = brand.id;
     this.enableSeries = false;
 
@@ -266,16 +251,15 @@ export class MoboFormComponent implements OnInit {
     this.caseSizeData.name = "selected: " + caseS.name;
   }
 
-  updateRam(ramS: ramSpeed, tab?: ramSpeed[]): void {
-    const index = (tab && this.ramMemoryListUserData) ? this.ramMemoryListUserData.indexOf(ramS) : -1;
+  updateRam(ramS: ramSpeed, tab: ramSpeed[]): void {
+    const index = tab.findIndex(item => item.standard === ramS.standard && item.freq === ramS.freq);
 
-    if (index === -1) {
-      if (tab && this.ramMemoryListUserData)
-        this.ramMemoryListUserData.push(ramS);
-
+    if (index !== -1) {
+      // Element już istnieje, usuń go
+      tab.splice(index, 1);
     } else {
-
-      tab!.splice(index, 1);
+      // Element nie istnieje, dodaj go
+      tab.push(ramS);
     }
   }
 
