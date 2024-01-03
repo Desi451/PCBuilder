@@ -104,7 +104,7 @@ public class RamService : IRAMService
 
     public async Task DeleteSpeed(int id)
     {
-        await _repo.Delete(id);
+        await _repo.DeleteSpeed(id);
         await _saveData.Save();
     }
 }

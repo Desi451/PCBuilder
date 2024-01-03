@@ -42,7 +42,7 @@ export class RamService {
     return this.http.post<addRamSpeed>(`${environment.apiUrl}Ram/addspeed`, res);
   }
 
-  updateSpeed(res: ram): Observable<ramSpeed> {
+  updateSpeed(res: ramSpeed): Observable<ramSpeed> {
     return this.http.put<ramSpeed>(`${environment.apiUrl}Ram/updatespeed`, res);
   }
 

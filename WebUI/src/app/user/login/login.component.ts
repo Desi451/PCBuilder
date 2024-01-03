@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/core/auth/auth.service";
 import { login } from "src/app/shared/models/user.model";
 
@@ -18,6 +19,7 @@ export class LoginComponent {
     private _route: ActivatedRoute,
     private _router: Router,
     private formBuilder: FormBuilder,
+    private toastr: ToastrService,
     private _authService: AuthService
   ) {
     this.initForm();
@@ -32,22 +34,20 @@ export class LoginComponent {
   }
 
   executeForm() {
-    console.log(this.loginForm.value.login);
-    console.log(this.loginForm.value.password);
     if(this.loginForm.valid){
       const log = this.loginForm.value as login;
       this._authService.login(log).subscribe(
 
         (res: boolean) => {
-          console.log(res);
+          this.toastr.success('Logged in Successfully!', 'Login');
         },
         (error) => {
-          console.error('Error fetching user:', error);
+          this.toastr.error('Error fetching user', 'Server Error');
         }
       );
     }
     else{
-      console.error("Data not valid");
+      this.toastr.error('Data not valid');
     }
   }
 

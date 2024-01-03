@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { PsuService } from "src/app/core/service/psu.service";
 import { psu } from "src/app/shared/models/psu.model";
 
@@ -12,6 +13,7 @@ export class PsuListComponent implements OnInit {
   isDataLoaded = false;
   constructor(
     public _psuService: PsuService,
+    private toastr: ToastrService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) { }
 
@@ -23,7 +25,7 @@ export class PsuListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching PSUs', 'Server Error');
       }
     );
   }

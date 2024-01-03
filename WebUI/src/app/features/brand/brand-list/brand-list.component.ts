@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { brand } from "src/app/shared/models/brand.model";
 
@@ -13,7 +14,8 @@ export class BrandListComponent implements OnInit {
   isDataLoaded = false;
   constructor(
     public _brandService: BrandService,
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -24,7 +26,7 @@ export class BrandListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
   }

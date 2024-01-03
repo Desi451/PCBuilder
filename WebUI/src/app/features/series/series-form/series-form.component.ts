@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { SeriesService } from "src/app/core/service/series.service";
 import { addSeries, series } from "src/app/shared/models/series.model";
 
@@ -16,11 +17,11 @@ export class SeriesFormComponent {
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
-    public _seriesService: SeriesService
+    public _seriesService: SeriesService,
+    private toastr: ToastrService
   ) {
     this.seriesId = this._route.snapshot.params['id'];
     this._seriesService.currentBrandId.subscribe(brandId => {
-      console.log("brand:" + brandId);
       this.brandId = brandId;
     });
   }
@@ -29,12 +30,11 @@ export class SeriesFormComponent {
     if (this.seriesId != null) {
       this._seriesService.getSeriesById(this.seriesId).subscribe(
         (res: series) => {
-          console.log("res= ", res);
           this.res.id = res.id;
           this.res = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching series', 'Server Error');
         }
       );
     }
@@ -44,34 +44,33 @@ export class SeriesFormComponent {
     if (this.seriesId != null) {
       this.res.brandId = this.brandId;
       this._seriesService.updateSeries(this.res).subscribe(() => {
-        console.log("yes");
+        this.toastr.success('Series updated Successfully!', 'Series updated');
         this._router.navigateByUrl(`brand`);
       },
       (error) => {
-        console.log("no: " + error);
+        this.toastr.error('Error updating series', 'Server Error');
       });
     } else {
       let res: addSeries = {};
       res.name = this.res.name;
       res.brandId = this.brandId;
       this._seriesService.addSeries(res).subscribe(() => {
-        console.log("yes");
+        this.toastr.success('Series added Successfully!', 'Series added');
         this._router.navigateByUrl(`brand`);
       },
       (error) => {
-        console.log("no: " + error);
+        this.toastr.error('Error adding series', 'Server Error');
       });
     }
   }
 
   delete(id: number): void {
-    console.log("im in")
     this._seriesService.deleteSeries(id).subscribe(
       () => {
-        console.log('Brand deleted successfully');
+        this.toastr.success('Brand deleted Successfully!', 'Brand deleted');
       },
       (error) => {
-        console.error('Error deleting brand:', error);
+        this.toastr.error('Error deleting series', 'Server Error');
       }
     );
   }

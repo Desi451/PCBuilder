@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { HddService } from "src/app/core/service/hdd.service";
 import { hdd } from "src/app/shared/models/hdd.model";
 
@@ -12,6 +13,7 @@ export class DriveListComponent implements OnInit {
   isDataLoaded = false;
   constructor(
     public _hddService: HddService,
+    private toastr: ToastrService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) { }
 
@@ -23,7 +25,7 @@ export class DriveListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching drives', 'Server Error');
       }
     );
   }

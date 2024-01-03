@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { PsuService } from "src/app/core/service/psu.service";
 import { SeriesService } from "src/app/core/service/series.service";
@@ -32,7 +33,8 @@ export class PsuFormComponent implements OnInit {
     private _seriesService: SeriesService,
     private _psuService: PsuService,
     private formBuilder: FormBuilder,
-    private _slotService: SlotService
+    private _slotService: SlotService,
+    private toastr: ToastrService
   ) {
     this.initForm();
     this.id = this._route.snapshot.params['id'];
@@ -62,7 +64,8 @@ export class PsuFormComponent implements OnInit {
         this.brandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
+
       }
     );
 
@@ -72,7 +75,6 @@ export class PsuFormComponent implements OnInit {
           this.res.id = res.id;
           this.res = res;
           debugger;
-          console.log(res);
           this.psuForm.patchValue(res);
 
           this._seriesService.getSeriesById(res.seriesId).subscribe(
@@ -93,7 +95,7 @@ export class PsuFormComponent implements OnInit {
           );
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching psu', 'Server Error');
         }
       );
     }
@@ -108,36 +110,38 @@ export class PsuFormComponent implements OnInit {
         updateForm.seriesId = this.srs.id;
         updateForm.hasPFC = this.pfc;
 
-        console.log(updateForm);
         this._psuService.update(updateForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('PSU updated Successfully!', 'PSU} updated');
           this._router.navigateByUrl(`psu`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error updating psu', 'Server Error');
           });
       } else {
         let addForm = this.psuForm.value as psu;
         addForm.seriesId = this.srs.id;
         addForm.hasPFC = this.pfc;
 
-        console.log(addForm);
         this._psuService.add(addForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('PSU added Successfully!', 'PSU added');
           this._router.navigateByUrl(`psu`);
         },
           (error) => {
-            console.log("no: " + error.value);
-          });
+            this.toastr.error('Error adding psu', 'Server Error');
+        });
       }
     }
-
   }
 
   delete(id: number): void {
-
-
-
+    this._psuService.delete(id).subscribe(
+      () => {
+        this.toastr.success('PSU deleted Successfully!', 'PSU deleted');
+      },
+      (error) => {
+        this.toastr.error('Error deleting PSU', 'Server Error');
+      }
+    );
   }
 
   updateBrand(brand: brand): void {
@@ -156,7 +160,7 @@ export class PsuFormComponent implements OnInit {
           this.seriesList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching series', 'Server Error');
         }
       );
       this.brnd.name = "selected: " + brand.name;
@@ -164,7 +168,6 @@ export class PsuFormComponent implements OnInit {
   }
 
   updateSeries(series: series): void {
-    console.log(series.id);
     this.srs = series;
     this.srs.id = series.id;
   }

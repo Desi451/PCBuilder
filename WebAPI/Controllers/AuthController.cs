@@ -9,6 +9,7 @@ namespace WebAPI.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _service;
+    public static UserDTO user = new UserDTO();
 
     public AuthController(IAuthService service)
     {

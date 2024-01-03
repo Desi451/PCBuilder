@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { RamService } from "src/app/core/service/ram.service";
 import { ram, ramSpeed } from "src/app/shared/models/ram.model";
 
@@ -14,6 +15,7 @@ export class RamListComponent implements OnInit {
   isSpeedLoaded = false
   constructor(
     public _ramService: RamService,
+    private toastr: ToastrService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) { }
 
@@ -25,7 +27,7 @@ export class RamListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching RAM speeds:', error);
+        this.toastr.error('Error RAM speeds', 'Server Error');
       }
     );
 
@@ -36,7 +38,7 @@ export class RamListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error RAMs', 'Server Error');
       }
     );
   }

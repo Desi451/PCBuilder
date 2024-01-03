@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { SlotService } from "src/app/core/service/slot.service";
 import { addSlot, slot } from "src/app/shared/models/slot.model";
 
@@ -16,7 +17,8 @@ export class SlotFormComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
-    public _slotService: SlotService
+    public _slotService: SlotService,
+    private toastr: ToastrService
   ) {
     this.id = this._route.snapshot.params['id'];
   }
@@ -29,7 +31,7 @@ export class SlotFormComponent implements OnInit {
           this.res = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching slots', 'Server Error');
         }
       );
     }
@@ -40,22 +42,22 @@ export class SlotFormComponent implements OnInit {
     if (this.res.name) {
       if (this.id != null) {
         this._slotService.update(this.res).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Slot updated Successfully!', 'Slot updated');
           this._router.navigateByUrl(`slot`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error updating slot', 'Server Error');
           });
       } else {
         let res: addSlot = {
           name: this.res.name
         };
         this._slotService.add(res).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Slot updated Successfully!', 'Slot updated');
           this._router.navigateByUrl(`slot`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error adding slot', 'Server Error');
           });
       }
     }
@@ -63,13 +65,12 @@ export class SlotFormComponent implements OnInit {
   }
 
   delete(id: number): void {
-    console.log("im in")
     this._slotService.delete(id).subscribe(
       () => {
-        console.log('Brand deleted successfully');
+        this.toastr.success('Slot deleted Successfully!', 'Brand deleted');
       },
       (error) => {
-        console.error('Error deleting brand:', error);
+        this.toastr.error('Error deleting slot', 'Server Error');
       }
     );
   }

@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { CpuService } from "src/app/core/service/cpu.service";
 import { cpu, socketCpu } from "src/app/shared/models/cpu.model";
 
@@ -14,7 +15,8 @@ export class CpuListComponent implements OnInit {
   isSocketLoaded= false;
   constructor(
     public _cpuService: CpuService,
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -25,7 +27,7 @@ export class CpuListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching cpus:', error);
+        this.toastr.error('Error fetching cpus', 'Server Error');
       }
     );
 
@@ -36,7 +38,7 @@ export class CpuListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching sockets:', error);
+        this.toastr.error('Error fetching sockets', 'Server Error');
       }
     );
   }

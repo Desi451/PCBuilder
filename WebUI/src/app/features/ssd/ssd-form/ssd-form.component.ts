@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { SeriesService } from "src/app/core/service/series.service";
 import { SlotService } from "src/app/core/service/slot.service";
@@ -35,7 +36,8 @@ export class SsdFormComponent implements OnInit {
     private _seriesService: SeriesService,
     private _slotService: SlotService,
     private _ssdService: SsdService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {
     this.initForm();
     this.id = this._route.snapshot.params['id'];
@@ -58,7 +60,7 @@ export class SsdFormComponent implements OnInit {
         this.brandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
 
@@ -67,7 +69,7 @@ export class SsdFormComponent implements OnInit {
         this.slotsList = slots;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching slots', 'Server Error');
       }
     )
 
@@ -105,7 +107,7 @@ export class SsdFormComponent implements OnInit {
           );
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching SSD', 'Server Error');
         }
       );
     }
@@ -119,33 +121,37 @@ export class SsdFormComponent implements OnInit {
         updateForm.seriesId = this.srs.id;
         updateForm.slotInterfaceId = this.slot.id;
 
-        console.log(updateForm);
         this._ssdService.update(updateForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('SSD updated Successfully!', 'SSD updated');
           this._router.navigateByUrl(`ssd`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error updating SSD', 'Server Error');
           });
       } else {
         let addForm = this.ssdForm.value as addSsd;
         addForm.seriesId = this.srs.id;
         addForm.slotInterfaceId = this.slot.id;
 
-        console.log(addForm);
         this._ssdService.add(addForm).subscribe(() => {
-          console.log("yes");
           this._router.navigateByUrl(`ssd`);
         },
           (error) => {
-            console.log("no: " + error.value);
+            this.toastr.error('Error adding SSD', 'Server Error');
           });
       }
     }
   }
 
   delete(id: number): void {
-
+    this._ssdService.delete(id).subscribe(
+      () => {
+        this.toastr.success('SSD deleted Successfully!', 'SSD deleted');
+      },
+      (error) => {
+        this.toastr.error('Error deleting SSD', 'Server Error');
+      }
+    );
   }
 
   updateBrand(brand: brand): void {
@@ -164,7 +170,7 @@ export class SsdFormComponent implements OnInit {
           this.seriesList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching series', 'Server Error');
         }
       );
       this.brnd.name = "selected: " + brand.name;
@@ -172,7 +178,6 @@ export class SsdFormComponent implements OnInit {
   }
 
   updateSeries(series: series): void {
-    console.log(series.id);
     this.srs = series;
     this.srs.id = series.id;
   }

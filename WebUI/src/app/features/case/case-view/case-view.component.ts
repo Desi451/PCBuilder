@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { CaseService } from "src/app/core/service/case.service";
 import { SeriesService } from "src/app/core/service/series.service";
@@ -43,6 +44,7 @@ export class CaseViewComponent implements OnInit {
     public _caseService: CaseService,
     public _brandService: BrandService,
     private _seriesService: SeriesService,
+    private toastr: ToastrService
   ) {
     this.id = this._route.snapshot.params['id'];
     for (const key in CaseSizes) {
@@ -77,7 +79,7 @@ export class CaseViewComponent implements OnInit {
         );
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching data', 'Server Error');
       }
     );
   }

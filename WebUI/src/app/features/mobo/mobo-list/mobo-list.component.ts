@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { MoboService } from "src/app/core/service/mobo.service";
 import { mobo } from "src/app/shared/models/mobo.model";
 
@@ -12,6 +13,7 @@ export class MoboListComponent implements OnInit {
   isDataLoaded = false;
   constructor(
     public _moboService: MoboService,
+    private toastr: ToastrService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) { }
 
@@ -20,11 +22,10 @@ export class MoboListComponent implements OnInit {
       (brands: mobo[]) => {
         this.list = brands;
         this.isDataLoaded = true;
-        console.log(this.list);
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching motherboards', 'Server Error');
       }
     );
   }

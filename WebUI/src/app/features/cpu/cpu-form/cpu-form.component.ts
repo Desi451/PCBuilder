@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { CpuService } from "src/app/core/service/cpu.service";
 import { SeriesService } from "src/app/core/service/series.service";
@@ -33,7 +34,8 @@ export class CpuFormComponent implements OnInit {
     public _brandService: BrandService,
     private _seriesService: SeriesService,
     private _cpuService: CpuService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {
     this.initForm();
     this.id = this._route.snapshot.params['id'];
@@ -63,12 +65,11 @@ export class CpuFormComponent implements OnInit {
         this.brandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
 
     if (this.id != null) {
-
       this._cpuService.getCpu(this.id).subscribe(
         (res: cpu) => {
           this.res = res;
@@ -88,7 +89,6 @@ export class CpuFormComponent implements OnInit {
                 )
               }
 
-              console.log(res.socketCpuId);
               if(res.socketCpuId){
                 this._cpuService.getCpuSocket(res.socketCpuId).subscribe(
                   (resSocket: socketCpu) => {
@@ -102,7 +102,7 @@ export class CpuFormComponent implements OnInit {
           );
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching CPU', 'Server Error');
         }
       );
     }
@@ -116,11 +116,11 @@ export class CpuFormComponent implements OnInit {
         updateForm.id = this.id;
         updateForm.seriesId = this.srs.id;
         this._cpuService.update(updateForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Cpu Updated Successfully!', 'Cpu Updated');
           this._router.navigateByUrl(`cpu`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error updating CPU', 'Server Error');
           });
       } else {
         this.cpuForm.value.isApu = false;
@@ -128,20 +128,26 @@ export class CpuFormComponent implements OnInit {
         addForm.socketCpuId = this.socket.id;
         addForm.seriesId = this.srs.id;
 
-        console.log(addForm);
         this._cpuService.add(addForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Cpu Added Successfully!', 'Cpu Added');
           this._router.navigateByUrl(`cpu`);
         },
           (error) => {
-            console.log("no: " + error.value);
+            this.toastr.error('Error adding CPU', 'Server Error');
           });
       }
     }
   }
 
   delete(id: number): void {
-
+    this._cpuService.delete(id).subscribe(
+      () => {
+        this.toastr.success('Brand deleted Successfully!', 'Brand deleted');
+      },
+      (error) => {
+        this.toastr.error('Error deleting brand', 'Server Error');
+      }
+    );
   }
 
   updateBrand(brand: brand): void {
@@ -163,7 +169,7 @@ export class CpuFormComponent implements OnInit {
           this.seriesList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching series', 'Server Error');
         }
       );
       this._cpuService.getCpuSocketsByBrand(this.brnd.id).subscribe(
@@ -171,7 +177,7 @@ export class CpuFormComponent implements OnInit {
           this.socketList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching sockets', 'Server Error');
         }
       );
       this.brnd.name = "selected: " + brand.name;
@@ -186,9 +192,6 @@ export class CpuFormComponent implements OnInit {
   }
 
   updateSeries(series: series): void {
-    console.log(series.id);
-
-
     this.srs = series;
     this.srs.name = series.name;
     this.srs.id = series.id;

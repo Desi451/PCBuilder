@@ -6,7 +6,7 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { BrandFormComponent } from "./brand-form/brand-form.component";
 import { BrandListComponent } from "./brand-list/brand-list.component";
 import { BrandRoutingModule } from "./brand-routing.module";
-import { BrandViewComponent } from './brand-view/brand-view.component';
+import { BrandViewComponent } from "./brand-view/brand-view.component";
 
 @NgModule({
     declarations: [
@@ -18,7 +18,8 @@ import { BrandViewComponent } from './brand-view/brand-view.component';
         CommonModule,
         BrandRoutingModule,
         SharedModule,
-        FormsModule
+        FormsModule,
+        
     ]
 })
 export class BrandModule { }

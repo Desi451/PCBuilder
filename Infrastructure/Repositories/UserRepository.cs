@@ -4,6 +4,7 @@ using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Generators;
 using System.Net;
 using System.Web.Http;
 
@@ -99,7 +100,7 @@ public class UserRepository : IUserRepository
     {
         var res = await _context.Users.FirstOrDefaultAsync(x => x.Login == log.Login || x.Email == log.Email);
 
-        if (res.Password == log.Password && res.IsDeleted == false)
+        if (res != null && VerifyPassword(res.Password, log.Password) && res.IsDeleted == false)
             return true;
         else
             return false;
@@ -110,4 +111,17 @@ public class UserRepository : IUserRepository
         return await _context.Users.ToListAsync();
     }
     #endregion
+
+    private string HashPassword(string password)
+    {
+        // Generowanie soli i haszowanie hasła
+        return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
+    }
+
+    private bool VerifyPassword(string hashedPassword, string providedPassword)
+    {
+        // Weryfikacja hasła
+        return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
+    }
+
 }

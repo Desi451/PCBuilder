@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { GpuService } from "src/app/core/service/gpu.service";
 import { gpu } from "src/app/shared/models/gpu.model";
 
@@ -12,6 +13,7 @@ export class GpuListComponent implements OnInit {
   isDataLoaded = false;
   constructor(
     public _gpuService: GpuService,
+    private toastr: ToastrService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) { }
 
@@ -23,7 +25,7 @@ export class GpuListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
   }

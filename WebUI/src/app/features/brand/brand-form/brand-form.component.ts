@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { addBrand, brand } from "src/app/shared/models/brand.model";
 
@@ -16,7 +17,8 @@ export class BrandFormComponent implements OnInit {
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
-    public _brandService: BrandService
+    public _brandService: BrandService,
+    private toastr: ToastrService
   ) {
     this.id = this._route.snapshot.params['id'];
   }
@@ -29,7 +31,7 @@ export class BrandFormComponent implements OnInit {
           this.res = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching brand', 'Server Error');
         }
       );
     }
@@ -40,35 +42,36 @@ export class BrandFormComponent implements OnInit {
     if (this.res.name) {
       if (this.id != null) {
         this._brandService.updateBrand(this.res).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Brand updated Successfully!', 'Brand updated');
           this._router.navigateByUrl(`brand`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error updating brand', 'Server Error');
           });
       } else {
         let res: addBrand = {};
         res.name = this.res.name;
         this._brandService.addBrand(res).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Brand Added Successfully!', 'Brand Added');
           this._router.navigateByUrl(`brand`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error sending brand', 'Server Error');
           });
       }
+    } else {
+      this.toastr.error('Fill all needed data!', 'Form Error');
     }
 
   }
 
   delete(id: number): void {
-    console.log("im in")
     this._brandService.deleteBrand(id).subscribe(
       () => {
-        console.log('Brand deleted successfully');
+        this.toastr.success('Brand deleted Successfully!', 'Brand deleted');
       },
       (error) => {
-        console.error('Error deleting brand:', error);
+        this.toastr.error('Error deleting brand', 'Server Error');
       }
     );
   }

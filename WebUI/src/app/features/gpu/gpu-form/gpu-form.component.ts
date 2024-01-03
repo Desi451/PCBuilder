@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { GpuService } from "src/app/core/service/gpu.service";
 import { SeriesService } from "src/app/core/service/series.service";
@@ -31,6 +32,7 @@ export class GpuFormComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     public _brandService: BrandService,
+    private toastr: ToastrService,
     private _seriesService: SeriesService,
     private _gpuService: GpuService,
     private formBuilder: FormBuilder
@@ -61,7 +63,7 @@ export class GpuFormComponent implements OnInit {
         this.brandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
 
@@ -104,15 +106,13 @@ export class GpuFormComponent implements OnInit {
           );
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching GPU', 'Server Error');
         }
       );
     }
   }
 
   executeForm(): void {
-    debugger;
-    console.log(this.gpuForm.value)
     if (this.gpuForm.valid && this.srs.id && this.chipsetSrs.id) {
       if (this.id != null) {
         let updateForm = this.gpuForm.value as gpu;
@@ -120,31 +120,37 @@ export class GpuFormComponent implements OnInit {
         updateForm.seriesId = this.srs.id;
         updateForm.chipsetSeriesId = this.chipsetSrs.id
         this._gpuService.update(updateForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('GPU updated Successfully!', 'GPU Updated');
           this._router.navigateByUrl(`gpu`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error updating GPU', 'Server Error');
           });
       } else {
         this.gpuForm.value.isApu = false;
         let addForm = this.gpuForm.value as addGpu;
         addForm.seriesId = this.srs.id;
         addForm.chipsetSeriesId = this.chipsetSrs.id;
-        console.log(addForm);
         this._gpuService.add(addForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('GPU Added Successfully!', 'GPU Added');
           this._router.navigateByUrl(`gpu`);
         },
           (error) => {
-            console.log("no: " + error.value);
+            this.toastr.error('Error updating GPU', 'Server Error');
           });
       }
     }
   }
 
   delete(id: number): void {
-
+    this._gpuService.delete(id).subscribe(
+      () => {
+        this.toastr.success('GPU deleted Successfully!', 'GPU deleted');
+      },
+      (error) => {
+        this.toastr.error('Error deleting GPU', 'Server Error');
+      }
+    );
   }
 
   updateBrand(brand: brand, isChipset: boolean): void {
@@ -163,11 +169,10 @@ export class GpuFormComponent implements OnInit {
             this.seriesList = res;
           },
           (error) => {
-            console.error('Error fetching brands:', error);
+            this.toastr.error('Error fetching Series', 'Server Error');
           }
         );
         this.brnd.name = "selected: " + brand.name;
-        console.log(this.brnd.name);
       }
     }
     else {
@@ -185,7 +190,7 @@ export class GpuFormComponent implements OnInit {
               this.chipsetSeriesList = res;
             },
             (error) => {
-              console.error('Error fetching brands:', error);
+              this.toastr.error('Error fetching Series', 'Server Error');
             }
           );
           this.chipsetBrnd.name = "selected: " + brand.name;

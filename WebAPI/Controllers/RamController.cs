@@ -45,7 +45,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _service.Delete(id);
@@ -80,7 +80,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("deletespeed")]
+        [HttpDelete("deletespeed/{id}")]
         public async Task<IActionResult> DeleteSpeed(int id)
         {
             await _service.DeleteSpeed(id);

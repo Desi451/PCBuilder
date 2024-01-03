@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { HddService } from "src/app/core/service/hdd.service";
 import { SeriesService } from "src/app/core/service/series.service";
@@ -32,6 +33,7 @@ export class DriveFromComponent implements OnInit {
     private _route: ActivatedRoute,
     private _router: Router,
     public _brandService: BrandService,
+    private toastr: ToastrService,
     private _seriesService: SeriesService,
     private _hddService: HddService,
     private _slotService: SlotService,
@@ -58,7 +60,7 @@ export class DriveFromComponent implements OnInit {
         this.brandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
 
@@ -67,7 +69,7 @@ export class DriveFromComponent implements OnInit {
         this.slotsList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching Interfaces', 'Server Error');
       }
     )
 
@@ -77,7 +79,6 @@ export class DriveFromComponent implements OnInit {
           this.res.id = res.id;
           this.res = res;
           debugger;
-          console.log(res);
           this.hddForm.patchValue(res);
 
           this._seriesService.getSeriesById(res.seriesId).subscribe(
@@ -107,7 +108,7 @@ export class DriveFromComponent implements OnInit {
           );
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching drive', 'Server Error');
         }
       );
     }
@@ -120,35 +121,39 @@ export class DriveFromComponent implements OnInit {
         let updateForm = this.hddForm.value as hdd;
         updateForm.id = this.id;
         updateForm.seriesId = this.srs.id;
-        updateForm.slotInterfaceId = this.slot.id;
-
-        console.log(updateForm);
+        updateForm.slotInterfaceId = this.slot.id;;
         this._hddService.update(updateForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Drive updated Successfully!', 'Drive updated');
           this._router.navigateByUrl(`hdd`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error updating drive', 'Server Error');
           });
       } else {
         let addForm = this.hddForm.value as hdd;
         addForm.seriesId = this.srs.id;
         addForm.slotInterfaceId = this.slot.id;
 
-        console.log(addForm);
         this._hddService.add(addForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Drive Added Successfully!', 'Drive Added');
           this._router.navigateByUrl(`hdd`);
         },
           (error) => {
-            console.log("no: " + error.value);
+            this.toastr.error('Error adding drive', 'Server Error');
           });
       }
     }
   }
 
   delete(id: number): void {
-
+    this._hddService.delete(id).subscribe(
+      () => {
+        this.toastr.success('Drive deleted Successfully!', 'Drive deleted');
+      },
+      (error) => {
+        this.toastr.error('Error deleting drive', 'Server Error');
+      }
+    );
   }
 
   updateBrand(brand: brand): void {
@@ -167,7 +172,7 @@ export class DriveFromComponent implements OnInit {
           this.seriesList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching series', 'Server Error');
         }
       );
       this.brnd.name = "selected: " + brand.name;
@@ -175,7 +180,6 @@ export class DriveFromComponent implements OnInit {
   }
 
   updateSeries(series: series): void {
-    console.log(series.id);
     this.srs = series;
     this.srs.id = series.id;
   }

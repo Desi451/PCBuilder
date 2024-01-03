@@ -24,6 +24,7 @@ export class SlotListComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching brands:', error);
+        
       }
     );
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { CaseService } from "src/app/core/service/case.service";
 import { SeriesService } from "src/app/core/service/series.service";
@@ -35,7 +36,8 @@ export class CaseFormComponent implements OnInit {
     public _caseService: CaseService,
     public _brandService: BrandService,
     private _seriesService: SeriesService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private toastr: ToastrService
   ) {
     this.initForm();
     this.id = this._route.snapshot.params['id'];
@@ -65,7 +67,7 @@ export class CaseFormComponent implements OnInit {
         this.brandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brand', 'Server Error');
       }
     );
 
@@ -98,7 +100,7 @@ export class CaseFormComponent implements OnInit {
           );
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching Case', 'Server Error');
         }
       );
     }
@@ -111,26 +113,24 @@ export class CaseFormComponent implements OnInit {
         updateForm.id = this.id;
         updateForm.seriesId = this.srs.id;
         updateForm.caseSizeId = this.caseSizeData.value;
-        console.log(updateForm);
         this._caseService.updateCase(updateForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Case Updated Successfully!', 'Case Updated');
           this._router.navigateByUrl(`case`);
         },
           (error) => {
-            console.log("no: " + error);
+            this.toastr.error('Error adding case', 'Server Error');
           });
       } else {
         let addForm = this.caseForm.value as addCase;
         addForm.seriesId = this.srs.id;
         addForm.caseSizeId = this.caseSizeData.value;
 
-        console.log(addForm);
         this._caseService.addCase(addForm).subscribe(() => {
-          console.log("yes");
+          this.toastr.success('Case Added Successfully!', 'Case Added');
           this._router.navigateByUrl(`case`);
         },
           (error) => {
-            console.log("no: " + error.value);
+            this.toastr.error('Error editing case', 'Server Error');
           });
       }
     }
@@ -139,10 +139,10 @@ export class CaseFormComponent implements OnInit {
   delete(id: number): void {
     this._caseService.deleteCases(id).subscribe(
       () => {
-        console.log('Brand deleted successfully');
+        this.toastr.success('Case Deleted Successfully!', 'Case Deleted');
       },
       (error) => {
-        console.error('Error deleting brand:', error);
+        this.toastr.error('Error deleting case', 'Server Error');
       }
     );
   }
@@ -163,7 +163,7 @@ export class CaseFormComponent implements OnInit {
           this.seriesList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching data', 'Server Error');
         }
       );
       this.brnd.name = "selected: " + brand.name;
@@ -172,13 +172,11 @@ export class CaseFormComponent implements OnInit {
 
   updateSeries(series: series): void {
     this.caseForm.value.seriesId = series.id;
-    console.log(series.id);
     this.srs = series;
     this.srs.id = series.id;
   }
 
   updateCaseSize(caseS: CaseSize): void {
-    console.log(caseS.value);
     this.caseForm.value.caseSizeId = caseS.value;
     this.caseSizeData.value = caseS.value;
     this.caseSizeData.name = "selected: " + caseS.name;

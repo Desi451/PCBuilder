@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
 import { SsdService } from "src/app/core/service/ssd.service";
 import { ssd } from "src/app/shared/models/ssd.model";
 
@@ -12,7 +13,8 @@ export class SsdListComponent implements OnInit {
   isDataLoaded = false;
   constructor(
     public _ssdService: SsdService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -23,7 +25,7 @@ export class SsdListComponent implements OnInit {
         this.cdr.detectChanges();
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching SSDs', 'Server Error');
       }
     );
   }

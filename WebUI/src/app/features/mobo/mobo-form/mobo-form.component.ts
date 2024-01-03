@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { CpuService } from "src/app/core/service/cpu.service";
 import { MoboService } from "src/app/core/service/mobo.service";
@@ -48,6 +49,7 @@ export class MoboFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private _cpuService: CpuService,
     private _moboService: MoboService,
+    private toastr: ToastrService,
     private _ramService: RamService
   ) {
     this.initForm();
@@ -78,7 +80,7 @@ export class MoboFormComponent implements OnInit {
         this.socketBrandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
 
@@ -87,7 +89,7 @@ export class MoboFormComponent implements OnInit {
         this.ramMemoryList = speeds;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching ram speeds', 'Server Error');
       }
     );
 
@@ -95,7 +97,6 @@ export class MoboFormComponent implements OnInit {
 
       this._moboService.getMobo(this.id).subscribe(
         (res: mobo) => {
-          console.log(res);
           this.res.id = res.id;
           this.res = res;
           this.moboForm.patchValue(res);
@@ -136,12 +137,9 @@ export class MoboFormComponent implements OnInit {
           );
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching sockets', 'Server Error');
         }
       );
-
-        console.log(this.ramMemoryListUserData);
-        console.log(this.res.memories);
         this.ramMemoryListUserData = this.res.memories;
     }
     else{
@@ -161,11 +159,11 @@ export class MoboFormComponent implements OnInit {
             data.memories = this.ramMemoryListUserData
             data.id = this.id;
             this._moboService.update(data).subscribe(() => {
-              console.log("yes");
+              this.toastr.success('Motherboard updated Successfully!', 'Motherboard updated');
               this._router.navigateByUrl(`mobo`);
             },
               (error) => {
-                console.log("no: " + error.value);
+                this.toastr.error('Error updating motherboard', 'Server Error');
             });
           }
           else{
@@ -175,21 +173,28 @@ export class MoboFormComponent implements OnInit {
             data.seriesId = this.srs.id;
             data.memories = this.ramMemoryListUserData
             this._moboService.add(data).subscribe(() => {
-              console.log("yes");
+              this.toastr.success('Motherboard added Successfully!', 'Motherboard added');
               this._router.navigateByUrl(`mobo`);
             },
               (error) => {
-                console.log("no: " + error.value);
+                this.toastr.error('Error adding motherboard', 'Server Error');
             });
           }
     }
     else{
-      console.log("form not valid");
+      this.toastr.error('Form not valid!');
     }
   }
 
   delete(id: number): void {
-
+    this._moboService.delete(id).subscribe(
+      () => {
+        this.toastr.success('Motherboard deleted Successfully!', 'Motherboard deleted');
+      },
+      (error) => {
+        this.toastr.error('Error deleting Motherboard', 'Server Error');
+      }
+    );
   }
 
   updateBrandSocket(brand: brand): void {
@@ -203,7 +208,7 @@ export class MoboFormComponent implements OnInit {
           this.socketList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching socket', 'Server Error');
         }
       );
     }
@@ -220,7 +225,7 @@ export class MoboFormComponent implements OnInit {
           this.seriesList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching series', 'Server Error');
         }
       );
       this._cpuService.getCpuSocketsByBrand(this.brnd.id).subscribe(
@@ -228,7 +233,7 @@ export class MoboFormComponent implements OnInit {
           this.socketList = res;
         },
         (error) => {
-          console.error('Error fetching brands:', error);
+          this.toastr.error('Error fetching sockets', 'Server Error');
         }
       );
     }
@@ -253,12 +258,9 @@ export class MoboFormComponent implements OnInit {
 
   updateRam(ramS: ramSpeed, tab: ramSpeed[]): void {
     const index = tab.findIndex(item => item.standard === ramS.standard && item.freq === ramS.freq);
-
     if (index !== -1) {
-      // Element już istnieje, usuń go
       tab.splice(index, 1);
     } else {
-      // Element nie istnieje, dodaj go
       tab.push(ramS);
     }
   }

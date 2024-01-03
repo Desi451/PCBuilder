@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/core/auth/auth.service";
 import { addUser } from "src/app/shared/models/user.model";
 
@@ -17,6 +18,7 @@ export class RegisterComponent {
     private _route: ActivatedRoute,
     private _router: Router,
     private formBuilder: FormBuilder,
+    private toastr: ToastrService,
     private _authService: AuthService
   ) {
     this.initForm();
@@ -39,14 +41,14 @@ export class RegisterComponent {
       const res = this.registrationForm.value as addUser;
       this._authService.register(res).subscribe(
         (res: boolean) => {
-          console.log(res);
+          this.toastr.success('Registred Successfully!', 'Registration');
         },
         (error) => {
-          console.error('Error fetching user:', error);
+          this.toastr.success('Error fetching user', 'Registration');
         }
       );
     }else{
-      console.log(this.registrationForm.value);
+      this.toastr.error('Data not valid');
     }
   }
 

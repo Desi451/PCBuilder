@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { CpuService } from "src/app/core/service/cpu.service";
 import { brand } from "src/app/shared/models/brand.model";
@@ -20,7 +21,8 @@ export class SocketFormComponent {
     private _route: ActivatedRoute,
     private _router: Router,
     public _brandService: BrandService,
-    private _cpuService: CpuService
+    private _cpuService: CpuService,
+    private toastr: ToastrService
   ) {
     this.id = this._route.snapshot.params['id'];
   }
@@ -32,7 +34,7 @@ export class SocketFormComponent {
         this.brandList = brands;
       },
       (error) => {
-        console.error('Error fetching brands:', error);
+        this.toastr.error('Error fetching brands', 'Server Error');
       }
     );
 
@@ -51,7 +53,7 @@ export class SocketFormComponent {
         }
       },
       (error) => {
-        console.error('Error fetching cpus:', error);
+        this.toastr.error('Error getting socket', 'Server Error');
       }
      )
     }
@@ -65,44 +67,44 @@ export class SocketFormComponent {
         this.res.id;
         this._cpuService.updateSocket(this.res).subscribe(
           () => {
+            this.toastr.success('Socket updated Successfully!', 'Socket updated');
             this._router.navigateByUrl(`cpu`);
           },
             (error) => {
-              console.log("no: " + error.value);
+              this.toastr.error('Error updating socket', 'Server Error');
           });
       }
       else{
         const res = this.res as addSocketCpu;
         this._cpuService.addSocket(res).subscribe(
           () => {
+            this.toastr.success('Socket added Successfully!', 'Socket added');
             this._router.navigateByUrl(`cpu`);
           },
             (error) => {
-              console.log("no: " + error.value);
+              this.toastr.error('Error adding socket', 'Server Error');
           });
       }
 
     }
     else {
-        console.error('form not valid');
+      this.toastr.error('Form not valid!');
     }
   }
 
 
   delete(id: number): void {
-    console.log("im in")
     this._cpuService.deleteSocket(id).subscribe(
       () => {
-        console.log('Socket deleted successfully');
+        this.toastr.success('Socket deleted Successfully!', 'Socket deleted');
       },
       (error) => {
-        console.error('Error deleting socket:', error);
+        this.toastr.error('Error deleting socket', 'Server Error');
       }
     );
   }
 
   updateBrand(brand: brand): void {
-
     this.brnd.id = brand.id;
     this.brnd.name = "selected: " + brand.name;
   }
