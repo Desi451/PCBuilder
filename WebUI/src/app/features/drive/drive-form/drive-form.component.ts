@@ -78,7 +78,6 @@ export class DriveFromComponent implements OnInit {
         (res: hdd) => {
           this.res.id = res.id;
           this.res = res;
-          debugger;
           this.hddForm.patchValue(res);
 
           this._seriesService.getSeriesById(res.seriesId).subscribe(

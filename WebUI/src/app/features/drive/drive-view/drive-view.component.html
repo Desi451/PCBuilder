@@ -1,1 +1,10 @@
-<p>drive-view works!</p>
+<h3 class="my-3">HDD drive <i class="bi bi-device-hdd"></i> </h3>
+
+  <div style="max-width: 450px" class="text-center rounded border border-2 border-primary mx-auto">
+    <h2 class="my-3"> {{res.name}} </h2>
+    <p>Model: {{res.model}} Socket: {{slot.name}}</p>
+    <p>Series: {{srs.name}}</p>
+    <p>Capacity: {{res.capacity}} Cache: {{res.cache}} RPM: {{res.rpm}}</p>
+    <p class="text-start ms-4" >Description:</p>
+    <p>{{res.description}}</p>
+  </div>

@@ -274,5 +274,3 @@ function getCaseSizeName(enumValue: number): string {
   const keys = Object.keys(CaseSizes).filter((x) => CaseSizes[x as keyof typeof CaseSizes] === enumValue);
   return keys[0];
 }
-
-

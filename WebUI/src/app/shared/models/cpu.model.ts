@@ -9,7 +9,7 @@ export class cpu {
   l2Cache: number;
   l3Cache: number;
   maxRam: number;
-  isApu: boolean;
+  isAPU: boolean;
   technology: number;
   tdp: number;
   description: string;
@@ -39,7 +39,7 @@ export type addCpu = {
   l2Cache: number,
   l3Cache: number,
   maxRam: number,
-  isApu: boolean,
+  isAPU: boolean,
   technology: number, //nm
   tdp: number,
   description: string,

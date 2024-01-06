@@ -4,7 +4,7 @@ export class psu {
   model: string;
   type: string;
   maxPower: number;
-  Fans: string;
+  fans: string;
   hasPFC: boolean;
   MainConnPins: string;
   pciExpressConn: string;
@@ -22,7 +22,7 @@ export type addPsu = {
   model: string,
   type: string,
   maxPower: number,
-  Fans: string,
+  fans: string,
   hasPFC: boolean,
   MainConnPins: string,
   pciExpressConn: string,

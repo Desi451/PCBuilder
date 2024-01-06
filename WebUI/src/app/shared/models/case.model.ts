@@ -25,10 +25,10 @@ export type addCase = {
 }
 
 export enum CaseSizes {
-  ATX = 0,
-  ITX = 1,
-  MicroATX = 2,
-  EATX = 3
+  EATX = 0,
+  ATX = 1,
+  ITXMicroATX = 2,
+  ITX = 3,
 }
 
 export interface CaseSize {

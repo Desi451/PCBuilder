@@ -77,7 +77,7 @@ export class CpuFormComponent implements OnInit {
           this.cpuForm.patchValue(res);
           this._seriesService.getSeriesById(res.seriesId).subscribe(
             (resSeries: series) => {
-              this.srs = res;
+              this.srs = resSeries;
               this.updateSeries(resSeries);
 
               if (resSeries.brandId) {
@@ -198,6 +198,6 @@ export class CpuFormComponent implements OnInit {
   }
 
   updateApu(res: boolean): void {
-    this.res.isApu = res;
+    this.res.isAPU = res;
   }
 }

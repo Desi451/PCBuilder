@@ -4,7 +4,6 @@ using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace Infrastructure.Repositories;
 
@@ -47,18 +46,6 @@ public class MotherboardRepository : IMotherBoardRepository
         }
     }
 
-    public async Task DeleteMemoryForMotherBoard(int id)
-    {
-        var res = await GetMemories(id);
-        //foreach(var item in res)
-        //{
-        //    if (item != null)
-        //    {
-        //        item.IsDeleted = true;
-        //    }
-        //} tutaj dac usuwanie?
-    }
-
     public async Task<Motherboard> GetById(int id)
     {
         var res = await _context.Motherboards.FirstOrDefaultAsync(x => x.Id == id);
@@ -80,7 +67,9 @@ public class MotherboardRepository : IMotherBoardRepository
 
     public async Task<List<Motherboard>> GetMotherboards()
     {
-        var res = await _context.Motherboards.ToListAsync();
+        var res = await _context.Motherboards
+            .Where(x  => x.IsDeleted == false)
+            .ToListAsync();
         return res;
     }
 

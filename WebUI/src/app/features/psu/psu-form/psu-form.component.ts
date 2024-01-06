@@ -74,7 +74,6 @@ export class PsuFormComponent implements OnInit {
         (res: psu) => {
           this.res.id = res.id;
           this.res = res;
-          debugger;
           this.psuForm.patchValue(res);
 
           this._seriesService.getSeriesById(res.seriesId).subscribe(

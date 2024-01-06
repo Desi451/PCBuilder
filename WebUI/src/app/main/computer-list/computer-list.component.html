@@ -1,1 +1,7 @@
-<p>computer-list works!</p>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="computerList"
+                 [columns]="['id','name', 'model']"
+                 [formLink]="'computer/form'"
+                 [viewLink]="'computer/view'"></app-uni-table>
+</ng-container>

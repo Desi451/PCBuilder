@@ -6,6 +6,7 @@ using Domain.Entities.Components.Drives;
 using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
+using Domain.Entities.Computer;
 using Domain.Entities.Slots;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,6 +43,42 @@ public class AppDbContext : DbContext
             .WithMany()
             .OnDelete(DeleteBehavior.NoAction);
 
+        modelBuilder.Entity<Computer>()
+            .HasOne(c => c.Case)
+            .WithMany()
+            .HasForeignKey(c => c.CaseId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Computer>()
+            .HasOne(c => c.Gpu)
+            .WithMany()
+            .HasForeignKey(c => c.GpuId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Computer>()
+            .HasOne(c => c.Mobo)
+            .WithMany()
+            .HasForeignKey(c => c.MotherboardId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Computer>()
+            .HasOne(c => c.RamMemory)
+            .WithMany()
+            .HasForeignKey(c => c.RamMemoryId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Computer>()
+            .HasOne(c => c.Psu)
+            .WithMany()
+            .HasForeignKey(c => c.PsuId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        modelBuilder.Entity<Computer>()
+            .HasOne(c => c.Cpu)
+            .WithMany()
+            .HasForeignKey(c => c.CpuId)
+            .OnDelete(DeleteBehavior.NoAction);
+
         base.OnModelCreating(modelBuilder);            
     }
 
@@ -70,4 +107,9 @@ public class AppDbContext : DbContext
     public DbSet <MotheboardMemory> MotherboardMemories { get; set; }
     public DbSet <Hdd> Hdds { get; set; }
     public DbSet <Ssd> Ssds { get; set; }
+
+
+    public DbSet <Computer> Computers { get; set; }
+    public DbSet <ComputerHdds> ComputerHdds { get; set; }
+    public DbSet <ComputerSsds> ComputerSsds { get; set; }
 }

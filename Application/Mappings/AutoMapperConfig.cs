@@ -8,6 +8,7 @@ using Application.DTO.Components.Motherboard;
 using Application.DTO.Components.PowerSupllyDTOs;
 using Application.DTO.Components.RAM;
 using Application.DTO.Components.Slot;
+using Application.DTO.Computer;
 using Application.DTO.SeriesDTOs;
 using Application.DTO.UserDTOs;
 using AutoMapper;
@@ -19,6 +20,7 @@ using Domain.Entities.Components.Drives;
 using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
+using Domain.Entities.Computer;
 using Domain.Entities.Slots;
 
 namespace Application.Mappings;
@@ -106,6 +108,12 @@ public static class AutoMapperConfig
             cfg.CreateMap<AddHddDTO, Hdd>();
             #endregion
 
+            cfg.CreateMap<Computer, ComputerDTO>().ForMember(dest => dest.Ssds, opt => opt.Ignore()).ForMember(dest => dest.Drives, opt => opt.Ignore());
+            cfg.CreateMap<ComputerDTO, Computer>().ForMember(dest => dest.Ssds, opt => opt.Ignore()).ForMember(dest => dest.Drives, opt => opt.Ignore());
+            cfg.CreateMap<AddComputerDTO,Computer>().ForMember(dest => dest.Ssds, opt => opt.Ignore()).ForMember(dest => dest.Drives, opt => opt.Ignore());
+            cfg.CreateMap<AddComputerDTO, ComputerDTO>().ForMember(dest => dest.Ssds, opt => opt.Ignore()).ForMember(dest => dest.Drives, opt => opt.Ignore());
+            cfg.CreateMap<ComputerFormDTO, Computer>();
+            cfg.CreateMap<Computer, ComputerFormDTO>();
 
 
         }).CreateMapper();

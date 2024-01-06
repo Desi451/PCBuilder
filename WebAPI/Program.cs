@@ -10,6 +10,7 @@ using Infrastructure.Common;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Tls;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,10 @@ builder.Services.AddScoped<ISeriesService, SeriesService>();
 builder.Services.AddScoped<ISeriesRepository, SeriesRepository>();
 builder.Services.AddScoped<ISlotRepository, SlotRepository>();
 builder.Services.AddScoped<ISlotService, SlotService>();
+
+//Computer
+builder.Services.AddScoped<IComputerService, ComputerService>();
+builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
 
 #region Components
 

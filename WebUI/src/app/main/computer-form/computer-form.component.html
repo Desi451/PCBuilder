@@ -1,1 +1,391 @@
-<p>computer-form works!</p>
+<h2 style="max-width: 500px;" class="text-center mx-auto my-2 p-2 rounded border border-2 border-primary">BUILD YOUR OWN PC <i class="bi bi-pc-display"></i></h2>
+
+<div class="row">
+    <button
+    type="button"
+    class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+    (click)="BrandCollapsed = !BrandCollapsed"
+    [attr.aria-expanded]="!BrandCollapsed"
+    aria-controls="collapseExample">
+    Select your CPU brand
+    </button>
+
+    <div #collapse="ngbCollapse" [(ngbCollapse)]="BrandCollapsed">
+      <div style="max-width: 600px;" class="card mx-auto">
+        <div class="card-body">
+
+          Aviable brand's:
+          <div ngbDropdown
+          class="d-inline-block">
+       <button type="button"
+               class="btn btn-outline-primary"
+               id="dropdownBrand"
+               ngbDropdownToggle>
+         Brand list
+       </button>
+       <div ngbDropdownMenu
+            aria-labelledby="dropdownBasic1">
+         <button type="button"
+                 *ngFor="let item of brandList"
+                 (click)="updateBrand(item)"
+                 ngbDropdownItem>
+           {{ item.name }}
+         </button>
+       </div>
+     </div>
+     <div class="mx-3 my-2">
+       <p>{{ brnd.name }}</p>
+     </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="row">
+  <button
+  type="button"
+  class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+  (click)="CpuCollapsed = !CpuCollapsed"
+  [attr.aria-expanded]="!CpuCollapsed"
+  aria-controls="collapseExample">
+  Select CPU
+  </button>
+
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="CpuCollapsed">
+    <div style="max-width: 600px;" class="card mx-auto">
+      <div class="card-body">
+        Aviable CPU's:
+
+        <div ngbDropdown
+        class="d-inline-block">
+          <button type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBrand"
+                  ngbDropdownToggle>
+            Cpu list
+          </button>
+          <div ngbDropdownMenu
+                aria-labelledby="dropdownBasic1">
+            <button type="button"
+                    *ngFor="let item of cpuList"
+                    (click)="updateCpu(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="mx-3 my-2">
+          <p>{{ cpu.name }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <button
+  type="button"
+  class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+  (click)="MotherBoardCollapsed = !MotherBoardCollapsed"
+  [attr.aria-expanded]="!MotherBoardCollapsed"
+  aria-controls="collapseExample">
+  Select Motherboard
+  </button>
+
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="MotherBoardCollapsed">
+    <div style="max-width: 600px;" class="card mx-auto">
+      <div class="card-body">
+
+        Aviable Motherboard's:
+        <div ngbDropdown
+        class="d-inline-block">
+          <button type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBrand"
+                  ngbDropdownToggle>
+            Mobo List
+          </button>
+          <div ngbDropdownMenu
+                aria-labelledby="dropdownBasic1">
+            <button type="button"
+                    *ngFor="let item of moboList"
+                    (click)="updateMotherboard(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="mx-3 my-2">
+          <p>{{ mobo.name }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <button
+  type="button"
+  class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+  (click)="RamMemoryCollapsed = !RamMemoryCollapsed"
+  [attr.aria-expanded]="!RamMemoryCollapsed"
+  aria-controls="collapseExample">
+  Select RAM memory
+  </button>
+
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="RamMemoryCollapsed">
+    <div style="max-width: 600px;" class="card mx-auto">
+      <div class="card-body">
+
+        Aviable Rams:
+
+        <div ngbDropdown
+        class="d-inline-block">
+          <button type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBrand"
+                  ngbDropdownToggle>
+            Ram list
+          </button>
+          <div ngbDropdownMenu
+                aria-labelledby="dropdownBasic1">
+            <button type="button"
+                    *ngFor="let item of ramList"
+                    (click)="updateRam(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="mx-3 my-2">
+          <p>{{ ram.name }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <button
+  type="button"
+  class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+  (click)="GpuCollapsed = !GpuCollapsed"
+  [attr.aria-expanded]="!GpuCollapsed"
+  aria-controls="collapseExample">
+  Select GPU
+  </button>
+
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="GpuCollapsed">
+    <div style="max-width: 600px;" class="card mx-auto">
+      <div class="card-body">
+
+        Aviable Gpu's:
+
+        <div ngbDropdown
+        class="d-inline-block">
+          <button type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBrand"
+                  ngbDropdownToggle>
+            GPU list
+          </button>
+          <div ngbDropdownMenu
+                aria-labelledby="dropdownBasic1">
+            <button type="button"
+                    *ngFor="let item of gpuList"
+                    (click)="updateGpu(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="mx-3 my-2">
+          <p>{{ gpu.name }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <button
+  type="button"
+  class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+  (click)="DriveCollapsed = !DriveCollapsed"
+  [attr.aria-expanded]="!DriveCollapsed"
+  aria-controls="collapseExample">
+  Select Drives
+  </button>
+
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="DriveCollapsed">
+    <div style="max-width: 600px;" class="card mx-auto">
+      <div class="card-body">
+
+        <div class="row">
+
+          <div class="col">
+
+            Aviable HDD's:
+
+        <div ngbDropdown
+        class="d-inline-block">
+          <button type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBrand"
+                  ngbDropdownToggle>
+            HDD list
+          </button>
+          <div ngbDropdownMenu
+                aria-labelledby="dropdownBasic1">
+            <button type="button"
+                    *ngFor="let item of hddList"
+                    (click)="updateHdd(item, selectedHdd)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="mx-3 my-2">
+          <p *ngFor="let item of selectedHdd">{{ item.name }}<i class="bi bi-x-lg" (click)="removeHdd(item, selectedHdd)"></i></p>
+        </div>
+
+          </div>
+
+          <div class="col">
+
+            Aviable SSD's:
+
+            <div ngbDropdown
+            class="d-inline-block">
+              <button type="button"
+                      class="btn btn-outline-primary"
+                      id="dropdownBrand"
+                      ngbDropdownToggle>
+                SSD list
+              </button>
+              <div ngbDropdownMenu
+                    aria-labelledby="dropdownBasic1">
+                <button type="button"
+                        *ngFor="let item of ssdList"
+                        (click)="updateSsd(item, selectedSsd)"
+                        ngbDropdownItem>
+                  {{ item.name }}
+                </button>
+              </div>
+            </div>
+            <div class="mx-3 my-2">
+              <p *ngFor="let item of selectedSsd">{{ item.name }} <i class="bi bi-x-lg" (click)="removeSsd(item, selectedSsd)"></i></p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <button
+  type="button"
+  class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+  (click)="PsuCollapsed = !PsuCollapsed"
+  [attr.aria-expanded]="!PsuCollapsed"
+  aria-controls="collapseExample">
+  Select Power Supply
+  </button>
+
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="PsuCollapsed">
+    <div style="max-width: 600px;" class="card mx-auto">
+      <div class="card-body">
+
+        Aviable PSU's:
+
+        <div ngbDropdown
+        class="d-inline-block">
+          <button type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBrand"
+                  ngbDropdownToggle>
+            Psu list
+          </button>
+          <div ngbDropdownMenu
+                aria-labelledby="dropdownBasic1">
+            <button type="button"
+                    *ngFor="let item of psuList"
+                    (click)="updatePsu(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="mx-3 my-2">
+          <p>{{ psu.name }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <button
+  type="button"
+  class="btn btn-outline-primary ms-2 my-2 col-sm-3"
+  (click)="CaseCollapsed = !CaseCollapsed"
+  [attr.aria-expanded]="!CaseCollapsed"
+  aria-controls="collapseExample">
+  Select Case
+  </button>
+
+  <div #collapse="ngbCollapse" [(ngbCollapse)]="CaseCollapsed">
+    <div style="max-width: 600px;" class="card mx-auto">
+      <div class="card-body">
+
+        Aviable Case's:
+
+        <div ngbDropdown
+        class="d-inline-block">
+          <button type="button"
+                  class="btn btn-outline-primary"
+                  id="dropdownBrand"
+                  ngbDropdownToggle>
+            Case list
+          </button>
+          <div ngbDropdownMenu
+                aria-labelledby="dropdownBasic1">
+            <button type="button"
+                    *ngFor="let item of caseList"
+                    (click)="updateCase(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+        </div>
+        <div class="mx-3 my-2">
+          <p>{{ case.name }}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<form #myForm="ngForm">
+  <div class="form-group">
+    <label class="my-1" for="brandName">Name your configuration</label>
+    <input style="max-width: 400px;" type="text" class="form-control"
+      id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Computer name">
+  </div>
+
+  <button (click)="executeForm()" type="submit"
+    class="btn btn-dark my-2 border border-primary">Submit</button>
+  <button *ngIf="res.id != null" (click)="delete(res.id)"
+    class="btn btn-danger m-2 border border-secondary">Delete</button>
+</form>

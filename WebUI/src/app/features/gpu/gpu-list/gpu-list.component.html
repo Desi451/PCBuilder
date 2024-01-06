@@ -1,8 +1,8 @@
-<p>gpu-list works!</p>
+<H3> Graphic Cards </H3>
 
 <ng-container *ngIf="isDataLoaded">
   <app-uni-table [data]="cpuList"
-                 [columns]="[ 'name', 'memorySize','memoryType']"
+                 [columns]="[ 'memorySize', 'name','memoryType']"
                  [formLink]="'gpu/form'"
                  [viewLink]="'gpu/view'"></app-uni-table>
 </ng-container>
