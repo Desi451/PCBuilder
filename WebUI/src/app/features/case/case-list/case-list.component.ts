@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { CaseService } from "src/app/core/service/case.service";
-import { casePc } from "src/app/shared/models/case.model";
+import { casePc, CaseSizes } from "src/app/shared/models/case.model";
 
 @Component({
   selector: 'app-case-list',
@@ -19,8 +19,14 @@ export class CaseListComponent implements OnInit {
 
   ngOnInit(): void {
     this._caseService.getCases().subscribe(
-      (brands: casePc[]) => {
-        this.caseList = brands;
+      (cases: casePc[]) => {
+        this.caseList = cases;
+        this.caseList = cases.map((caseItem) => {
+          return {
+            ...caseItem,
+            caseSize: getCaseSizeName(caseItem.caseSizeId),
+          };
+        });
         this.isDataLoaded = true;
         this.cdr.detectChanges();
       },
@@ -29,4 +35,9 @@ export class CaseListComponent implements OnInit {
       }
     );
   }
+}
+
+function getCaseSizeName(enumValue: number): string {
+  const keys = Object.keys(CaseSizes).filter((x) => CaseSizes[x as keyof typeof CaseSizes] === enumValue);
+  return keys[0];
 }

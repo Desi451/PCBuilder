@@ -1,6 +1,4 @@
-﻿using Application.DTO.Components.Case;
-using Application.DTO.Components.Case_Size;
-using Application.DTO.Components.CPU;
+﻿using Application.DTO.Components.CPU;
 using Application.Interfaces.Components;
 using Microsoft.AspNetCore.Mvc;
 

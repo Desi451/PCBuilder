@@ -25,10 +25,14 @@ public class AppDbContext : DbContext
             .HasOne(u => u.Rank);
 
         modelBuilder.Entity<Case>()
-            .HasOne(b => b.Series);
+            .HasOne(b => b.Series)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Series>()
-            .HasOne(b => b.Brand);
+            .HasOne(b => b.Brand)
+            .WithMany()
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<SocketCPU>()
             .HasOne(b => b.Brand)

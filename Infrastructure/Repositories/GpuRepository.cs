@@ -19,7 +19,7 @@ public class GpuRepository : IGPURepository
     public async Task Add(GPU gpu)
     {
         gpu.IsDeleted = false;
-        gpu.CreatedBy = 1;
+        gpu.Created = DateTime.Now;
         await _context.AddAsync(gpu);
     }
 
@@ -46,5 +46,6 @@ public class GpuRepository : IGPURepository
     {
         GPU oldBox = await GetById(gpu.Id);
         Helper.CopyProperties(gpu, oldBox);
+        oldBox.LastModified = DateTime.Now;
     }
 }

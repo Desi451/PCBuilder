@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { brand } from "src/app/shared/models/brand.model";
 import { casePc } from "src/app/shared/models/case.model";
-import { addComputer, caseRequest, computer, computerForm } from "src/app/shared/models/computer.model";
+import { addComputer, caseRequest, computer, computerForm, computerView } from "src/app/shared/models/computer.model";
 import { cpu } from "src/app/shared/models/cpu.model";
 import { mobo } from "src/app/shared/models/mobo.model";
 import { psu } from "src/app/shared/models/psu.model";
@@ -27,6 +27,15 @@ export class ComputerService {
   getFullData(id: number): Observable<computerForm> {
     return this.http.get<computerForm>(`${environment.apiUrl}Computer/fulldata/` + id);
   }
+
+  getViews(): Observable<computerView[]> {
+    return this.http.get<computerView[]>(`${environment.apiUrl}Computer/views`);
+  }
+
+  getViewsByUser(id: number): Observable<computerView[]> {
+    return this.http.get<computerView[]>(`${environment.apiUrl}Computer/views/` + id);
+  }
+
 
   add(brand: addComputer): Observable<addComputer> {
     return this.http.post<addComputer>(`${environment.apiUrl}Computer/add`, brand);

@@ -1,9 +1,9 @@
 
-<H3> Power supplies </H3>
+<H3> Power supplies <i class="bi bi-power"></i></H3>
 
 <ng-container *ngIf="isDataLoaded">
   <app-uni-table [data]="list"
-                 [columns]="['id', 'name', 'model', 'maxPower']"
+                 [columns]="['power', 'name', 'model','standard' ]"
                  [formLink]="'psu/form'"
                  [viewLink]="'psu/view'"></app-uni-table>
 </ng-container>

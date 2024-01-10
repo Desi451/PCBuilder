@@ -9,6 +9,20 @@ export class casePc {
   description: string;
 
   caseSizeId: number;
+  caseSize: string;
+  seriesId: number;
+}
+
+export class casePcView {
+  id: number;
+  name: string;
+  model: string;
+  height: number;
+  width: number;
+  deepth: number;
+  description: string;
+
+  caseSizeId: CaseSizes;
   seriesId: number;
 }
 

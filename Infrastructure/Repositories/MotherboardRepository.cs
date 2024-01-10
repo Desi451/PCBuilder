@@ -19,7 +19,7 @@ public class MotherboardRepository : IMotherBoardRepository
     public async Task Add(Motherboard mobo)
     {
         mobo.IsDeleted = false;
-        mobo.CreatedBy = 1;
+        mobo.Created = DateTime.Now;
         await _context.AddAsync(mobo);
     }
 
@@ -78,7 +78,7 @@ public class MotherboardRepository : IMotherBoardRepository
         var res = await GetById(mobo.Id);
 
         Helper.CopyProperties(mobo, res);
-
+        res.LastModified = DateTime.Now;
         var oldRams = await _context.MotherboardMemories
             .Where(x => x.MotherBoardId == mobo.Id)
             .Select(x => x.MemoryId)

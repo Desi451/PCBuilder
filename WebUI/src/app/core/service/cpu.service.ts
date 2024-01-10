@@ -19,7 +19,7 @@ export class CpuService {
   }
 
   add(res: addCpu): Observable<addCpu> {
-    return this.http.post<addCpu>(`${environment.apiUrl}Cpu/add`, res);
+    return this.http.post<any>(`${environment.apiUrl}Cpu/add`, res);
   }
 
   update(res: cpu): Observable<cpu> {

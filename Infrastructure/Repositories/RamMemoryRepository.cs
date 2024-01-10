@@ -18,14 +18,13 @@ public class RamMemoryRepository : IRamRepository
     public async Task Add(RamMemories ram)
     {
         ram.IsDeleted = false;
-        ram.CreatedBy = 1;
+        ram.Created = DateTime.Now;
         await _context.AddAsync(ram);
     }
 
     public async Task AddSpeed(RamSpeed ram)
     {
         ram.IsDeleted = false;
-        ram.CreatedBy = 1;
         await _context.AddAsync(ram);
     }
 
@@ -73,6 +72,7 @@ public class RamMemoryRepository : IRamRepository
     {
         var oldRam = await _context.RAMs.Where(r => r.Id == ram.Id).FirstOrDefaultAsync();
         Helper.CopyProperties(ram, oldRam);
+        oldRam.LastModified = DateTime.Now;
     }
 
     public async Task UpdateSpeed(RamSpeed ram)

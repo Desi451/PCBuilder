@@ -1,13 +1,13 @@
-<h3 class="my-3">Power Supply <i class="bi bi-power"></i> </h3>
+<h3 class="my-3">Power supply <i class="bi bi-power"></i> </h3>
 
-  <div style="max-width: 550px" class="text-center rounded border border-2 border-primary mx-auto my-2">
+  <div style="max-width: 750px" class="text-center rounded border border-2 border-primary mx-auto my-2 p-2">
     <h2 class="my-3"> {{res.name}} </h2>
     <p>Brand: {{brnd.name}} Model: {{res.model}}</p>
-    <p>Series: {{srs.name}} Type: {{res.type}}</p>
-    <p>Power: {{res.maxPower}}W Voltage: {{res.voltage}}V</p>
-    <p *ngIf="res.hasPFC" >PFC: Yes, Pins: {{res.MainConnPins}} </p>
-    <p *ngIf="!res.hasPFC" >PFC: No, Pins: {{res.MainConnPins}} </p>
-    <p> PCI-E conn: {{res.pciExpressConn}} Frequency: {{res.freq}}MHz</p>
+    <p>Series: {{srs.name}} Type: {{res.standard}}</p>
+    <p>Power: {{res.power}}W  Min Voltage: {{res.voltage}}V</p>
+    <p *ngIf="res.hasPFC" >PFC: Yes, Pins: {{res.mainConnPins}} </p>
+    <p *ngIf="!res.hasPFC" >PFC: No, Pins: {{res.mainConnPins}} </p>
+    <p> PCI-E conn: {{res.pciExpressConn}}</p>
     <p>Connectors: {{res.connectors}}</p>
     <p>Dimensions: {{res.dimensions}}cm</p>
     <p>Fans: {{res.fans}}</p>

@@ -115,6 +115,7 @@ export class CpuFormComponent implements OnInit {
         updateForm.socketCpuId = this.socket.id;
         updateForm.id = this.id;
         updateForm.seriesId = this.srs.id;
+        console.log(updateForm);
         this._cpuService.update(updateForm).subscribe(() => {
           this.toastr.success('Cpu Updated Successfully!', 'Cpu Updated');
           this._router.navigateByUrl(`cpu`);
@@ -123,8 +124,8 @@ export class CpuFormComponent implements OnInit {
             this.toastr.error('Error updating CPU', 'Server Error');
           });
       } else {
-        this.cpuForm.value.isApu = false;
         let addForm = this.cpuForm.value as addCpu;
+        console.log(addForm);
         addForm.socketCpuId = this.socket.id;
         addForm.seriesId = this.srs.id;
 

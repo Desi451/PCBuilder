@@ -7,21 +7,10 @@ using Application.DTO.Components.RAM;
 using Application.DTO.Computer;
 using Application.Interfaces;
 using AutoMapper;
-using Domain.Entities;
-using Domain.Entities.Components.Case;
-using Domain.Entities.Components.CPU;
 using Domain.Entities.Components.Drives;
-using Domain.Entities.Components.Motherboard;
-using Domain.Entities.Components.RamMemory;
 using Domain.Entities.Computer;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Service;
 
@@ -52,7 +41,7 @@ public class ComputerService : IComputerService
         var res = _mapper.Map<Computer>(pc);
         var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
         var ssds = _mapper.Map<List<Ssd>>(pc.Ssds);
-        await _repository.Add(res,hdds,ssds);
+        await _repository.Add(res, hdds, ssds);
         await _saveData.Save();
     }
 
@@ -81,7 +70,7 @@ public class ComputerService : IComputerService
             var res = _mapper.Map<Computer>(pc);
             var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
             var ssds = _mapper.Map<List<Ssd>>(pc.Ssds);
-            await _repository.Update(res,hdds,ssds);
+            await _repository.Update(res, hdds, ssds);
             await _saveData.Save();
         }
         catch
@@ -120,9 +109,9 @@ public class ComputerService : IComputerService
         return _mapper.Map<List<PowerSupplyDTO>>(res);
     }
 
-    public async Task<List<CaseDTO>> GetCasesByStandard(int caseSizeId, int gpuLength)
+    public async Task<List<CaseDTO>> GetCasesByStandard(int caseSizeId, double gpuLength)
     {
-        var res = await _repository.GetCasesBySize(caseSizeId,gpuLength);
+        var res = await _repository.GetCasesBySize(caseSizeId, gpuLength);
         return _mapper.Map<List<CaseDTO>>(res);
     }
 
@@ -134,5 +123,39 @@ public class ComputerService : IComputerService
         var cpuBrand = await _brandRepository.GetById(series.BrandId);
         res.cpuBrand = _mapper.Map<BrandDTO>(cpuBrand);
         return _mapper.Map<ComputerFormDTO>(res);
+    }
+
+    public async Task<List<ComputerViewDTO>> GetComputersView()
+    {
+        var pc = await _repository.GetComputersView();
+        List<ComputerViewDTO> res= new List<ComputerViewDTO>();
+        foreach (var item in pc)
+        {
+            ComputerViewDTO i = new ComputerViewDTO();
+            i.Id = item.Id;
+            i.Cpu = item.Cpu.Name;
+            i.Name = item.Name;
+            i.Ram = item.RamMemory.Capacity.ToString() + " GB";
+            res.Add(i);
+        }
+
+        return res;
+    }
+
+    public async Task<List<ComputerViewDTO>> GetComputersViewByUser(int id)
+    {
+        var pc = await _repository.GetComputersViewByUser(id);
+        List<ComputerViewDTO> res = new List<ComputerViewDTO>();
+        foreach (var item in pc)
+        {
+            ComputerViewDTO i = new ComputerViewDTO();
+            i.Id = item.Id;
+            i.Cpu = item.Cpu.Name;
+            i.Name = item.Name;
+            i.Ram = item.RamMemory.Capacity.ToString() + " GB";
+            res.Add(i);
+        }
+
+        return res;
     }
 }

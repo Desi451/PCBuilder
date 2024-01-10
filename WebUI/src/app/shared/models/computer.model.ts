@@ -10,6 +10,7 @@ import { ssd } from "./ssd.model";
 
 export class computer {
   id: number;
+  userId: number;
   name: string;
   isCompleted: boolean;
   caseId: number;
@@ -26,6 +27,7 @@ export class computer {
 export class computerForm {
 
   id: number;
+  userId: number;
   name: string;
   isCompleted: boolean;
   case: casePc;
@@ -43,6 +45,7 @@ export class computerForm {
 
 export type addComputer = {
   name: string,
+  userId: number;
   model: string,
   isCompleted: boolean,
   caseId: number,
@@ -58,4 +61,11 @@ export type addComputer = {
 export type caseRequest = {
   caseId: number,
   gpuLenght: number,
+}
+
+export type computerView = {
+  id: number;
+  name: string,
+  cpu: string,
+  ram: string
 }

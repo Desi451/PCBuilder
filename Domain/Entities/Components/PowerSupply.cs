@@ -7,8 +7,8 @@ public class PowerSupply : AuditableEntity
     public required int Id { get; set; }
     public required string Name { get; set; }
     public required string Model { get; set; }
-    public required string type { get; set; }
-    public required int maxPower { get; set; }
+    public required string standard { get; set; }
+    public required int Power { get; set; }
     public required string Fans { get; set; }
     public required bool HasPFC { get; set; }
     public required string MainConnPins { get; set; }

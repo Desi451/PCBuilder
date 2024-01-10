@@ -18,14 +18,13 @@ public class CPURepository : ICPURepository
     public async Task Add(CPU Cpu)
     {
         Cpu.IsDeleted = false;
-        Cpu.CreatedBy = 1;
+        Cpu.Created = DateTime.Now;
         await _context.AddAsync(Cpu);
     }
 
     public async Task AddSocket(SocketCPU socket)
     {
         socket.IsDeleted = false;
-        socket.CreatedBy = 1;
         await _context.AddAsync(socket);
     }
 
@@ -82,6 +81,7 @@ public class CPURepository : ICPURepository
         var oldCpu = await _context.CPUs
             .FirstOrDefaultAsync(r => r.Id == Cpu.Id);
         Helper.CopyProperties(Cpu, oldCpu);
+        oldCpu.LastModified = DateTime.Now;
     }
 
     public async Task UpdateSocket(SocketCPU socket)

@@ -3,11 +3,11 @@
 
 <ng-container *ngIf="isDataLoaded && isSocketLoaded">
   <app-uni-table [data]="cpuList"
-                 [columns]="['id', 'name', 'model']"
+                 [columns]="['cores', 'name', 'model']"
                  [formLink]="'cpu/form'"
                  [viewLink]="'cpu/view'"></app-uni-table>
 
-  <app-uni-table [data]="socketList"
+<app-uni-table   [data]="socketList"
                  [columns]="['id', 'name']"
                  [formLink]="'cpu/formsocket'"></app-uni-table>
 </ng-container>

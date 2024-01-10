@@ -1,2 +1,21 @@
-<p>edit-profile works!</p>
+<h3 class="m-2">Profile Edit</h3>
 
+<form [formGroup]="userForm" (ngSubmit)="executeForm()" style="max-width: 450px" class="mx-auto py-4 my-5 rounded border border-2 border-primary">
+  <!-- First row -->
+
+  <div class="form-outline mb-4 mx-4 my-2">
+    <input type="text" id="login" class="form-control my-3" formControlName="login"  placeholder="login"/>
+    <input type="text" id="email" class="form-control my-3" formControlName="email"  placeholder="email"/>
+    <input type="password" id="password" class="form-control my-3" formControlName="password"  placeholder="new password password min 8 characters"/>
+    <input type="password" id="passwordRepeat" class="form-control my-3" formControlName="passwordRepeat"  placeholder="repeat password"/>
+  </div>
+
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block ms-4">Submit</button>
+</form>
+<h3 class="my-3">Your configurations <i class="bi bi-pc-display"></i> </h3>
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="computerList"
+                 [columns]="['ram','cpu', 'name']"
+                 [formLink]="'computer/form'"
+                 [viewLink]="'computer/view'"></app-uni-table>
+</ng-container>

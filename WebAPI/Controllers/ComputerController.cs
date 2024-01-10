@@ -29,6 +29,20 @@ public class ComputerController : ControllerBase
         return Ok(res);
     }
 
+    [HttpGet("views")]
+    public async Task<IActionResult> GetViews()
+    {
+        var res = await _service.GetComputersView();
+        return Ok(res);
+    }
+
+    [HttpGet("views/{id}")]
+    public async Task<IActionResult> GetViewsByUser(int id)
+    {
+        var res = await _service.GetComputersViewByUser(id);
+        return Ok(res);
+    }
+
     [HttpGet("fulldata/{id}")]
     public async Task<IActionResult> GetFullData(int id)
     {

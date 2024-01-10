@@ -1,13 +1,12 @@
-﻿
-using Application.DTO.Components.Drive;
+﻿using Application.DTO.Components.Drive;
 
 namespace Application.DTO.Computer;
 
 public class ComputerDTO
 {
     public required int Id { get; set; }
+    public required int UserId { get; set; }
     public required string Name { get; set; }
-    public bool isCompleted { get; set; }
 
     public required int CaseId { get; set; }
     public required int CpuId { get; set; }

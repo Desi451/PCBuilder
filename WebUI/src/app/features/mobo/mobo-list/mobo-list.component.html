@@ -1,9 +1,9 @@
 
-<H3> Motherboards </H3>
+<H3> Motherboards <i class="bi bi-motherboard"></i></H3>
 
 <ng-container *ngIf="isDataLoaded">
   <app-uni-table [data]="list"
-                 [columns]="[ 'name', 'model','chipset']"
+                 [columns]="['chipset','name', 'model']"
                  [formLink]="'mobo/form'"
                  [viewLink]="'mobo/view'"></app-uni-table>
 </ng-container>

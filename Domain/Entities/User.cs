@@ -8,8 +8,7 @@ public class User : AuditableEntity
     public string Login { get; set; }
     public string Email { get; set; }
     public string Password { get; set; }
-    public string PsswordSalt { get; set; }
-    public bool IsEmailConfirmed { get; set; }
+    //public bool IsEmailConfirmed { get; set; }
     public int RankId { get; set; }
     public Rank Rank { get; set; }
 }

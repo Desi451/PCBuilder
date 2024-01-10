@@ -26,8 +26,7 @@ public class ComputerRepository : IComputerRepository
     public async Task Add(Computer computer, List<Hdd> Hdds, List<Ssd> Ssds)
     {
         computer.IsDeleted = false;
-        computer.CreatedBy = 1;
-
+        computer.Created = DateTime.Now;
         _context.Add(computer);
 
         await _context.SaveChangesAsync();
@@ -70,6 +69,29 @@ public class ComputerRepository : IComputerRepository
         return res;
     }
 
+    public async Task<List<Computer>> GetComputersView()
+    {
+        var computer = await _context.Computers
+        .Include(c => c.Case)
+        .Include(c => c.Cpu)
+        .Include(c => c.RamMemory)
+        .ToListAsync();
+
+        return computer;
+    }
+
+    public async Task<List<Computer>> GetComputersViewByUser(int id)
+    {
+        var computer = await _context.Computers
+            .Include(c => c.Case)
+            .Include(c => c.Cpu)
+            .Include(c => c.RamMemory)
+            .Where(x => x.UserId == id)
+            .ToListAsync();
+
+        return computer;
+    }
+
     public async Task<Computer> GetFullDataById(int id)
     {
         var computer = await _context.Computers
@@ -108,7 +130,7 @@ public class ComputerRepository : IComputerRepository
     public async Task<List<Computer>> GetComputers()
     {
         var res = await _context.Computers
-            .Where(x => x.IsDeleted == false && x.isCompleted == true)
+            .Where(x => x.IsDeleted == false)
             .ToListAsync();
         return res;
     }
@@ -118,7 +140,7 @@ public class ComputerRepository : IComputerRepository
         var res = await GetById(computer.Id);
 
         Helper.CopyProperties(computer, res);
-
+        res.LastModified = DateTime.Now;
         var oldHdds = await _context.ComputerHdds
             .Where(x => x.ComputerId == computer.Id)
             .Select(x => x.HddId)
@@ -145,8 +167,6 @@ public class ComputerRepository : IComputerRepository
 
         _context.ComputerHdds.RemoveRange(hddsToRemove);
 
-        ////////////////////////////////////
-
         var oldSsds = await _context.ComputerSsds
        .Where(x => x.ComputerId == computer.Id)
        .Select(x => x.SsdId)
@@ -172,7 +192,7 @@ public class ComputerRepository : IComputerRepository
             .ToListAsync();
 
         _context.ComputerSsds.RemoveRange(memoriesToRemove);
-
+        
         await _context.SaveChangesAsync();
     }
 
@@ -255,11 +275,13 @@ public class ComputerRepository : IComputerRepository
 
     public async Task<List<PowerSupply>> GetPsusByWattage(int watt)
     {
-        return await _context.PSUs.Where(x => x.maxPower >= watt).ToListAsync();
+        return await _context.PSUs.Where(x => x.Power >= watt).ToListAsync();
     }
 
-    public async Task<List<Case>> GetCasesBySize(int caseSizeId, int gpuLength)
+    public async Task<List<Case>> GetCasesBySize(int caseSizeId, double gpuLength)
     {
-        return await _context.Cases.Where(x => x.CaseSizeId <= caseSizeId && gpuLength + 2 < x.Deepth).ToListAsync();
+        return await _context.Cases.Where(x => x.CaseSizeId <= caseSizeId && (gpuLength + 2)*10 < x.Width).ToListAsync();
     }
+
+
 }

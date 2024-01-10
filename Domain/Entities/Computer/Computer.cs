@@ -6,19 +6,14 @@ using Domain.Entities.Components.Drives;
 using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities.Computer;
 
 public class Computer : AuditableEntity
 {
     public required int Id { get; set; }
+    public required int UserId { get; set; }
     public required string Name { get; set; }
-    public bool isCompleted { get; set; }
 
     public required int CaseId { get; set; }
     public required int CpuId { get; set; }
@@ -28,6 +23,7 @@ public class Computer : AuditableEntity
     public int GpuId { get; set; }
 
 
+    public User User { get; set; }
     public Case Case { get; set; }
     public CPU Cpu { get; set; }
     public Motherboard Mobo { get; set; }
@@ -37,5 +33,4 @@ public class Computer : AuditableEntity
 
     public List<Hdd> Drives { get; set; }
     public List<Ssd> Ssds { get; set; }
-
 }

@@ -69,6 +69,7 @@ export class MoboFormComponent implements OnInit {
       maxMemory: [null, [Validators.required, Validators.min(1)]],
       m2Slots: [null, [Validators.required, Validators.min(1)]],
       sataSlots: [null, [Validators.required, Validators.min(1)]],
+      ramSlots: [null, [Validators.required, Validators.min(1)]],
       description: ['Default description', Validators.required],
     });
   }

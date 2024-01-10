@@ -1,8 +1,10 @@
 <h3 class="my-3">Case <i class="bi bi-pc"></i> </h3>
 
-  <div style="max-width: 450px" class="text-center rounded border border-2 border-primary mx-auto">
+  <div style="max-width: 550px" class="text-center rounded border border-2 border-primary mx-auto p-2">
     <h2 class="my-3"> {{res.name}} </h2>
     <p>Model: {{res.model}}</p>
-    <p>Dimensions: {{res.width}} x {{res.height}} x {{res.deepth}} CM</p>
-    <p>Case format: {{caseSizeData.name}}</p>
+    <p>Dimensions: {{res.width}} x {{res.height}} x {{res.deepth}} MM</p>
+    <p>Case Size: {{caseSizeData.name}}</p>
+    <p class="my-1">Description</p>
+    <p>{{res.description}}</p>
   </div>

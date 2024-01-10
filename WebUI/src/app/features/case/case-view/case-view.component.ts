@@ -25,6 +25,7 @@ export class CaseViewComponent implements OnInit {
     deepth: 0,
     description: "",
     caseSizeId: 0,
+    caseSize: "",
     seriesId: 0
   };
   brnd: brand = new brand();

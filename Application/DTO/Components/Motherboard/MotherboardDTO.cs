@@ -13,6 +13,7 @@ public class MotherboardDTO
     public int MaxMemory { get; set; }
     public int SATASlots { get; set; }
     public int M2Slots { get; set; }
+    public int RamSlots { get; set; }
     public int CaseSizeId { get; set; }
     public string Description { get; set; }
     public List<RamSpeedDTO> Memories { get; set; }

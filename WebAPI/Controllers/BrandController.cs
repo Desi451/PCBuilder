@@ -31,6 +31,7 @@ public class BrandController : ControllerBase
     [HttpPost("add")]
     public async Task<IActionResult> Create(AddBrandDTO brand)
     {
+
         await _service.Add(brand);
         return Ok();
     }

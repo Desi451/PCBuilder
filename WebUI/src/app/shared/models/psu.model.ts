@@ -2,11 +2,11 @@ export class psu {
   id: number;
   name: string;
   model: string;
-  type: string;
-  maxPower: number;
+  standard: string;
+  power: number;
   fans: string;
   hasPFC: boolean;
-  MainConnPins: string;
+  mainConnPins: string;
   pciExpressConn: string;
   voltage: string;
   freq: string;
@@ -20,11 +20,11 @@ export class psu {
 export type addPsu = {
   name: string,
   model: string,
-  type: string,
-  maxPower: number,
+  standard: string,
+  power: number,
   fans: string,
   hasPFC: boolean,
-  MainConnPins: string,
+  mainConnPins: string,
   pciExpressConn: string,
   voltage: string,
   freq: string,

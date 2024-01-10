@@ -17,6 +17,8 @@ public interface IComputerService
 
     //query
     public Task<List<ComputerDTO>> GetComputers();
+    public Task<List<ComputerViewDTO>> GetComputersView();
+    public Task<List<ComputerViewDTO>> GetComputersViewByUser(int id);
     public Task<ComputerDTO> GetById(int id);
     public Task<ComputerFormDTO> GetFullDataById(int id);
 
@@ -25,5 +27,5 @@ public interface IComputerService
     public Task<List<MotherboardDTO>> GetMotherBoardsBySocket(int socketId);
     public Task<List<RamDTO>> GetRamsByMotherboard(int motherboardId);
     public Task<List<PowerSupplyDTO>> GetPsuByWattage(int wattage);
-    public Task<List<CaseDTO>> GetCasesByStandard(int caseSizeId, int gpuLength);
+    public Task<List<CaseDTO>> GetCasesByStandard(int caseSizeId, double gpuLength);
 }

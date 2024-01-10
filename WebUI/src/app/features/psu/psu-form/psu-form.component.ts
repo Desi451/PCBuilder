@@ -45,7 +45,7 @@ export class PsuFormComponent implements OnInit {
       name: ['', Validators.required],
       model: ['', Validators.required],
       type: ['', Validators.required],
-      maxPower: ['', [Validators.required, Validators.min(1)]],
+      power: ['', [Validators.required, Validators.min(1)]],
       fans: ['', Validators.required],
       hasPFC: [false],
       mainConnPins: ['', Validators.required],

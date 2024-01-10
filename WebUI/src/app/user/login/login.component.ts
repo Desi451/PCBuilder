@@ -1,16 +1,14 @@
 import { Component } from "@angular/core";
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/core/auth/auth.service";
-import { login } from "src/app/shared/models/user.model";
+import { login, user } from "src/app/shared/models/user.model";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule]
 })
 export class LoginComponent {
   loginForm!: FormGroup;
@@ -20,11 +18,10 @@ export class LoginComponent {
     private _router: Router,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private _authService: AuthService
+    private _authService: AuthService,
   ) {
     this.initForm();
   }
-
 
   initForm() {
     this.loginForm = this.formBuilder.group({
@@ -38,8 +35,9 @@ export class LoginComponent {
       const log = this.loginForm.value as login;
       this._authService.login(log).subscribe(
 
-        (res: boolean) => {
+        (res: user) => {
           this.toastr.success('Logged in Successfully!', 'Login');
+          this._router.navigateByUrl(``);
         },
         (error) => {
           this.toastr.error('Error fetching user', 'Server Error');
@@ -50,6 +48,4 @@ export class LoginComponent {
       this.toastr.error('Data not valid');
     }
   }
-
-
 }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { AuthService } from "src/app/core/auth/auth.service";
 
 @Component({
   selector: 'app-uni-table',
@@ -22,10 +23,28 @@ export class UniTableComponent implements OnInit {
   sortDirection: 'asc' | 'desc' = 'asc';
   loading = true;
 
-  constructor(private _router: Router) { }
+  userId: number = 0;
+  username: string = '';
+  userRank: number = 0;
+
+  constructor(private _router: Router,
+    private _authService: AuthService) { }
 
   ngOnInit(): void {
+    this.refreshUserInfo();
     this.updateSlicedData();
+  }
+
+  refreshUserInfo() {
+    this._authService.getUserInfo().subscribe(response => {
+      console.log(response);
+      if (response.userId) {
+        this.userId = response.userId;
+        this.username = response.username;
+        this.userRank = response.userRank;
+        console.log("tab: " + response.userRank);
+      }
+    });
   }
 
   onPageChange(page: number): void {

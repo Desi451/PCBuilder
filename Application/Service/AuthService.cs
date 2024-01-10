@@ -1,4 +1,5 @@
-﻿using Application.DTO.UserDTOs;
+﻿using Application.DTO.Computer;
+using Application.DTO.UserDTOs;
 using Application.Interfaces;
 using Application.Mappings;
 using AutoMapper;
@@ -23,7 +24,7 @@ public class AuthService : IAuthService
         AutoMapperConfig.Initialize();
     }
 
-    public async Task<bool> Login(LoginUserDTO user)
+    public async Task<UserDTO> Login(LoginUserDTO user)
     {
         User res = new User();
         if (user.Login.Contains("@"))
@@ -32,8 +33,8 @@ public class AuthService : IAuthService
             res.Login = user.Login;
         
         res.Password = user.Password;
-
-        return await _repository.GetByLoginMail(res);
+        var data = await _repository.GetByLoginMail(res);
+        return _mapper.Map<UserDTO>(data);
     }
 
     public async Task Register(AddUserDTO user)
@@ -47,9 +48,15 @@ public class AuthService : IAuthService
         throw new NotImplementedException();
     }
 
-    public async Task ChangeMailStatus(int id)
+    //public async Task ChangeMailStatus(int id)
+    //{
+    //    await _repository.ChangeMailStatus(id);
+    //    await _saveData.Save();
+    //}
+
+    public async Task Edit(AddUserDTO user, int id)
     {
-        await _repository.ChangeMailStatus(id);
+        await _repository.Update(_mapper.Map<User>(user), id);
         await _saveData.Save();
     }
 }

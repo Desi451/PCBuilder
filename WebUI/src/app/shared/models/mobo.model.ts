@@ -8,6 +8,7 @@ export class mobo {
   maxMemory: number;
   m2Slots: number;
   sataSlots: number;
+  ramSlots: number;
   description: string;
 
   caseSizeId: number;
@@ -24,6 +25,7 @@ export type addMobo = {
   maxMemory: number,
   m2Slots: number,
   sataSlots: number;
+  ramSlots: number;
   description: string,
 
   caseSizeId: number,

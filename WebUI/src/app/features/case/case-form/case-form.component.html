@@ -1,8 +1,10 @@
-<form [formGroup]="caseForm"
-      (ngSubmit)="executeForm()">
+<h3 class="my-3">Case form <i class="bi bi-pc"></i> </h3>
 
-  <div class="row">
-    <div class="col-md-6 my-2">
+<form [formGroup]="caseForm"
+      (ngSubmit)="executeForm()" style="max-width: 1200px;" class="mx-auto my-2">
+
+  <div class="row align-items-center">
+    <div class="col-md-6 my-3">
       <input type="text"
              class="form-control"
              id="name"
@@ -18,7 +20,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row my-2">
     <div class="col-md-4 my-2">
       <input type="number"
              class="form-control"
@@ -42,7 +44,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row my-2">
     <div class="col-md-4">
       <div ngbDropdown
            class="d-inline-block">
@@ -50,7 +52,7 @@
                 class="btn btn-outline-primary"
                 id="dropdownCaseSize"
                 ngbDropdownToggle>
-          Case Size
+          Case Standard
         </button>
         <div ngbDropdownMenu
              aria-labelledby="dropdownBasic1">
@@ -123,7 +125,7 @@
 
   <!-- Description -->
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 mb-3">
       <textarea class="form-control"
                 id="floatingTextarea"
                 formControlName="description"></textarea>
@@ -134,12 +136,13 @@
   <div class="row mt-2">
     <div class="col-md-6">
       <button type="submit"
-              class="form-group btn btn-dark border border-primary btn-block">Submit</button>
-    </div>
-    <div class="col-md-6">
-      <button *ngIf="res?.id"
+              class="form-group btn btn-dark border border-primary btn-block me-2">Submit</button>
+              <button *ngIf="res?.id"
               (click)="delete(id)"
               class="btn btn-danger border border-secondary btn-block">Delete</button>
+    </div>
+    <div class="col-md-6">
+
     </div>
   </div>
 </form>

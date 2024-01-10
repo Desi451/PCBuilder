@@ -1,14 +1,15 @@
 
 <h3 class="my-3">Processor <i class="bi bi-cpu"></i> </h3>
 
-  <div style="max-width: 450px" class="text-center rounded border border-2 border-primary mx-auto">
+  <div style="max-width: 750px" class="text-center rounded border border-2 border-primary mx-auto p-2 my-2 mb-3">
     <h2 class="my-3"> {{res.name}} </h2>
     <p>Model: {{res.model}} Socket: {{socket.name}}</p>
     <p>Series: {{srs.name}}</p>
     <p>Cores: {{res.cores}}  Threads: {{res.threads}}</p>
-    <p>Frequency {{res.minFreq}}/{{res.maxFreq}} Mhz</p>
+    <p>Frequency {{res.minFreq}} - {{res.maxFreq}} GHz</p>
     <p>Cache: L2-{{res.l2Cache}}MB L3-{{res.l3Cache}}MB</p>
-    <p>Max ram: {{res.maxRam}} GB  Tech(nm): {{res.technology}}</p>
+    <p>Max ram: {{res.maxRam}} GB</p>
+    <p>Manufacturing Tech(nm): {{res.technology}}</p>
     <p *ngIf="res.isAPU" >Max TDP: {{res.tdp}}W APU: Yes </p>
     <p *ngIf="!res.isAPU" >Max TDP: {{res.tdp}}W APU: No </p>
     <p class="text-start ms-4" >Description:</p>

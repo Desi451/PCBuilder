@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
+using System.Net.Http;
 
 namespace Application.Service;
 

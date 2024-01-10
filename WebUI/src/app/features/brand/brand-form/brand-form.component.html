@@ -1,7 +1,9 @@
+<H3> Brand form </H3>
+
 <form #myForm="ngForm">
   <div class="form-group">
     <label class="my-1" for="brandName">Enter new brand name</label>
-    <input type="text" class="form-control" id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Brand name">
+    <input type="text" style="max-width: 500px;" class="form-control" id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Brand name">
   </div>
 
   <button (click)="executeForm()" type="submit" class="btn btn-dark my-2 border border-primary">Submit</button>

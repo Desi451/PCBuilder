@@ -14,6 +14,14 @@ export type addUser =
   password: string;
 }
 
+export type updateUser =
+{
+  id: number;
+  login: string;
+  email: string;
+  password: string;
+}
+
 export type login = {
   login: string;
   password: string;

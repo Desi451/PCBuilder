@@ -23,7 +23,7 @@ public class SlotRepository : ISlotRepository
     public async Task Add(SlotInterface slot)
     {
         slot.IsDeleted = false;
-        slot.CreatedBy = 1;
+        slot.Created = DateTime.Now;
         await _context.AddAsync(slot);
     }
 
@@ -57,5 +57,6 @@ public class SlotRepository : ISlotRepository
     {
         var oldSlot = await GetById(slot.Id);
         oldSlot.Name = slot.Name;
+        oldSlot.LastModified = DateTime.Now;
     }
 }

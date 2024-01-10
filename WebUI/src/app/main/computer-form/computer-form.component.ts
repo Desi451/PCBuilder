@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from "src/app/core/auth/auth.service";
 import { ComputerService } from "src/app/core/service/computer.service";
 import { GpuService } from "src/app/core/service/gpu.service";
 import { HddService } from "src/app/core/service/hdd.service";
@@ -29,8 +30,12 @@ export class ComputerFormComponent implements OnInit {
   computerForm!: FormGroup;
   id: number;
 
+  userId: number = 0;
+  username: string = '';
+  userRank: number = 0;
+
   //html
-  BrandCollapsed = true;
+  BrandCollapsed = false;
   CpuCollapsed = true;
   MotherBoardCollapsed = true;
   RamMemoryCollapsed = true;
@@ -80,7 +85,8 @@ export class ComputerFormComponent implements OnInit {
     private _gpuService: GpuService,
     private _hddService: HddService,
     private _ssdService: SsdService,
-    private _slotService: SlotService
+    private _slotService: SlotService,
+    private _authService: AuthService
   ) {
     this.initForm();
     this.id = this._route.snapshot.params['id'];
@@ -93,6 +99,16 @@ export class ComputerFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._authService.getUserInfo().subscribe(response => {
+      console.log(response);
+      if (response.userId) {
+        this.userId = response.userId;
+        this.res.userId = response.userId;
+        this.username = response.username;
+        this.userRank = response.userRank;
+      }
+    });
+
     this._computerService.getCpuBrands().subscribe(
       (brands: brand[]) => {
         this.brandList = brands;
@@ -112,6 +128,14 @@ export class ComputerFormComponent implements OnInit {
     );
 
     if(this.id){
+      this.BrandCollapsed = false;
+      this.CpuCollapsed = false;
+      this.MotherBoardCollapsed = false;
+      this.RamMemoryCollapsed = false;
+      this.GpuCollapsed = false;
+      this.DriveCollapsed = false;
+      this.PsuCollapsed = false;
+      this.CaseCollapsed = false;
 
       this._computerService.getFullData(this.id).subscribe(
         (res: computerForm) => {
@@ -271,11 +295,10 @@ export class ComputerFormComponent implements OnInit {
   updatePsu(psu: psu): void {
     this.psu = psu;
     this.psu.id = psu.id;
-
     if (this.psu.id) {
       this.psu.name = "selected: " + psu.name;
     }
-    const psuVal = getCaseSizeValue(this.psu.type) || this.mobo.caseSizeId;
+    const psuVal = getCaseSizeValue(this.psu.standard) || this.mobo.caseSizeId;
     let caseReq: caseRequest;
     if (psuVal > this.mobo.caseSizeId) {
       caseReq = {
@@ -426,7 +449,7 @@ export class ComputerFormComponent implements OnInit {
 
         this._computerService.update(this.res).subscribe(() => {
           this.toastr.success('Computer updated Successfully!', 'Computer Updated');
-          this._router.navigateByUrl(`gpu`);
+          this._router.navigateByUrl(`computer`);
         },
         (error) => {
           this.toastr.error('Error updating Computer', 'Server Error');
@@ -437,7 +460,7 @@ export class ComputerFormComponent implements OnInit {
       console.log(res);
       this._computerService.add(res).subscribe(() => {
         this.toastr.success('Computer updated Successfully!', 'Computer Updated');
-        this._router.navigateByUrl(`gpu`);
+        this._router.navigateByUrl(`computer`);
       },
       (error) => {
         this.toastr.error('Error updating Computer', 'Server Error');

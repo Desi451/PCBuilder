@@ -19,7 +19,7 @@ public class HddRepository : IHddRepository
     public async Task Add(Hdd gpu)
     {
         gpu.IsDeleted = false;
-        gpu.CreatedBy = 1;
+        gpu.Created = DateTime.Now;
         await _context.AddAsync(gpu);
     }
 
@@ -46,5 +46,6 @@ public class HddRepository : IHddRepository
     {
         Hdd oldHdd = await GetById(gpu.Id);
         Helper.CopyProperties(gpu, oldHdd);
+        oldHdd.LastModified = DateTime.Now;
     }
 }

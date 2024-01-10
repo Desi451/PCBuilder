@@ -4,7 +4,6 @@ using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Crypto.Generators;
 using System.Net;
 using System.Web.Http;
 
@@ -21,14 +20,14 @@ public class UserRepository : IUserRepository
 
     public async Task Add(User user)
     {
-        Rank r = await _context.Ranks.FirstOrDefaultAsync(x => x.Id == 2); // 2 => normal user
+        Rank r = await _context.Ranks.FirstOrDefaultAsync(x => x.Id == 1); // 2 => normal user
         try
         {
             user.IsDeleted = false;
-            user.IsEmailConfirmed = false;
-            user.CreatedBy = 1;
+            //user.IsEmailConfirmed = false;
             user.Rank = r;
             user.RankId = r.Id;
+            user.Password = HashPassword(user.Password);
             await _context.AddAsync(user);
         }
         catch
@@ -48,14 +47,14 @@ public class UserRepository : IUserRepository
             res.IsDeleted = true;
     }
 
-    public async Task Update(User user)
+    public async Task Update(User user, int id)
     {
-        var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+        var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         if(res != null)
         {
             res.Login = user.Login;
             res.Email = user.Email;
-            res.Password = user.Password;
+            res.Password = HashPassword(user.Password);
         }
         else
         {
@@ -68,14 +67,14 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task ChangeMailStatus(int id)
-    {
-        var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        if(res != null)
-        {
-            res.IsEmailConfirmed = true;
-        }
-    }
+    //public async Task ChangeMailStatus(int id)
+    //{
+    //    var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+    //    if(res != null)
+    //    {
+    //        res.IsEmailConfirmed = true;
+    //    }
+    //}
 
     #region query
     public async Task<User> GetById(int id)
@@ -83,6 +82,7 @@ public class UserRepository : IUserRepository
         var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         if(res != null)
         {
+            res.Password = "";
             return res;
         }
         else
@@ -96,14 +96,14 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task<bool> GetByLoginMail(User log)
+    public async Task<User> GetByLoginMail(User log)
     {
         var res = await _context.Users.FirstOrDefaultAsync(x => x.Login == log.Login || x.Email == log.Email);
 
         if (res != null && VerifyPassword(res.Password, log.Password) && res.IsDeleted == false)
-            return true;
+            return res;
         else
-            return false;
+            throw new Exception();
     }
 
     public async Task<List<User>> GetUsers()
@@ -112,16 +112,13 @@ public class UserRepository : IUserRepository
     }
     #endregion
 
-    private string HashPassword(string password)
+    private static string HashPassword(string password)
     {
-        // Generowanie soli i haszowanie hasła
-        return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
+        return BCrypt.Net.BCrypt.HashPassword(password);
     }
 
-    private bool VerifyPassword(string hashedPassword, string providedPassword)
+    private static bool VerifyPassword(string hashedPassword, string providedPassword)
     {
-        // Weryfikacja hasła
         return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
     }
-
 }

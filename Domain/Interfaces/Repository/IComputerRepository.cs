@@ -20,6 +20,8 @@ public interface IComputerRepository
     Task<Computer> GetById(int id);
 
     Task<Computer> GetFullDataById(int id);
+    Task<List<Computer>> GetComputersView();
+    Task<List<Computer>> GetComputersViewByUser(int id);
     //elements
     Task AddHdd(ComputerHdds hdd);
     Task AddSsd(ComputerSsds hdd);
@@ -32,5 +34,5 @@ public interface IComputerRepository
     Task<List<Motherboard>> GetMotherBoardsBySocket(int socketId);
     Task<List<RamMemories>> GetRamsByMotherboard(int motherboardId);
     Task<List<PowerSupply>> GetPsusByWattage(int watt);
-    Task<List<Case>> GetCasesBySize(int caseSizeId, int gpuLength);
+    Task<List<Case>> GetCasesBySize(int caseSizeId, double gpuLength);
 }

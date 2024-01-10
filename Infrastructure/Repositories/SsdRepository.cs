@@ -19,7 +19,7 @@ public class SsdRepository : ISsdRepository
     public async Task Add(Ssd ssd)
     {
         ssd.IsDeleted = false;
-        ssd.CreatedBy = 1;
+        ssd.Created = DateTime.Now;
         await _context.AddAsync(ssd);
     }
 
@@ -46,5 +46,6 @@ public class SsdRepository : ISsdRepository
     {
         Ssd oldSsd = await GetById(ssd.Id);
         Helper.CopyProperties(ssd, oldSsd);
+        oldSsd.LastModified = DateTime.Now;
     }
 }

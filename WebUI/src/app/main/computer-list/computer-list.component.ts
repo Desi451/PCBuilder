@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { ComputerService } from "src/app/core/service/computer.service";
-import { computer } from "src/app/shared/models/computer.model";
+import { CaseSizes } from "src/app/shared/models/case.model";
+import { computerView } from "src/app/shared/models/computer.model";
 
 @Component({
   selector: 'app-computer-list',
@@ -9,7 +10,7 @@ import { computer } from "src/app/shared/models/computer.model";
   styleUrls: ['./computer-list.component.scss']
 })
 export class ComputerListComponent implements OnInit {
-  computerList: computer[] = [];
+  computerList: computerView[] = [];
   isDataLoaded = false;
   constructor(
     public _computerService: ComputerService,
@@ -18,8 +19,8 @@ export class ComputerListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._computerService.getComputers().subscribe(
-      (list: computer[]) => {
+    this._computerService.getViews().subscribe(
+      (list: computerView[]) => {
         this.computerList = list;
         this.isDataLoaded = true;
         this.cdr.detectChanges();
@@ -29,4 +30,11 @@ export class ComputerListComponent implements OnInit {
       }
     );
   }
+}
+
+function getCaseSizeNames(enumValues: number[]): string[] {
+  return enumValues.map((enumValue) => {
+    const keys = Object.keys(CaseSizes).filter((x) => CaseSizes[x as keyof typeof CaseSizes] === enumValue);
+    return keys[0];
+  });
 }

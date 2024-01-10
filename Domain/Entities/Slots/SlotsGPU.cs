@@ -1,7 +1,5 @@
 ﻿using Domain.Entities.Components.GPU;
-using Domain.Entities.Components.Motherboard;
-using Domain.Entities.Components.RamMemory;
-using System;
+
 namespace Domain.Entities.Slots;
 
 public class SlotsGPU

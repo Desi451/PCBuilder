@@ -4,7 +4,6 @@ import { RouterModule, Routes } from "@angular/router";
 import { EditProfileComponent } from "./edit-profile/edit-profile.component";
 import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
-import { ResetPasswordComponent } from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   {
@@ -16,11 +15,7 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'resetpass',
-    component: ResetPasswordComponent
-  },
-  {
-    path: 'editprofile',
+    path: 'editprofile/:id',
     component: EditProfileComponent
   }
 ];
