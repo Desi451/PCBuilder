@@ -16,7 +16,6 @@ public class PowerSupplyRepository : IPowerSupplyRepository
     public async Task Add(PowerSupply psu)
     {
         psu.IsDeleted = false;
-        psu.CreatedBy = 1;
         psu.Created = DateTime.Now;
         await _context.AddAsync(psu);
     }
@@ -44,5 +43,6 @@ public class PowerSupplyRepository : IPowerSupplyRepository
     {
         var oldPsu = await _context.PSUs.FirstOrDefaultAsync(r => r.Id == psu.Id);
         Helper.CopyProperties(psu, oldPsu);
+        oldPsu.LastModified = DateTime.Now;
     }
 }

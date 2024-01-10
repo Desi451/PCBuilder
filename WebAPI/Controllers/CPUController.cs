@@ -1,6 +1,4 @@
-﻿using Application.DTO.Components.Case;
-using Application.DTO.Components.Case_Size;
-using Application.DTO.Components.CPU;
+﻿using Application.DTO.Components.CPU;
 using Application.Interfaces.Components;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,6 +54,13 @@ public class CPUController : ControllerBase
     public async Task<IActionResult> GetAllSockets()
     {
         var brands = await _service.GetAllSockets();
+        return Ok(brands);
+    }
+
+    [HttpGet("socketsbrand/{id}")]
+    public async Task<IActionResult> GetAllSocketsByBrand(int id)
+    {
+        var brands = await _service.GetSocketsByBrandId(id);
         return Ok(brands);
     }
 

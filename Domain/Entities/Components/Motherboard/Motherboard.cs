@@ -7,21 +7,20 @@ namespace Domain.Entities.Components.Motherboard;
 public class Motherboard : AuditableEntity
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string Model { get; set; }
-    public int BrandId { get; set; }
-    public int SeriesId { get; set; }
-    public int SocketCPUId { get; set; }
-    public string Chipset { get; set; }
-    public int MaxMemory { get; set; }
-    public int SATASlots { get; set; }
-    public int M2Slots { get; set; }
-    public int CaseSizeId { get; set; }
-    public string Description { get; set; }
+    public required string Name { get; set; }
+    public required string Model { get; set; }
+    public required int SeriesId { get; set; }
+    public required int SocketCpuId { get; set; }
+    public required string Chipset { get; set; }
+    public required int MaxMemory { get; set; }
+    public required int SATASlots { get; set; }
+    public required int M2Slots { get; set; }
+    public required int RamSlots { get; set; }
+    public required int CaseSizeId { get; set; }
+    public required string Description { get; set; }
 
-    public CaseSize CaseSize { get; set; }
-    public Brand Brand { get; set; }
-    public Series Series { get; set; }
-    public SocketCPU SocketCPU { get; set; }
-    public List<MotheboardMemory> Memories { get; set; }
+    public required CaseSize CaseSize { get; set; }
+    public required Series Series { get; set; }
+    public required SocketCPU SocketCPU { get; set; }
+    public required List<MotheboardMemory> Memories { get; set; }
 }

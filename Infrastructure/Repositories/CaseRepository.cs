@@ -19,7 +19,7 @@ public class CaseRepository : ICaseRepository
     public async Task Add(Case box)
     {
         box.IsDeleted = false;
-        box.CreatedBy = 1;
+        box.Created = DateTime.Now;
         await _context.AddAsync(box);
     }
 
@@ -31,7 +31,16 @@ public class CaseRepository : ICaseRepository
 
     public async Task<List<Case>> GetCases()
     {
-        return await _context.Cases.ToListAsync();
+        try
+        {
+            return await _context.Cases
+            .Where(x => x.IsDeleted == false)
+            .ToListAsync();
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public async Task<Case> GetById(int id)
@@ -46,5 +55,6 @@ public class CaseRepository : ICaseRepository
     {
         Case oldBox = await GetById(box.Id);
         Helper.CopyProperties(box, oldBox);
+        oldBox.LastModified = DateTime.Now;
     }
 }

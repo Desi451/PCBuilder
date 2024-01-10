@@ -1,0 +1,157 @@
+<h3 class="my-3">Power supply form <i class="bi bi-power"></i> </h3>
+
+<form [formGroup]="psuForm" (ngSubmit)="executeForm()">
+  <!-- First row -->
+  <div class="row">
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="PSU name">
+    </div>
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="model" formControlName="model" placeholder="PSU model">
+    </div>
+  </div>
+
+  <!-- Second row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="type" formControlName="type" placeholder="Type">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="number" class="form-control" id="power" formControlName="power" placeholder="Max Power">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="fans" formControlName="fans" placeholder="fans">
+    </div>
+  </div>
+
+  <!-- Third row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="mainConnPins" formControlName="mainConnPins" placeholder="Main Connection Pins">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="pciExpressConn" formControlName="pciExpressConn" placeholder="PCI Express Connection">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="voltage" formControlName="voltage" placeholder="Voltage">
+    </div>
+  </div>
+
+  <!-- Fourth row -->
+  <div class="row">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="freq" formControlName="freq" placeholder="Frequency">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="connectors" formControlName="connectors" placeholder="Connectors">
+    </div>
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="dimensions" formControlName="dimensions" placeholder="Dimensions(cm) (HxWxD)">
+    </div>
+  </div>
+
+  <!-- Fifth row -->
+  <div class="row my-2 justify-content-center ms-5">
+
+    <div class="col-md-3">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownApu"
+                ngbDropdownToggle>
+          PFC
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownPsu">
+          <button type="button"
+                  (click)="updatePfc(false)"
+                  class="dropdown-item">
+            No
+          </button>
+          <button type="button"
+                  (click)="updatePfc(true)"
+                  class="dropdown-item">
+            Yes
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="res.hasPFC" class="mx-3 my-2">
+        <p>Selected: Yes</p>
+      </div>
+      <div *ngIf="!res.hasPFC" class="mx-3 my-2">
+        <p>Selected: No</p>
+      </div>
+    </div>
+
+
+    <div class="col-md-3">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBrand"
+                ngbDropdownToggle>
+          Brand list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <button type="button"
+                  *ngFor="let item of brandList"
+                  (click)="updateBrand(item)"
+                  ngbDropdownItem>
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p>{{ brnd.name }}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button class="btn btn-outline-primary"
+                id="dropdownSeries"
+                type="button"
+                ngbDropdownToggle
+                [attr.disabled]="enableSeries ? true : null">
+          Series list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <div *ngIf="seriesList && seriesList.length > 0">
+            <button type="button"
+                    *ngFor="let item of seriesList"
+                    (click)="updateSeries(item)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+          <div *ngIf="!seriesList || seriesList.length < 1">
+            <button type="button"
+                    ngbDropdownItem>no series</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="srs.name" class="mx-3 my-2">
+        <p>selected: {{ srs.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <textarea class="form-control" id="description" formControlName="description" placeholder="Description"></textarea>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="row mt-2">
+    <div class="col-md-6">
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block me-2">Submit</button>
+      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+    </div>
+  </div>
+</form>

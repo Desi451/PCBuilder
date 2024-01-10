@@ -9,4 +9,5 @@ namespace Application.DTO.SeriesDTOs;
 public class AddSeriesDTO
 {
     public string Name { get; set; }
+    public int BrandId { get; set; }
 }

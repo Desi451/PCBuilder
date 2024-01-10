@@ -1,0 +1,37 @@
+<h3 class="my-3">Socket form <i class="bi bi-cpu"></i> </h3>
+
+<form #myForm="ngForm">
+  <div class="form-group row">
+    <label class="my-1" for="brandName">CPU socket form</label>
+    <div class="col">
+    <input type="text" class="form-control" id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Brand name">
+    </div>
+
+    <div class="col">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBrand"
+                ngbDropdownToggle>
+          Brand list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <button type="button"
+                  *ngFor="let item of brandList"
+                  (click)="updateBrand(item)"
+                  ngbDropdownItem>
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p>{{ brnd.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <button (click)="executeForm()" type="submit" class="btn btn-dark my-2 border border-primary">Submit</button>
+  <button *ngIf="res.id != null" (click)="delete(res.id)" class="btn btn-danger m-2 border border-secondary">Delete</button>
+</form>

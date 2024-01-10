@@ -1,5 +1,6 @@
 ﻿using Application.DTO.BrandDTOs;
 using Application.DTO.Components.CPU;
+using Domain.Entities.Components.CPU;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ public interface ICPUService
 
     public Task<List<SocketCpuDTO>> GetAllSockets();
     public Task<SocketCpuDTO> GetSocketById(int id);
+    public Task<List<SocketCpuDTO>> GetSocketsByBrandId(int id);
     public Task<SocketCpuDTO> AddSocket(AddSocketCpuDTO post);
     public Task UpdateSocket(SocketCpuDTO updateCpu);
     public Task DeleteSocket(int id);

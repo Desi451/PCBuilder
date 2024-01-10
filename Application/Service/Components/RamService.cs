@@ -76,7 +76,7 @@ public class RamService : IRAMService
 
     public async Task<RamSpeedDTO> GetSpeedById(int id)
     {
-        var res = await _repo.GetById(id);
+        var res = await _repo.GetSpeedById(id);
         return _mapper.Map<RamSpeedDTO>(res);
     }
 
@@ -104,7 +104,7 @@ public class RamService : IRAMService
 
     public async Task DeleteSpeed(int id)
     {
-        await _repo.Delete(id);
+        await _repo.DeleteSpeed(id);
         await _saveData.Save();
     }
 }

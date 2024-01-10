@@ -1,34 +1,124 @@
-<div class="d-flex flex-column" style="min-height: 100vh;">
+<div class="d-flex flex-column"
+     style="min-height: 100vh;">
 
-  <nav class="navbar navbar-light bg-dark border-bottom border-info-subtle">
-    <div class="container-fluid">
-      <a class="navbar-brand mx-4" href="#">
-        <div class="text-primary">
-          <i class="bi bi-pc-display"></i>
-          <small class="fw-bold p-3 text-light"> PCBuilder</small>
+     <nav class="navbar navbar-light bg-dark border-bottom border-info-subtle">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a class="navbar-brand" href="#">
+          <div>
+            <i class="bi bi-pc-display"></i>
+            <small class="fw-bold p-3 text-light"> PCBuilder</small>
+          </div>
+        </a>
+
+        <div class="d-flex">
+          <a *ngIf="!userId" href="login" type="button" class="btn btn-primary">Login</a>
+          <a *ngIf="userId" [href]="'editprofile/' + userId" type="button" class="btn btn-primary ms-2">Profile</a>
+          <a *ngIf="userId" (click)="logout()" type="button" class="btn btn-primary ms-2">Logout</a>
         </div>
-      </a>
-    </div>
-  </nav>
+      </div>
+    </nav>
+
 
   <div class="d-flex flex-grow-1">
 
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 280px; position: sticky; top: 0; overflow-y: auto;">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-        <svg class="bi pe-none me-2" width="40" height="3"><use xlink:href="#bootstrap"/></svg>
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark"
+         style="width: 240px; position: sticky; top: 0; overflow-y: auto;">
+      <a href="/"
+         class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <svg class="bi pe-none me-2"
+             width="40"
+             height="3">
+          <use xlink:href="#bootstrap" />
+        </svg>
       </a>
       <hr>
-      <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-          <a href="brand" class="nav-link text-white" aria-current="page">
+      <ul  class="nav nav-pills flex-column mb-auto">
+        <li *ngIf="userRank==2" class="nav-item">
+          <a href="brand"
+             class="nav-link text-white"
+             aria-current="page">
             <i class="bi bi-building"></i>
-            Brand
+            Brand's
           </a>
         </li>
         <li class="nav-item">
-          <a href="series" class="nav-link text-white" aria-current="page">
-            <i class="bi bi-buildings"></i>
-            Series
+          <a href="case"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-pc"></i>
+            Case's
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="cpu"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-cpu"></i>
+            CPU's
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="gpu"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-gpu-card"></i>
+            GPU's
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="ram"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-memory"></i>
+            RAM memories
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="ssd"
+             class="nav-link text-white"
+             aria-current="page">
+             <i class="bi bi-device-ssd"></i>
+            SSD's
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="drive"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-device-hdd"></i>
+            HDD's
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="psu"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-battery-charging"></i>
+            PSU's
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="mobo"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-motherboard"></i>
+            MOBO's
+          </a>
+        </li>
+        <li *ngIf="userRank==2" class="nav-item">
+          <a href="slot"
+             class="nav-link text-white"
+             aria-current="page">
+            <i class="bi bi-hdmi"></i>
+            Interfaces
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="computer"
+             class="nav-link text-white"
+             aria-current="page">
+             <i class="bi bi-pc-display"></i>
+            Computers
           </a>
         </li>
       </ul>
@@ -39,12 +129,15 @@
       <router-outlet></router-outlet>
     </div>
 
+    <!-- <div class="p-2 flex-grow-1 mx-5 d-flex justify-content-center align-items-center">
+      <h1 class="text-center my-auto">Welcome to PCBuilder!</h1>
+      <h1 class="mx-3"><i class="bi bi-pc-display-horizontal"></i></h1>
+    </div> -->
   </div>
 
-  <footer class="footer mt-auto py-3 bg-dark border-top border-info-subtle">
+  <footer class="footer text-center mt-auto py-3 bg-dark border-top border-info-subtle">
     <div class="container">
-      <span class="text-body-secondary">Place sticky footer content here.</span>
+      <span class="text-body-secondary"><i class="bi bi-c-circle"></i> PCBuilder</span>
     </div>
   </footer>
-
 </div>

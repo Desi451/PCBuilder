@@ -5,24 +5,22 @@ namespace Domain.Entities.Components.CPU;
 public class CPU : AuditableEntity
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string Model { get; set; }
-    public int Cores { get; set; }
-    public int Threads { get; set; }
-    public double MinFreq { get; set; }
-    public double MaxFreq { get; set; }
-    public int L2Cache { get; set; }
-    public int L3Cache { get; set; }
-    public int MaxRam { get; set; }
-    public bool IsAPU { get; set; }
-    public int Technology { get; set; } //nm
-    public int TDP { get; set; }
-    public int BrandId { get; set; }
-    public int SeriesId { get; set; }
-    public int SocketCPUId { get; set; }
-    public string Description { get; set; }
+    public required string Name { get; set; }
+    public required string Model { get; set; }
+    public required int Cores { get; set; }
+    public required int Threads { get; set; }
+    public required double MinFreq { get; set; }
+    public required double MaxFreq { get; set; }
+    public required int L2Cache { get; set; }
+    public required int L3Cache { get; set; }
+    public required int MaxRam { get; set; }
+    public required bool IsAPU { get; set; }
+    public required int Technology { get; set; } //nm
+    public required int TDP { get; set; }
+    public required int SeriesId { get; set; }
+    public required int SocketCpuId { get; set; }
+    public required string Description { get; set; }
 
-    public Brand Brand { get; set; }
     public Series Series { get; set; }
     public SocketCPU SocketCPU { get; set; }
 }

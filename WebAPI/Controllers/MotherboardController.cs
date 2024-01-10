@@ -38,7 +38,7 @@ public class MotherboardController : ControllerBase
     }
 
     [HttpPut("update")]
-    public async Task<IActionResult> Update(MotherboardDTO mobo)
+    public async Task<IActionResult> Update(UpdateMotherboardDTO mobo)
     {
         await _service.Update(mobo);
         return Ok();

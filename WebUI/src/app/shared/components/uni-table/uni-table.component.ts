@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { AuthService } from "src/app/core/auth/auth.service";
 
 @Component({
   selector: 'app-uni-table',
@@ -12,7 +13,7 @@ export class UniTableComponent implements OnInit {
   @Input() formLink!: string;
   @Input() viewLink!: string;
   page = 1; // init page
-  pageSize = 9;
+  pageSize = 10;
   maxSize = 15;
   rotate = true;
   ellipses = true;
@@ -20,11 +21,30 @@ export class UniTableComponent implements OnInit {
   searchTerm = '';
   sortColumn: string | null = null;
   sortDirection: 'asc' | 'desc' = 'asc';
+  loading = true;
 
-  constructor(private _router: Router) { }
+  userId: number = 0;
+  username: string = '';
+  userRank: number = 0;
+
+  constructor(private _router: Router,
+    private _authService: AuthService) { }
 
   ngOnInit(): void {
+    this.refreshUserInfo();
     this.updateSlicedData();
+  }
+
+  refreshUserInfo() {
+    this._authService.getUserInfo().subscribe(response => {
+      console.log(response);
+      if (response.userId) {
+        this.userId = response.userId;
+        this.username = response.username;
+        this.userRank = response.userRank;
+        console.log("tab: " + response.userRank);
+      }
+    });
   }
 
   onPageChange(page: number): void {
@@ -33,15 +53,15 @@ export class UniTableComponent implements OnInit {
   }
 
   onEditClick(row: any): void {
-    this._router.navigateByUrl( this.formLink + "/" + row.id);
+    this._router.navigateByUrl(this.formLink + "/" + row.id);
   }
 
   onViewClick(row: any): void {
+    this._router.navigateByUrl(this.viewLink + "/" + row.id);
   }
 
   onAddClick(): void {
-    console.log("test")
-    this._router.navigateByUrl( this.formLink);
+    this._router.navigateByUrl(this.formLink);
   }
 
   onSearchTermChange(): void {
@@ -60,7 +80,7 @@ export class UniTableComponent implements OnInit {
     this.updateSlicedData();
   }
 
-  private updateSlicedData(): void {
+  updateSlicedData(): void {
     const startIndex = (this.page - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
 
@@ -75,7 +95,7 @@ export class UniTableComponent implements OnInit {
       filteredData.sort((a, b) => {
         let valueA = "";
         let valueB = "";
-        if(this.sortColumn != null){
+        if (this.sortColumn != null) {
           valueA = String(a[this.sortColumn]);
           valueB = String(b[this.sortColumn]);
         }
@@ -89,5 +109,6 @@ export class UniTableComponent implements OnInit {
     }
 
     this.slicedData = filteredData.slice(startIndex, endIndex);
+    this.loading = false;
   }
 }

@@ -12,7 +12,11 @@ const routes: Routes = [
     {
       path: 'form',
       component: SeriesFormComponent
-    }
+    },
+    {
+      path: 'form/:id',
+      component: SeriesFormComponent
+    },
 ];
 
 @NgModule({

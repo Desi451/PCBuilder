@@ -2,8 +2,8 @@
 
 public enum CaseSize
 {
-    ATX = 0,
-    ITX = 1,
-    MicroATX = 2,
-    EATX = 3
+    EATX = 0,
+    ATX = 1,
+    ITXMicroATX = 2,
+    ITX = 3,
 }

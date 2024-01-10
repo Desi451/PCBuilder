@@ -6,5 +6,5 @@ public class RamSpeed : AuditableEntity
 {
     public int Id { get; set; }
     public required string Standard { get; set; }
-    public int Freq { get; set; }
+    public required int Freq { get; set; }
 }

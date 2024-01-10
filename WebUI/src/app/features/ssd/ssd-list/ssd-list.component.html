@@ -1,0 +1,8 @@
+<H3> SSD drvies <i class="bi bi-device-ssd"></i></H3>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="[ 'capacity','name', 'model']"
+                 [formLink]="'ssd/form'"
+                 [viewLink]="'ssd/view'"></app-uni-table>
+</ng-container>

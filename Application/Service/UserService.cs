@@ -34,6 +34,7 @@ public class UserService : IUserService
         try
         {
             var res = await _repository.GetById(id);
+            res.Password = "";
             return _mapper.Map<UserDTO>(res);
         }
         catch
@@ -55,7 +56,7 @@ public class UserService : IUserService
         try
         {
             var res = _mapper.Map<User>(updateUser);
-            await _repository.Update(res);
+            await _repository.Update(res, updateUser.Id);
             await _saveData.Save();
         }
         catch

@@ -1,0 +1,14 @@
+
+<H3 class="mt-3"> RAM Memory </H3>
+
+
+<ng-container *ngIf="isDataLoaded && isSpeedLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="[ 'capacity', 'name','model']"
+                 [formLink]="'ram/form'"
+                 [viewLink]="'ram/view'"></app-uni-table>
+                 <!-- <H3> RAM Standards </H3>
+  <app-uni-table [data]="speedList"
+                 [columns]="[ 'standard', 'freq']"
+                 [formLink]="'ram/speedform'"></app-uni-table>
+</ng-container> -->

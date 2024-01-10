@@ -1,0 +1,167 @@
+<h3 class="my-3">Graphic card form <i class="bi bi-gpu-card"></i> </h3>
+
+<form [formGroup]="gpuForm" (ngSubmit)="executeForm()">
+
+  <div class="row">
+    <div class="col-md-6 my-2">
+      <input type="text" class="form-control" id="name" formControlName="name" placeholder="GPU name">
+    </div>
+    <div class="col-md-3 my-2">
+      <input type="number" class="form-control" id="memorySize" formControlName="memorySize" placeholder="Memory Size(GB)">
+    </div>
+    <div class="col-md-3 my-2">
+      <input type="text" class="form-control" id="memoryType" formControlName="memoryType" placeholder="Memory Type">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 my-2">
+      <input type="text" class="form-control" id="coreClock" formControlName="coreClock" placeholder="Core Clock(Mhz)">
+    </div>
+
+    <div class="col-md-3 my-2">
+      <input type="number" class="form-control" id="memoryInterface" formControlName="memoryInterface" placeholder="Memory Interface">
+    </div>
+    <div class="col-md-3 my-2">
+      <input type="text" class="form-control" id="directX" formControlName="directX" placeholder="DirectX">
+    </div>
+    <div class="col-md-3 my-2">
+      <input type="number" class="form-control" id="openGL" formControlName="openGL" placeholder="OpenGL">
+    </div>
+  </div>
+
+  <div class="row my-2">
+    <div class="col-md-2 mx-auto">
+      <input type="number" class="form-control" id="tdp" formControlName="tdp" placeholder="TDP">
+    </div>
+    <div class="col-md-3 mx-auto">
+      <input type="number" class="form-control" id="recommendedPsuPower" formControlName="recommendedPsuPower" placeholder="Recommended PSU(W)">
+    </div>
+    <div class="col-md-4 mx-auto">
+      <input type="number" class="form-control" id="length" formControlName="length" placeholder="Length(mm)">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 my-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBrand"
+                ngbDropdownToggle>
+          Brand list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <button type="button"
+                  *ngFor="let item of brandList"
+                  (click)="updateBrand(item, false)"
+                  ngbDropdownItem>
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p>{{ brnd.name }}</p>
+      </div>
+    </div>
+    <div class="col-md-3 my-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button class="btn btn-outline-primary"
+                id="seriesId"
+                type="button"
+                ngbDropdownToggle
+                [attr.disabled]="enableSeries ? true : null">
+          Series list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <div *ngIf="seriesList && seriesList.length > 0">
+            <button type="button"
+                    *ngFor="let item of seriesList"
+                    (click)="updateSeries(item, false)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+          <div *ngIf="!seriesList || seriesList.length < 1">
+            <button type="button"
+                    ngbDropdownItem>no series</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="srs.name" class="mx-3 my-2">
+        <p>selected: {{ srs.name }}</p>
+      </div>
+    </div>
+
+    <div class="col-md-3 my-2 pe-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button type="button"
+                class="btn btn-outline-primary"
+                id="dropdownBrand"
+                ngbDropdownToggle>
+          Chipset Brand list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <button type="button"
+                  *ngFor="let item of brandList"
+                  (click)="updateBrand(item, true)"
+                  ngbDropdownItem>
+            {{ item.name }}
+          </button>
+        </div>
+      </div>
+      <div class="mx-3 my-2">
+        <p>{{ chipsetBrnd.name }}</p>
+      </div>
+    </div>
+    <div class="col-md-3 my-2">
+      <div ngbDropdown
+           class="d-inline-block">
+        <button class="btn btn-outline-primary"
+                id="chipsetSeriesId"
+                type="button"
+                ngbDropdownToggle
+                [attr.disabled]="enableChipsetSeries ? true : null">
+          Chipset list
+        </button>
+        <div ngbDropdownMenu
+             aria-labelledby="dropdownBasic1">
+          <div *ngIf="seriesList && seriesList.length > 0">
+            <button type="button"
+                    *ngFor="let item of chipsetSeriesList"
+                    (click)="updateSeries(item, true)"
+                    ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          </div>
+          <div *ngIf="!seriesList || seriesList.length < 1">
+            <button type="button"
+                    ngbDropdownItem>no series</button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="chipsetSrs.name" class="mx-3 my-2">
+        <p>selected: {{ chipsetSrs.name }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10 mx-auto">
+      <textarea class="form-control" id="description" formControlName="description" placeholder="Description"></textarea>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-md-6">
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
+      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block mx-2">Delete</button>
+    </div>
+  </div>
+</form>

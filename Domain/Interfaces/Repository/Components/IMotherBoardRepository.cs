@@ -1,11 +1,12 @@
 ﻿using Domain.Entities.Components.Motherboard;
+using Domain.Entities.Components.RamMemory;
 
 namespace Domain.Interfaces.Repository.Components;
 
 public interface IMotherBoardRepository
 {
     Task Add(Motherboard mobo);
-    Task Update(Motherboard mobo);
+    Task Update(Motherboard mobo, List<RamSpeed> Rams);
     Task Delete(int id);
 
     //query

@@ -1,5 +1,4 @@
-﻿using Application.DTO.BrandDTOs;
-using Application.DTO.Components.Case;
+﻿using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
 using Application.Interfaces.Components;
 using Microsoft.AspNetCore.Mvc;

@@ -5,17 +5,15 @@ namespace Domain.Entities.Components.RamMemory;
 public class RamMemories : AuditableEntity
 {
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string Model { get; set; }
-    public int Capacity { get; set; }
-    public int NoELements { get; set; }
-    public string Description { get; set; }
-    public string Latency { get; set; }
-    public int BrandId { get; set; }
-    public int MemorySpeedId { get; set; }
-    public int SeriesId { get; set; }
+    public required string Name { get; set; }
+    public required string Model { get; set; }
+    public required int Capacity { get; set; }
+    public required int NoELements { get; set; }
+    public required string Description { get; set; }
+    public required string Latency { get; set; }
+    public required int MemorySpeedId { get; set; }
+    public required int SeriesId { get; set; }
 
     public Series series { get; set; }
     public RamSpeed MemorySpeed { get; set; }
-    public Brand Brand { get; set; }
 }

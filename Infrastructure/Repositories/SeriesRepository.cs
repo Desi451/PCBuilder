@@ -17,7 +17,7 @@ public class SeriesRepository : ISeriesRepository
     public async Task Add(Series series)
     {
         series.IsDeleted = false;
-        series.CreatedBy = 1;
+        series.Created = DateTime.Now;
         await _context.AddAsync(series);
     }
 
@@ -34,18 +34,23 @@ public class SeriesRepository : ISeriesRepository
     {
         var oldSeries = await GetById(series.Id);
         oldSeries.Name = series.Name;
+        oldSeries.LastModified = DateTime.Now;
     }
 
     #region query
     public async Task<Series> GetById(int id)
     {
-        Series? series = await _context.Series.FirstOrDefaultAsync(x => x.Id == id);
-        return series;
+        return await _context.Series.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<List<Series>> GetSeries()
     {
         return await _context.Series.ToListAsync();
+    }
+
+    public async Task<List<Series>> GetByBrandId(int id)
+    {
+        return await _context.Series.Where(x => x.BrandId == id).ToListAsync();
     }
     #endregion
 }

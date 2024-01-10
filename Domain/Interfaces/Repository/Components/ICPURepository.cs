@@ -18,6 +18,7 @@ public interface ICPURepository
     Task DeleteSocket(int id);
 
     //query
+    Task<List<SocketCPU>> GetSocketsByBrandId(int id);
     Task<List<SocketCPU>> GetSockets();
     Task<SocketCPU> GetSocketById(int id);
 }

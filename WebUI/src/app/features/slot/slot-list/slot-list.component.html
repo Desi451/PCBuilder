@@ -1,0 +1,5 @@
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="[ 'id', 'name']"
+                 [formLink]="'slot/form'"></app-uni-table>
+</ng-container>

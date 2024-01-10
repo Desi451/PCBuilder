@@ -1,0 +1,21 @@
+<h3 class="my-3">Motherboard <i class="bi bi-motherboard"></i> </h3>
+
+  <div style="max-width: 750px" class="text-center rounded border border-2 border-primary mx-auto my-2 p-2">
+    <h2 class="my-3"> {{res.name}} </h2>
+    <p>Brand: {{brnd.name}} Model: {{res.model}}</p>
+    <p>Series: {{srs.name}} </p>
+    <p>Standard: {{caseSizeData.name}} | Socket: {{socket.name}} </p>
+    <p>Sata slots: {{res.sataSlots}} | M2 Slots: {{res.m2Slots}}</p>
+    <p>Chipset: {{res.chipset}} | Max RAM: {{res.maxMemory}} GB | {{res.ramSlots}} Slots</p>
+
+    <div class="row mx-auto align-items-center">
+      <div class="col-6 ms-5">
+        <p> Supported Rams:</p>
+      </div>
+      <div class="col-3 me-1">
+        <p *ngFor="let item of ramMemoryListUserData"> {{item.freq}} {{item.standard}}</p>
+      </div>
+    </div>
+    <p class="text-start ms-4" >Description:</p>
+    <p class="px-3">{{res.description}}</p>
+  </div>

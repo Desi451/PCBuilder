@@ -1,0 +1,9 @@
+
+<H3> HDD drives <i class="bi bi-device-hdd"></i></H3>
+
+<ng-container *ngIf="isDataLoaded">
+  <app-uni-table [data]="list"
+                 [columns]="['capacity','name', 'model']"
+                 [formLink]="'drive/form'"
+                 [viewLink]="'drive/view'"></app-uni-table>
+</ng-container>

@@ -17,7 +17,7 @@ public class BrandRepository : IBrandRepository
     public async Task Add(Brand brand)
     {
         brand.IsDeleted = false;
-        brand.CreatedBy = 1;
+        brand.Created = DateTime.Now;
         await _context.AddAsync(brand);
     }
 
@@ -34,12 +34,22 @@ public class BrandRepository : IBrandRepository
     {
         var oldSeries = await GetById(brand.Id);
         oldSeries.Name = brand.Name;
+        oldSeries.LastModified = DateTime.Now;
     }
 
     #region query
     public async Task<List<Brand>> GetBrands()
     {
-        return await _context.Brands.ToListAsync();
+        try
+        {
+            return await _context.Brands
+            .Where(x => x.IsDeleted == false)
+            .ToListAsync();
+        }
+        catch
+        {
+            throw;
+        }
     }
 
     public async Task<Brand> GetById(int id)

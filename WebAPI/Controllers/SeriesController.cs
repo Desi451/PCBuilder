@@ -29,6 +29,13 @@ public class SeriesController : ControllerBase
         return Ok(res);
     }
 
+    [HttpGet("brandId/{id}")]
+    public async Task<IActionResult> GetByBrand(int id)
+    {
+        var res = await _service.GetByBrandId(id);
+        return Ok(res);
+    }
+
     [HttpPost("add")]
     public async Task<IActionResult> Create(AddSeriesDTO series)
     {

@@ -86,4 +86,10 @@ public class CPUService : ICPUService
         await _repo.DeleteSocket(id);
         await _saveData.Save();
     }
+
+    public async Task<List<SocketCpuDTO>> GetSocketsByBrandId(int id)
+    {
+        var res = await _repo.GetSocketsByBrandId(id);
+        return _mapper.Map<List<SocketCpuDTO>>(res);
+    }
 }

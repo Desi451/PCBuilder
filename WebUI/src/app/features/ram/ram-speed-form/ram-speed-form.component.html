@@ -1,0 +1,19 @@
+<h3 class="my-3">RAM speed form <i class="bi bi-memory"></i> </h3>
+
+<form [formGroup]="ramForm" (ngSubmit)="executeForm()">
+  <div class="row mx-auto">
+    <div class="col-md-4 my-2">
+      <input type="text" class="form-control" id="standard" formControlName="standard" placeholder="RAM standard">
+    </div>
+    <div class="col-md-4 my-2 ms-1">
+      <input type="number" class="form-control" id="freq" formControlName="freq" placeholder="RAM speed">
+    </div>
+  </div>
+
+  <div class="row mt-2 ms-1">
+    <div class="col-md-6">
+      <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
+      <button *ngIf="speed?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block ms-2">Delete</button>
+    </div>
+  </div>
+</form>

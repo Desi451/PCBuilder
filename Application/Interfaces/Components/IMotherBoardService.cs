@@ -1,11 +1,12 @@
 ﻿using Application.DTO.Components.Motherboard;
+using Application.DTO.Components.RAM;
 
 namespace Application.Interfaces.Components;
 
 public interface IMotherBoardService
 {
     public Task Add(AddMotherboardDTO mobo);
-    public Task Update(MotherboardDTO mobo);
+    public Task Update(UpdateMotherboardDTO mobo);
     public Task Delete(int id);
 
     //query
@@ -17,6 +18,6 @@ public interface IMotherBoardService
     public Task DeleteMemory(int id);
 
     //query
-    public Task<List<MotherboardMemoryDTO>> GetMemories(int id);
+    public Task<List<RamSpeedDTO>> GetMemories(int id);
     public Task<MotherboardMemoryDTO> GetMemoryById(int id);
 }
