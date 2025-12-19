@@ -1,4 +1,4 @@
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
@@ -12,23 +12,16 @@ import { FeaturesModule } from "./features/features.module";
 import { ComputerModule } from "./main/computer.module";
 import { UserModule } from "./user/user.module";
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FeaturesModule,
-    UserModule,
-    ToastrModule.forRoot(),
-    BrowserAnimationsModule,
-    ComputerModule,
-    HttpClientModule,
-    NgbModule,
-    FormsModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FeaturesModule,
+        UserModule,
+        ToastrModule.forRoot(),
+        BrowserAnimationsModule,
+        ComputerModule,
+        NgbModule,
+        FormsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
