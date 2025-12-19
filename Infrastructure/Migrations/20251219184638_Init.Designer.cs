@@ -12,15 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231226235451_userFix")]
-    partial class userFix
+    [Migration("20251219184638_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("ProductVersion", "10.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -36,17 +36,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -71,9 +65,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -92,9 +83,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<double>("MaxFreq")
                         .HasColumnType("float");
@@ -151,17 +139,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -191,9 +173,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<float>("Deepth")
                         .HasColumnType("real");
 
@@ -209,9 +188,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -248,11 +224,11 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Capacity")
                         .HasColumnType("float");
 
+                    b.Property<int?>("ComputerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -263,9 +239,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Model")
                         .IsRequired()
@@ -286,6 +259,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ComputerId");
+
                     b.HasIndex("SeriesId");
 
                     b.HasIndex("SlotInterfaceId");
@@ -304,11 +279,11 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Capacity")
                         .HasColumnType("float");
 
+                    b.Property<int?>("ComputerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -319,9 +294,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<int>("MaxRead")
                         .HasColumnType("int");
@@ -344,6 +316,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ComputerId");
 
                     b.HasIndex("SeriesId");
 
@@ -373,9 +347,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -389,9 +360,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<int>("Length")
                         .HasColumnType("int");
@@ -475,9 +443,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -487,9 +452,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<int>("M2Slots")
                         .HasColumnType("int");
@@ -505,20 +467,23 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("RamSlots")
+                        .HasColumnType("int");
+
                     b.Property<int>("SATASlots")
                         .HasColumnType("int");
 
                     b.Property<int>("SeriesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SocketCPUId")
+                    b.Property<int>("SocketCpuId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SeriesId");
 
-                    b.HasIndex("SocketCPUId");
+                    b.HasIndex("SocketCpuId");
 
                     b.ToTable("Motherboards");
                 });
@@ -537,9 +502,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -572,9 +534,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("MainConnPins")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -591,6 +550,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Power")
+                        .HasColumnType("int");
+
                     b.Property<int>("SeriesId")
                         .HasColumnType("int");
 
@@ -598,10 +560,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("maxPower")
-                        .HasColumnType("int");
-
-                    b.Property<string>("type")
+                    b.Property<string>("standard")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -626,9 +585,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -638,9 +594,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Latency")
                         .IsRequired()
@@ -683,9 +636,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<int>("Freq")
                         .HasColumnType("int");
 
@@ -695,9 +645,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("Standard")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -705,6 +652,113 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RamSpeeds");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Computer.Computer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CaseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CpuId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("GpuId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("MotherboardId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PsuId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RamMemoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseId");
+
+                    b.HasIndex("CpuId");
+
+                    b.HasIndex("GpuId");
+
+                    b.HasIndex("MotherboardId");
+
+                    b.HasIndex("PsuId");
+
+                    b.HasIndex("RamMemoryId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Computers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Computer.ComputerHdds", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ComputerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HddId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComputerId");
+
+                    b.HasIndex("HddId");
+
+                    b.ToTable("ComputerHdds");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Computer.ComputerSsds", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ComputerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SsdId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComputerId");
+
+                    b.HasIndex("SsdId");
+
+                    b.ToTable("ComputerSsds");
                 });
 
             modelBuilder.Entity("Domain.Entities.Rank", b =>
@@ -738,17 +792,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -772,17 +820,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -827,9 +869,6 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -837,14 +876,8 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsEmailConfirmed")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedBy")
-                        .HasColumnType("int");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -899,7 +932,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Series");
@@ -907,6 +940,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Components.Drives.Hdd", b =>
                 {
+                    b.HasOne("Domain.Entities.Computer.Computer", null)
+                        .WithMany("Drives")
+                        .HasForeignKey("ComputerId");
+
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
@@ -926,6 +963,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Components.Drives.Ssd", b =>
                 {
+                    b.HasOne("Domain.Entities.Computer.Computer", null)
+                        .WithMany("Ssds")
+                        .HasForeignKey("ComputerId");
+
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
@@ -991,7 +1032,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Components.CPU.SocketCPU", "SocketCPU")
                         .WithMany()
-                        .HasForeignKey("SocketCPUId")
+                        .HasForeignKey("SocketCpuId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1030,12 +1071,109 @@ namespace Infrastructure.Migrations
                     b.Navigation("series");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Computer.Computer", b =>
+                {
+                    b.HasOne("Domain.Entities.Components.Case.Case", "Case")
+                        .WithMany()
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.CPU.CPU", "Cpu")
+                        .WithMany()
+                        .HasForeignKey("CpuId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.GPU.GPU", "Gpu")
+                        .WithMany()
+                        .HasForeignKey("GpuId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.Motherboard.Motherboard", "Mobo")
+                        .WithMany()
+                        .HasForeignKey("MotherboardId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.PowerSupply", "Psu")
+                        .WithMany()
+                        .HasForeignKey("PsuId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.RamMemory.RamMemories", "RamMemory")
+                        .WithMany()
+                        .HasForeignKey("RamMemoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Case");
+
+                    b.Navigation("Cpu");
+
+                    b.Navigation("Gpu");
+
+                    b.Navigation("Mobo");
+
+                    b.Navigation("Psu");
+
+                    b.Navigation("RamMemory");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Computer.ComputerHdds", b =>
+                {
+                    b.HasOne("Domain.Entities.Computer.Computer", "Computer")
+                        .WithMany()
+                        .HasForeignKey("ComputerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.Drives.Hdd", "Hdd")
+                        .WithMany()
+                        .HasForeignKey("HddId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Computer");
+
+                    b.Navigation("Hdd");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Computer.ComputerSsds", b =>
+                {
+                    b.HasOne("Domain.Entities.Computer.Computer", "Computer")
+                        .WithMany()
+                        .HasForeignKey("ComputerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Components.Drives.Ssd", "Ssd")
+                        .WithMany()
+                        .HasForeignKey("SsdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Computer");
+
+                    b.Navigation("Ssd");
+                });
+
             modelBuilder.Entity("Domain.Entities.Series", b =>
                 {
                     b.HasOne("Domain.Entities.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Brand");
@@ -1074,6 +1212,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>
                 {
                     b.Navigation("Memories");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Computer.Computer", b =>
+                {
+                    b.Navigation("Drives");
+
+                    b.Navigation("Ssds");
                 });
 #pragma warning restore 612, 618
         }

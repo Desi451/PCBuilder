@@ -1,11 +1,9 @@
-﻿using Application.DTO.UserDTOs;
+﻿using System.Net;
 using Application.Service.Common;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Web.Http;
 
 namespace Infrastructure.Repositories;
 
@@ -50,7 +48,7 @@ public class UserRepository : IUserRepository
     public async Task Update(User user, int id)
     {
         var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        if(res != null)
+        if (res != null)
         {
             res.Login = user.Login;
             res.Email = user.Email;
@@ -63,7 +61,7 @@ public class UserRepository : IUserRepository
                 Content = new StringContent(string.Format("No user with ID = {0}", user.Id)),
                 ReasonPhrase = "Product ID Not Found"
             };
-            throw new HttpResponseException(resp);
+            throw new Exception();
         }
     }
 
@@ -80,7 +78,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetById(int id)
     {
         var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        if(res != null)
+        if (res != null)
         {
             res.Password = "";
             return res;
@@ -92,7 +90,7 @@ public class UserRepository : IUserRepository
                 Content = new StringContent(string.Format("No user with ID = {0}", id)),
                 ReasonPhrase = "Product ID Not Found"
             };
-            throw new HttpResponseException(resp);
+            throw new Exception();
         }
     }
 
