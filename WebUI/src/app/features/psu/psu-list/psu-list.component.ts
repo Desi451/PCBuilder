@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { PsuService } from "src/app/core/service/psu.service";
 import { psu } from "src/app/shared/models/psu.model";
@@ -6,7 +6,9 @@ import { psu } from "src/app/shared/models/psu.model";
 @Component({
   selector: 'app-psu-list',
   templateUrl: './psu-list.component.html',
-  styleUrls: ['./psu-list.component.scss']
+  styleUrls: ['./psu-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class PsuListComponent implements OnInit {
   list: psu[] = [];

@@ -1,8 +1,8 @@
 <H3> Graphic Cards </H3>
 
-<ng-container *ngIf="isDataLoaded">
+@if (isDataLoaded) {
   <app-uni-table [data]="cpuList"
-                 [columns]="[ 'memorySize', 'name','memoryType']"
-                 [formLink]="'gpu/form'"
-                 [viewLink]="'gpu/view'"></app-uni-table>
-</ng-container>
+    [columns]="[ 'memorySize', 'name','memoryType']"
+    [formLink]="'gpu/form'"
+  [viewLink]="'gpu/view'"></app-uni-table>
+}

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { brand } from "src/app/shared/models/brand.model";
@@ -6,7 +6,9 @@ import { brand } from "src/app/shared/models/brand.model";
 @Component({
   selector: 'app-brand-list',
   templateUrl: './brand-list.component.html',
-  styleUrls: ['./brand-list.component.scss']
+  styleUrls: ['./brand-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class BrandListComponent implements OnInit {

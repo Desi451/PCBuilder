@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -12,7 +12,9 @@ import { series } from "src/app/shared/models/series.model";
 @Component({
   selector: 'app-cpu-form',
   templateUrl: './cpu-form.component.html',
-  styleUrls: ['./cpu-form.component.scss']
+  styleUrls: ['./cpu-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 
 export class CpuFormComponent implements OnInit {

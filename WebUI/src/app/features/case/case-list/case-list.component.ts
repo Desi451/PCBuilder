@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { CaseService } from "src/app/core/service/case.service";
 import { casePc, CaseSizes } from "src/app/shared/models/case.model";
@@ -6,7 +6,9 @@ import { casePc, CaseSizes } from "src/app/shared/models/case.model";
 @Component({
   selector: 'app-case-list',
   templateUrl: './case-list.component.html',
-  styleUrls: ['./case-list.component.scss']
+  styleUrls: ['./case-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class CaseListComponent implements OnInit {
   caseList: casePc[] = [];

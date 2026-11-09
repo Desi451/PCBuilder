@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { MoboService } from "src/app/core/service/mobo.service";
 import { mobo } from "src/app/shared/models/mobo.model";
@@ -6,7 +6,9 @@ import { mobo } from "src/app/shared/models/mobo.model";
 @Component({
   selector: 'app-mobo-list',
   templateUrl: './mobo-list.component.html',
-  styleUrls: ['./mobo-list.component.scss']
+  styleUrls: ['./mobo-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class MoboListComponent implements OnInit {
   list: mobo[] = [];

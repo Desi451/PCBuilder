@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -8,7 +8,9 @@ import { addRam, ramSpeed } from "src/app/shared/models/ram.model";
 @Component({
   selector: 'app-ram-speed-form',
   templateUrl: './ram-speed-form.component.html',
-  styleUrls: ['./ram-speed-form.component.scss']
+  styleUrls: ['./ram-speed-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class RamSpeedFormComponent implements OnInit {
   ramForm!: FormGroup;

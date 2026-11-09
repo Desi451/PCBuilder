@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
@@ -9,7 +9,9 @@ import { series } from "src/app/shared/models/series.model";
 @Component({
   selector: 'app-brand-view',
   templateUrl: './brand-view.component.html',
-  styleUrls: ['./brand-view.component.scss']
+  styleUrls: ['./brand-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class BrandViewComponent implements OnInit {
   id: number;

@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { SeriesService } from "src/app/core/service/series.service";
@@ -7,7 +7,9 @@ import { addSeries, series } from "src/app/shared/models/series.model";
 @Component({
   selector: 'app-series-form',
   templateUrl: './series-form.component.html',
-  styleUrls: ['./series-form.component.scss']
+  styleUrls: ['./series-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SeriesFormComponent {
   seriesId: number;

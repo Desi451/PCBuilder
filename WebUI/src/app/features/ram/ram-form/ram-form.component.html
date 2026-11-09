@@ -17,21 +17,22 @@
 
     <div class="col-md-2">
       <div ngbDropdown
-           class="d-inline-block">
+        class="d-inline-block">
         <button type="button"
-                class="btn btn-outline-primary"
-                id="dropdownBrand"
-                ngbDropdownToggle>
+          class="btn btn-outline-primary"
+          id="dropdownBrand"
+          ngbDropdownToggle>
           Brand list
         </button>
         <div ngbDropdownMenu
-             aria-labelledby="dropdownBasic1">
-          <button type="button"
-                  *ngFor="let item of brandList"
-                  (click)="updateBrand(item)"
-                  ngbDropdownItem>
-            {{ item.name }}
-          </button>
+          aria-labelledby="dropdownBasic1">
+          @for (item of brandList; track item) {
+            <button type="button"
+              (click)="updateBrand(item)"
+              ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          }
         </div>
       </div>
       <div class="mx-3 my-2">
@@ -40,63 +41,75 @@
     </div>
     <div class="col-md-2">
       <div ngbDropdown
-           class="d-inline-block">
+        class="d-inline-block">
         <button class="btn btn-outline-primary"
-                id="dropdownSeries"
-                type="button"
-                ngbDropdownToggle
-                [attr.disabled]="enableSeries ? true : null">
+          id="dropdownSeries"
+          type="button"
+          ngbDropdownToggle
+          [attr.disabled]="enableSeries ? true : null">
           Series list
         </button>
         <div ngbDropdownMenu
-             aria-labelledby="dropdownBasic1">
-          <div *ngIf="seriesList && seriesList.length > 0">
-            <button type="button"
-                    *ngFor="let item of seriesList"
-                    (click)="updateSeries(item)"
-                    ngbDropdownItem>
-              {{ item.name }}
-            </button>
-          </div>
-          <div *ngIf="!seriesList || seriesList.length < 1">
-            <button type="button"
-                    ngbDropdownItem>no series</button>
-          </div>
+          aria-labelledby="dropdownBasic1">
+          @if (seriesList && seriesList.length > 0) {
+            <div>
+              @for (item of seriesList; track item) {
+                <button type="button"
+                  (click)="updateSeries(item)"
+                  ngbDropdownItem>
+                  {{ item.name }}
+                </button>
+              }
+            </div>
+          }
+          @if (!seriesList || seriesList.length < 1) {
+            <div>
+              <button type="button"
+              ngbDropdownItem>no series</button>
+            </div>
+          }
         </div>
       </div>
-      <div *ngIf="srs.name" class="mx-3 my-2">
-        <p>selected: {{ srs.name }}</p>
-      </div>
+      @if (srs.name) {
+        <div class="mx-3 my-2">
+          <p>selected: {{ srs.name }}</p>
+        </div>
+      }
     </div>
 
     <div class="col-md-2">
       <div ngbDropdown
-           class="d-inline-block">
+        class="d-inline-block">
         <button class="btn btn-outline-primary"
-                id="dropdownSeries"
-                type="button"
-                ngbDropdownToggle>
+          id="dropdownSeries"
+          type="button"
+          ngbDropdownToggle>
           Ram speed
         </button>
         <div ngbDropdownMenu
-             aria-labelledby="dropdownBasic1">
+          aria-labelledby="dropdownBasic1">
           <div>
-            <button type="button"
-                    *ngFor="let item of speedsList"
-                    (click)="updateSpeed(item)"
-                    ngbDropdownItem>
-              {{ item.standard }} {{item.freq}} Mhz
-            </button>
+            @for (item of speedsList; track item) {
+              <button type="button"
+                (click)="updateSpeed(item)"
+                ngbDropdownItem>
+                {{ item.standard }} {{item.freq}} Mhz
+              </button>
+            }
           </div>
-          <div *ngIf="!speedsList || speedsList.length < 1">
-            <button type="button"
-                    ngbDropdownItem>no items</button>
-          </div>
+          @if (!speedsList || speedsList.length < 1) {
+            <div>
+              <button type="button"
+              ngbDropdownItem>no items</button>
+            </div>
+          }
         </div>
       </div>
-      <div *ngIf="speed.freq" class="mx-3 my-2">
-        <p>selected: {{ speed.standard }} {{speed.freq}}</p>
-      </div>
+      @if (speed.freq) {
+        <div class="mx-3 my-2">
+          <p>selected: {{ speed.standard }} {{speed.freq}}</p>
+        </div>
+      }
     </div>
 
 
@@ -120,7 +133,9 @@
       <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
     </div>
     <div class="col-md-6">
-      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+      @if (res?.id) {
+        <button (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+      }
     </div>
   </div>
 </form>

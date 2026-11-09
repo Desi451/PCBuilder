@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { SlotService } from "src/app/core/service/slot.service";
@@ -7,7 +7,9 @@ import { addSlot, slot } from "src/app/shared/models/slot.model";
 @Component({
   selector: 'app-slot-from',
   templateUrl: './slot-form.component.html',
-  styleUrls: ['./slot-form.component.scss']
+  styleUrls: ['./slot-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SlotFormComponent implements OnInit {
 

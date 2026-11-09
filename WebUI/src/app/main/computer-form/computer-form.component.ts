@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -23,7 +23,9 @@ import { ssd } from "src/app/shared/models/ssd.model";
 @Component({
   selector: 'app-computer-form',
   templateUrl: './computer-form.component.html',
-  styleUrls: ['./computer-form.component.scss']
+  styleUrls: ['./computer-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class ComputerFormComponent implements OnInit {
 

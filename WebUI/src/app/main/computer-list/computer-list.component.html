@@ -1,8 +1,8 @@
 <h3 class="my-3">Computer list <i class="bi bi-pc-display"></i> </h3>
 
-<ng-container *ngIf="isDataLoaded">
+@if (isDataLoaded) {
   <app-uni-table [data]="computerList"
-                 [columns]="['ram','cpu', 'name']"
-                 [formLink]="'computer/form'"
-                 [viewLink]="'computer/view'"></app-uni-table>
-</ng-container>
+    [columns]="['ram','cpu', 'name']"
+    [formLink]="'computer/form'"
+  [viewLink]="'computer/view'"></app-uni-table>
+}

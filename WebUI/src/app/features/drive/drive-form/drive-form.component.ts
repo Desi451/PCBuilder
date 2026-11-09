@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -14,7 +14,9 @@ import { slot } from "src/app/shared/models/slot.model";
 @Component({
   selector: 'app-drive-from',
   templateUrl: './drive-form.component.html',
-  styleUrls: ['./drive-form.component.scss']
+  styleUrls: ['./drive-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class DriveFromComponent implements OnInit {
   hddForm!: FormGroup;

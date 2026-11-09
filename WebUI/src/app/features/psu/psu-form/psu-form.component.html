@@ -55,54 +55,59 @@
 
     <div class="col-md-3">
       <div ngbDropdown
-           class="d-inline-block">
+        class="d-inline-block">
         <button type="button"
-                class="btn btn-outline-primary"
-                id="dropdownApu"
-                ngbDropdownToggle>
+          class="btn btn-outline-primary"
+          id="dropdownApu"
+          ngbDropdownToggle>
           PFC
         </button>
         <div ngbDropdownMenu
-             aria-labelledby="dropdownPsu">
+          aria-labelledby="dropdownPsu">
           <button type="button"
-                  (click)="updatePfc(false)"
-                  class="dropdown-item">
+            (click)="updatePfc(false)"
+            class="dropdown-item">
             No
           </button>
           <button type="button"
-                  (click)="updatePfc(true)"
-                  class="dropdown-item">
+            (click)="updatePfc(true)"
+            class="dropdown-item">
             Yes
           </button>
         </div>
       </div>
 
-      <div *ngIf="res.hasPFC" class="mx-3 my-2">
-        <p>Selected: Yes</p>
-      </div>
-      <div *ngIf="!res.hasPFC" class="mx-3 my-2">
-        <p>Selected: No</p>
-      </div>
+      @if (res.hasPFC) {
+        <div class="mx-3 my-2">
+          <p>Selected: Yes</p>
+        </div>
+      }
+      @if (!res.hasPFC) {
+        <div class="mx-3 my-2">
+          <p>Selected: No</p>
+        </div>
+      }
     </div>
 
 
     <div class="col-md-3">
       <div ngbDropdown
-           class="d-inline-block">
+        class="d-inline-block">
         <button type="button"
-                class="btn btn-outline-primary"
-                id="dropdownBrand"
-                ngbDropdownToggle>
+          class="btn btn-outline-primary"
+          id="dropdownBrand"
+          ngbDropdownToggle>
           Brand list
         </button>
         <div ngbDropdownMenu
-             aria-labelledby="dropdownBasic1">
-          <button type="button"
-                  *ngFor="let item of brandList"
-                  (click)="updateBrand(item)"
-                  ngbDropdownItem>
-            {{ item.name }}
-          </button>
+          aria-labelledby="dropdownBasic1">
+          @for (item of brandList; track item) {
+            <button type="button"
+              (click)="updateBrand(item)"
+              ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          }
         </div>
       </div>
       <div class="mx-3 my-2">
@@ -111,33 +116,40 @@
     </div>
     <div class="col-md-4">
       <div ngbDropdown
-           class="d-inline-block">
+        class="d-inline-block">
         <button class="btn btn-outline-primary"
-                id="dropdownSeries"
-                type="button"
-                ngbDropdownToggle
-                [attr.disabled]="enableSeries ? true : null">
+          id="dropdownSeries"
+          type="button"
+          ngbDropdownToggle
+          [attr.disabled]="enableSeries ? true : null">
           Series list
         </button>
         <div ngbDropdownMenu
-             aria-labelledby="dropdownBasic1">
-          <div *ngIf="seriesList && seriesList.length > 0">
-            <button type="button"
-                    *ngFor="let item of seriesList"
-                    (click)="updateSeries(item)"
-                    ngbDropdownItem>
-              {{ item.name }}
-            </button>
-          </div>
-          <div *ngIf="!seriesList || seriesList.length < 1">
-            <button type="button"
-                    ngbDropdownItem>no series</button>
-          </div>
+          aria-labelledby="dropdownBasic1">
+          @if (seriesList && seriesList.length > 0) {
+            <div>
+              @for (item of seriesList; track item) {
+                <button type="button"
+                  (click)="updateSeries(item)"
+                  ngbDropdownItem>
+                  {{ item.name }}
+                </button>
+              }
+            </div>
+          }
+          @if (!seriesList || seriesList.length < 1) {
+            <div>
+              <button type="button"
+              ngbDropdownItem>no series</button>
+            </div>
+          }
         </div>
       </div>
-      <div *ngIf="srs.name" class="mx-3 my-2">
-        <p>selected: {{ srs.name }}</p>
-      </div>
+      @if (srs.name) {
+        <div class="mx-3 my-2">
+          <p>selected: {{ srs.name }}</p>
+        </div>
+      }
     </div>
   </div>
 
@@ -151,7 +163,9 @@
   <div class="row mt-2">
     <div class="col-md-6">
       <button type="submit" class="form-group btn btn-dark border border-primary btn-block me-2">Submit</button>
-      <button *ngIf="res?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+      @if (res?.id) {
+        <button (click)="delete(id)" class="btn btn-danger border border-secondary btn-block">Delete</button>
+      }
     </div>
   </div>
 </form>

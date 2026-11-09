@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
@@ -7,7 +7,9 @@ import { addBrand, brand } from "src/app/shared/models/brand.model";
 @Component({
   selector: 'app-brand-form',
   templateUrl: './brand-form.component.html',
-  styleUrls: ['./brand-form.component.scss']
+  styleUrls: ['./brand-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class BrandFormComponent implements OnInit {
 

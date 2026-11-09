@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
@@ -13,7 +13,9 @@ import { ssd } from "src/app/shared/models/ssd.model";
 @Component({
   selector: 'app-ssd-view',
   templateUrl: './ssd-view.component.html',
-  styleUrls: ['./ssd-view.component.scss']
+  styleUrls: ['./ssd-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SsdViewComponent implements OnInit {
   id: number;

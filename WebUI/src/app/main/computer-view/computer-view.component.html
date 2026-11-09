@@ -1,28 +1,32 @@
 
 <h3 class="my-3">Computer <i class="bi bi-pc-display"></i> </h3>
 
-  <div style="max-width: 600px" class="text-center rounded border border-2 border-primary mx-auto p-2">
-    <h2 class="my-3"> {{res.name}} </h2>
-    <p>CPU: {{res.cpu.name}}</p>
-    <p>Motherboard: {{res.mobo.name}}</p>
-    <p>RAM: {{res.ramMemory.name}} {{res.ramMemory.capacity}}GB</p>
-    <p>GPU: {{res.gpu.name}} {{res.gpu.memorySize}}GB {{res.gpu.memoryType}}</p>
-    <p class="text-center"> Selected Drives </p>
-    <div class="row">
+<div style="max-width: 600px" class="text-center rounded border border-2 border-primary mx-auto p-2">
+  <h2 class="my-3"> {{res.name}} </h2>
+  <p>CPU: {{res.cpu.name}}</p>
+  <p>Motherboard: {{res.mobo.name}}</p>
+  <p>RAM: {{res.ramMemory.name}} {{res.ramMemory.capacity}}GB</p>
+  <p>GPU: {{res.gpu.name}} {{res.gpu.memorySize}}GB {{res.gpu.memoryType}}</p>
+  <p class="text-center"> Selected Drives </p>
+  <div class="row">
 
-      <div class="col rounded border border-info ms-4 me-1 my-2">
-        <p class="text-center"> SSD </p>
-        <p *ngFor="let item of res.ssds"> {{item.name}} {{item.capacity}}GB</p>
+    <div class="col rounded border border-info ms-4 me-1 my-2">
+      <p class="text-center"> SSD </p>
+      @for (item of res.ssds; track item) {
+        <p> {{item.name}} {{item.capacity}}GB</p>
+      }
 
-      </div>
+    </div>
 
-      <div class="col rounded border border-info ms-1 me-4 my-2">
-        <p class="text-center"> HDD </p>
-        <p *ngFor="let item of res.drives"> {{item.name}} {{item.capacity}}GB</p>
+    <div class="col rounded border border-info ms-1 me-4 my-2">
+      <p class="text-center"> HDD </p>
+      @for (item of res.drives; track item) {
+        <p> {{item.name}} {{item.capacity}}GB</p>
+      }
 
-      </div>
+    </div>
 
     <p class="mt-1">PSU: {{res.psu.name}} {{res.psu.power}} WATT </p>
     <p>Case: {{res.case.name}}  Standard: {{getCaseSizeName(res.case.caseSizeId)}} </p>
-    </div>
   </div>
+</div>

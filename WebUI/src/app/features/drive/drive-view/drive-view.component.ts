@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -14,7 +14,9 @@ import { slot } from "src/app/shared/models/slot.model";
 @Component({
   selector: 'app-drive-view',
   templateUrl: './drive-view.component.html',
-  styleUrls: ['./drive-view.component.scss']
+  styleUrls: ['./drive-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class DriveViewComponent implements OnInit {
   id: number;

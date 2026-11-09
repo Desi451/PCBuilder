@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
@@ -11,7 +11,9 @@ import { series } from "src/app/shared/models/series.model";
 @Component({
   selector: 'app-case-view',
   templateUrl: './case-view.component.html',
-  styleUrls: ['./case-view.component.scss']
+  styleUrls: ['./case-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class CaseViewComponent implements OnInit {
 

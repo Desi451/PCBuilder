@@ -1,8 +1,8 @@
 <H3> PC Cases </H3>
 
-<ng-container *ngIf="isDataLoaded">
+@if (isDataLoaded) {
   <app-uni-table [data]="caseList"
-                 [columns]="['caseSize', 'name', 'model']"
-                 [formLink]="'case/form'"
-                 [viewLink]="'case/view'"></app-uni-table>
-</ng-container>
+    [columns]="['caseSize', 'name', 'model']"
+    [formLink]="'case/form'"
+  [viewLink]="'case/view'"></app-uni-table>
+}

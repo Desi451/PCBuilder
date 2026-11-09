@@ -7,5 +7,7 @@
   </div>
 
   <button (click)="executeForm()" type="submit" class="btn btn-dark my-2 border border-primary">Submit</button>
-  <button *ngIf="res.id != null" (click)="delete(res.id)" class="btn btn-danger m-2 border border-secondary">Delete</button>
+  @if (res.id != null) {
+    <button (click)="delete(res.id)" class="btn btn-danger m-2 border border-secondary">Delete</button>
+  }
 </form>

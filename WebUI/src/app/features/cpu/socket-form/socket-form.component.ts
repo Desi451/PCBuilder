@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
@@ -9,7 +9,9 @@ import { addSocketCpu, socketCpu } from "src/app/shared/models/cpu.model";
 @Component({
   selector: 'app-socket-form',
   templateUrl: './socket-form.component.html',
-  styleUrls: ['./socket-form.component.scss']
+  styleUrls: ['./socket-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SocketFormComponent {
   id: number;

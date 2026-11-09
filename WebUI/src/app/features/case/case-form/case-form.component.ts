@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -12,7 +12,9 @@ import { series } from "src/app/shared/models/series.model";
 @Component({
   selector: 'app-case-form',
   templateUrl: './case-form.component.html',
-  styleUrls: ['./case-form.component.scss']
+  styleUrls: ['./case-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class CaseFormComponent implements OnInit {
   id: number;

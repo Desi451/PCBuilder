@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -13,7 +13,9 @@ import { series } from "src/app/shared/models/series.model";
 @Component({
   selector: 'app-psu-view',
   templateUrl: './psu-view.component.html',
-  styleUrls: ['./psu-view.component.scss']
+  styleUrls: ['./psu-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class PsuViewComponent implements OnInit {
   id: number;

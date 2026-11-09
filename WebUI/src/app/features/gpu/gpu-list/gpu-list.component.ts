@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { GpuService } from "src/app/core/service/gpu.service";
 import { gpu } from "src/app/shared/models/gpu.model";
@@ -6,7 +6,9 @@ import { gpu } from "src/app/shared/models/gpu.model";
 @Component({
   selector: 'app-gpu-list',
   templateUrl: './gpu-list.component.html',
-  styleUrls: ['./gpu-list.component.scss']
+  styleUrls: ['./gpu-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class GpuListComponent implements OnInit {
   cpuList: gpu[] = [];

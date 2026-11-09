@@ -10,12 +10,12 @@
     <input type="password" id="passwordRepeat" class="form-control my-3" formControlName="passwordRepeat"  placeholder="repeat password"/>
   </div>
 
-      <button type="submit" class="form-group btn btn-dark border border-primary btn-block ms-4">Submit</button>
+  <button type="submit" class="form-group btn btn-dark border border-primary btn-block ms-4">Submit</button>
 </form>
 <h3 class="my-3">Your configurations <i class="bi bi-pc-display"></i> </h3>
-<ng-container *ngIf="isDataLoaded">
+@if (isDataLoaded) {
   <app-uni-table [data]="computerList"
-                 [columns]="['ram','cpu', 'name']"
-                 [formLink]="'computer/form'"
-                 [viewLink]="'computer/view'"></app-uni-table>
-</ng-container>
+    [columns]="['ram','cpu', 'name']"
+    [formLink]="'computer/form'"
+  [viewLink]="'computer/view'"></app-uni-table>
+}

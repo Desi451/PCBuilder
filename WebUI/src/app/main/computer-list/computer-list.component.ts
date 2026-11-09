@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { ComputerService } from "src/app/core/service/computer.service";
 import { CaseSizes } from "src/app/shared/models/case.model";
@@ -7,7 +7,9 @@ import { computerView } from "src/app/shared/models/computer.model";
 @Component({
   selector: 'app-computer-list',
   templateUrl: './computer-list.component.html',
-  styleUrls: ['./computer-list.component.scss']
+  styleUrls: ['./computer-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class ComputerListComponent implements OnInit {
   computerList: computerView[] = [];

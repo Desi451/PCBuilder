@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -14,7 +14,9 @@ import { addSsd, ssd } from "src/app/shared/models/ssd.model";
 @Component({
   selector: 'app-ssd-form',
   templateUrl: './ssd-form.component.html',
-  styleUrls: ['./ssd-form.component.scss']
+  styleUrls: ['./ssd-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SsdFormComponent implements OnInit {
   ssdForm!: FormGroup;

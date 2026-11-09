@@ -1,11 +1,13 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "src/app/core/auth/auth.service";
 
 @Component({
   selector: 'app-uni-table',
   templateUrl: './uni-table.component.html',
-  styleUrls: ['./uni-table.component.scss']
+  styleUrls: ['./uni-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class UniTableComponent implements OnInit {
   @Input() data!: any[];

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -17,7 +17,9 @@ import { series } from "src/app/shared/models/series.model";
 @Component({
   selector: 'app-mobo-view',
   templateUrl: './mobo-view.component.html',
-  styleUrls: ['./mobo-view.component.scss']
+  styleUrls: ['./mobo-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class MoboViewComponent implements OnInit {
   id: number;

@@ -4,26 +4,27 @@
   <div class="form-group row">
     <label class="my-1" for="brandName">CPU socket form</label>
     <div class="col">
-    <input type="text" class="form-control" id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Brand name">
+      <input type="text" class="form-control" id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Brand name">
     </div>
 
     <div class="col">
       <div ngbDropdown
-           class="d-inline-block">
+        class="d-inline-block">
         <button type="button"
-                class="btn btn-outline-primary"
-                id="dropdownBrand"
-                ngbDropdownToggle>
+          class="btn btn-outline-primary"
+          id="dropdownBrand"
+          ngbDropdownToggle>
           Brand list
         </button>
         <div ngbDropdownMenu
-             aria-labelledby="dropdownBasic1">
-          <button type="button"
-                  *ngFor="let item of brandList"
-                  (click)="updateBrand(item)"
-                  ngbDropdownItem>
-            {{ item.name }}
-          </button>
+          aria-labelledby="dropdownBasic1">
+          @for (item of brandList; track item) {
+            <button type="button"
+              (click)="updateBrand(item)"
+              ngbDropdownItem>
+              {{ item.name }}
+            </button>
+          }
         </div>
       </div>
       <div class="mx-3 my-2">
@@ -33,5 +34,7 @@
   </div>
 
   <button (click)="executeForm()" type="submit" class="btn btn-dark my-2 border border-primary">Submit</button>
-  <button *ngIf="res.id != null" (click)="delete(res.id)" class="btn btn-danger m-2 border border-secondary">Delete</button>
+  @if (res.id != null) {
+    <button (click)="delete(res.id)" class="btn btn-danger m-2 border border-secondary">Delete</button>
+  }
 </form>

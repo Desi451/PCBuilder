@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { SsdService } from "src/app/core/service/ssd.service";
 import { ssd } from "src/app/shared/models/ssd.model";
@@ -6,7 +6,9 @@ import { ssd } from "src/app/shared/models/ssd.model";
 @Component({
   selector: 'app-ssd-list',
   templateUrl: './ssd-list.component.html',
-  styleUrls: ['./ssd-list.component.scss']
+  styleUrls: ['./ssd-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SsdListComponent implements OnInit {
   list: ssd[] = [];

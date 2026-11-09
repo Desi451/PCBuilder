@@ -1,8 +1,8 @@
 <H1> {{brand.name}} </H1>
 
 <h5> Series for brand list:</h5>
-<ng-container *ngIf="isDataLoaded">
+@if (isDataLoaded) {
   <app-uni-table [data]="seriesList"
-                 [columns]="['id', 'name']"
-                 [formLink]="'series/form'"></app-uni-table>
-</ng-container>
+    [columns]="['id', 'name']"
+  [formLink]="'series/form'"></app-uni-table>
+}

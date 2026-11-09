@@ -13,7 +13,9 @@
   <div class="row mt-2 ms-1">
     <div class="col-md-6">
       <button type="submit" class="form-group btn btn-dark border border-primary btn-block">Submit</button>
-      <button *ngIf="speed?.id" (click)="delete(id)" class="btn btn-danger border border-secondary btn-block ms-2">Delete</button>
+      @if (speed?.id) {
+        <button (click)="delete(id)" class="btn btn-danger border border-secondary btn-block ms-2">Delete</button>
+      }
     </div>
   </div>
 </form>

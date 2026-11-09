@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { RamService } from "src/app/core/service/ram.service";
 import { ram, ramSpeed } from "src/app/shared/models/ram.model";
@@ -6,7 +6,9 @@ import { ram, ramSpeed } from "src/app/shared/models/ram.model";
 @Component({
   selector: 'app-ram-list',
   templateUrl: './ram-list.component.html',
-  styleUrls: ['./ram-list.component.scss']
+  styleUrls: ['./ram-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class RamListComponent implements OnInit {
   list: ram[] = [];

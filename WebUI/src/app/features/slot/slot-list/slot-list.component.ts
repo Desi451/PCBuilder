@@ -1,11 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { SlotService } from "src/app/core/service/slot.service";
 import { slot } from "src/app/shared/models/slot.model";
 
 @Component({
   selector: 'app-slot-list',
   templateUrl: './slot-list.component.html',
-  styleUrls: ['./slot-list.component.scss']
+  styleUrls: ['./slot-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: false
 })
 export class SlotListComponent implements OnInit {
   list: slot[] = [];
