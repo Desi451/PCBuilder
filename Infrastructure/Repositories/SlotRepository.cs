@@ -1,13 +1,8 @@
-﻿using Domain.Entities.Components.Case;
+﻿using Application.Service.Common;
 using Domain.Entities.Slots;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories;
 
@@ -22,8 +17,6 @@ public class SlotRepository : ISlotRepository
 
     public async Task Add(SlotInterface slot)
     {
-        slot.IsDeleted = false;
-        slot.Created = DateTime.Now;
         await _context.AddAsync(slot);
     }
 
@@ -43,20 +36,12 @@ public class SlotRepository : ISlotRepository
 
     public async Task<SlotInterface> GetById(int id)
     {
-        try
-        {
-            return await _context.SlotInterfaces.FirstOrDefaultAsync(x => x.Id == id);
-        }
-        catch
-        {
-            throw;
-        }
+        return await _context.SlotInterfaces.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task Update(SlotInterface slot)
     {
-        var oldSlot = await GetById(slot.Id);
+        var oldSlot = await GetById(slot.Id) ?? throw new NotFoundException($"No slot with ID = {slot.Id}");
         oldSlot.Name = slot.Name;
-        oldSlot.LastModified = DateTime.Now;
     }
 }

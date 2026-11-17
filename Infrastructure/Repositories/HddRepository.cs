@@ -1,7 +1,6 @@
 ﻿using Application.Service.Common;
 using Domain.Entities.Components.Drives;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,11 +15,9 @@ public class HddRepository : IHddRepository
         _context = context;
     }
 
-    public async Task Add(Hdd gpu)
+    public async Task Add(Hdd hdd)
     {
-        gpu.IsDeleted = false;
-        gpu.Created = DateTime.Now;
-        await _context.AddAsync(gpu);
+        await _context.AddAsync(hdd);
     }
 
     public async Task Delete(int id)
@@ -42,10 +39,16 @@ public class HddRepository : IHddRepository
         return await _context.Hdds.ToListAsync();
     }
 
-    public async Task Update(Hdd gpu)
+    public async Task Update(Hdd hdd)
     {
-        Hdd oldHdd = await GetById(gpu.Id);
-        Helper.CopyProperties(gpu, oldHdd);
-        oldHdd.LastModified = DateTime.Now;
+        Hdd oldHdd = await GetById(hdd.Id);
+        oldHdd.Name = hdd.Name;
+        oldHdd.Model = hdd.Model;
+        oldHdd.Description = hdd.Description;
+        oldHdd.Capacity = hdd.Capacity;
+        oldHdd.Rpm = hdd.Rpm;
+        oldHdd.Cache = hdd.Cache;
+        oldHdd.SlotInterfaceId = hdd.SlotInterfaceId;
+        oldHdd.SeriesId = hdd.SeriesId;
     }
 }

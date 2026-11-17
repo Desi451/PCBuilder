@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Components.RamMemory;
+﻿using Application.Service.Common;
+using Domain.Entities.Components.RamMemory;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +17,11 @@ public class RamMemoryRepository : IRamRepository
 
     public async Task Add(RamMemories ram)
     {
-        ram.IsDeleted = false;
-        ram.Created = DateTime.Now;
         await _context.AddAsync(ram);
     }
 
     public async Task AddSpeed(RamSpeed ram)
     {
-        ram.IsDeleted = false;
         await _context.AddAsync(ram);
     }
 
@@ -70,14 +67,21 @@ public class RamMemoryRepository : IRamRepository
 
     public async Task Update(RamMemories ram)
     {
-        var oldRam = await _context.RAMs.Where(r => r.Id == ram.Id).FirstOrDefaultAsync();
-        Helper.CopyProperties(ram, oldRam);
-        oldRam.LastModified = DateTime.Now;
+        var oldRam = await GetById(ram.Id) ?? throw new NotFoundException($"No RAM with ID = {ram.Id}");
+        oldRam.Name = ram.Name;
+        oldRam.Model = ram.Model;
+        oldRam.Capacity = ram.Capacity;
+        oldRam.NoELements = ram.NoELements;
+        oldRam.Description = ram.Description;
+        oldRam.Latency = ram.Latency;
+        oldRam.MemorySpeedId = ram.MemorySpeedId;
+        oldRam.SeriesId = ram.SeriesId;
     }
 
     public async Task UpdateSpeed(RamSpeed ram)
     {
-        var oldRam = await _context.RamSpeeds.Where(r => r.Id == ram.Id).FirstOrDefaultAsync();
-        Helper.CopyProperties(ram, oldRam);
+        var oldSpeed = await GetSpeedById(ram.Id) ?? throw new NotFoundException($"No RAM speed with ID = {ram.Id}");
+        oldSpeed.Standard = ram.Standard;
+        oldSpeed.Freq = ram.Freq;
     }
 }

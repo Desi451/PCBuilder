@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Service.Common;
+using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +17,6 @@ public class BrandRepository : IBrandRepository
 
     public async Task Add(Brand brand)
     {
-        brand.IsDeleted = false;
-        brand.Created = DateTime.Now;
         await _context.AddAsync(brand);
     }
 
@@ -32,36 +31,19 @@ public class BrandRepository : IBrandRepository
 
     public async  Task Update(Brand brand)
     {
-        var oldSeries = await GetById(brand.Id);
-        oldSeries.Name = brand.Name;
-        oldSeries.LastModified = DateTime.Now;
+        var oldBrand = await GetById(brand.Id) ?? throw new NotFoundException($"No brand with ID = {brand.Id}");
+        oldBrand.Name = brand.Name;
     }
 
     #region query
     public async Task<List<Brand>> GetBrands()
     {
-        try
-        {
-            return await _context.Brands
-            .Where(x => x.IsDeleted == false)
-            .ToListAsync();
-        }
-        catch
-        {
-            throw;
-        }
+        return await _context.Brands.AsNoTracking().ToListAsync();
     }
 
     public async Task<Brand> GetById(int id)
     {
-        try
-        {
-            return await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
-        }
-        catch
-        {
-            throw;
-        }
+        return await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
     }
     #endregion
 }

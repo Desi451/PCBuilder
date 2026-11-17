@@ -16,7 +16,6 @@ public class Motherboard : AuditableEntity
     public required int SATASlots { get; set; }
     public required int M2Slots { get; set; }
     public required int RamSlots { get; set; }
-    public required int CaseSizeId { get; set; }
     public required string Description { get; set; }
 
     public required CaseSize CaseSize { get; set; }

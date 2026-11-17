@@ -48,9 +48,9 @@ public class MappingProfile : Profile
 
         #region components
         //case
-        CreateMap<Case, CaseDTO>();
-        CreateMap<CaseDTO, Case>();
-        CreateMap<AddCaseDTO, Case>();
+        CreateMap<Case, CaseDTO>().ForMember(dest => dest.CaseSizeId, opt => opt.MapFrom(src => (int)src.CaseSize));
+        CreateMap<CaseDTO, Case>().ForMember(dest => dest.CaseSize, opt => opt.MapFrom(src => (CaseSize)src.CaseSizeId));
+        CreateMap<AddCaseDTO, Case>().ForMember(dest => dest.CaseSize, opt => opt.MapFrom(src => (CaseSize)src.CaseSizeId));
 
         //ram
         CreateMap<RamMemories, RamDTO>();
@@ -78,13 +78,24 @@ public class MappingProfile : Profile
         CreateMap<AddPowerSupplyDTO, PowerSupply>();
 
         //motherboard
-        CreateMap<Motherboard, MotherboardDTO>().ForMember(dest => dest.Memories, opt => opt.Ignore());
-        CreateMap<MotherboardDTO, Motherboard>().ForMember(dest => dest.Memories, opt => opt.Ignore());
-        CreateMap<AddMotherboardDTO, Motherboard>().ForMember(dest => dest.Memories, opt => opt.Ignore());
-        CreateMap<UpdateMotherboardDTO, Motherboard>().ForMember(dest => dest.Memories, opt => opt.Ignore());
+        CreateMap<Motherboard, MotherboardDTO>()
+            .ForMember(dest => dest.Memories, opt => opt.Ignore())
+            .ForMember(dest => dest.CaseSizeId, opt => opt.MapFrom(src => (int)src.CaseSize));
+        CreateMap<MotherboardDTO, Motherboard>()
+            .ForMember(dest => dest.Memories, opt => opt.Ignore())
+            .ForMember(dest => dest.CaseSize, opt => opt.MapFrom(src => (CaseSize)src.CaseSizeId));
+        CreateMap<AddMotherboardDTO, Motherboard>()
+            .ForMember(dest => dest.Memories, opt => opt.Ignore())
+            .ForMember(dest => dest.CaseSize, opt => opt.MapFrom(src => (CaseSize)src.CaseSizeId));
+        CreateMap<UpdateMotherboardDTO, Motherboard>()
+            .ForMember(dest => dest.Memories, opt => opt.Ignore())
+            .ForMember(dest => dest.CaseSize, opt => opt.MapFrom(src => (CaseSize)src.CaseSizeId));
 
         CreateMap<MotheboardMemory, MotherboardMemoryDTO>();
-        CreateMap<MotherboardMemoryDTO, MotheboardMemory>();
+        CreateMap<MotherboardMemoryDTO, MotheboardMemory>()
+            .ForMember(dest => dest.MemoryId, opt => opt.MapFrom(src => src.RamMemoryId))
+            .ForMember(dest => dest.Memory, opt => opt.Ignore())
+            .ForMember(dest => dest.Motherboard, opt => opt.Ignore());
         CreateMap<AddMotherboardMemoryDTO, MotheboardMemory>();
 
         //gpu

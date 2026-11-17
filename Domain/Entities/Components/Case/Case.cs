@@ -13,7 +13,6 @@ public class Case : AuditableEntity
     public required string Description { get; set; }
 
     //relations
-    public required int CaseSizeId { get; set; }
     public required int SeriesId { get; set; }
     public CaseSize CaseSize { get; set; }
     public Series Series { get; set; }

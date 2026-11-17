@@ -15,7 +15,7 @@ export class computer {
   isCompleted: boolean;
   caseId: number;
   cpuId: number;
-  gpuId: number
+  gpuId?: number | null;
   motherboardId: number;
   ramMemoryId: number;
   psuId: number;
@@ -32,7 +32,7 @@ export class computerForm {
   isCompleted: boolean;
   case: casePc;
   cpu: cpu;
-  gpu: gpu;
+  gpu?: gpu | null;
   mobo: mobo;
   ramMemory: ram;
   psu: psu;

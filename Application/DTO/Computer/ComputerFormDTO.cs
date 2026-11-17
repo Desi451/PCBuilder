@@ -19,7 +19,7 @@ public class ComputerFormDTO
     public MotherboardDTO Mobo { get; set; }
     public RamDTO RamMemory { get; set; }
     public PowerSupplyDTO Psu { get; set; }
-    public GpuDTO Gpu { get; set; }
+    public GpuDTO? Gpu { get; set; }
 
     public BrandDTO cpuBrand { get; set; }
 

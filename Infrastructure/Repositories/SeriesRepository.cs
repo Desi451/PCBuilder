@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Service.Common;
+using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
@@ -16,8 +17,6 @@ public class SeriesRepository : ISeriesRepository
 
     public async Task Add(Series series)
     {
-        series.IsDeleted = false;
-        series.Created = DateTime.Now;
         await _context.AddAsync(series);
     }
 
@@ -32,9 +31,8 @@ public class SeriesRepository : ISeriesRepository
 
     public async Task Update(Series series)
     {
-        var oldSeries = await GetById(series.Id);
+        var oldSeries = await GetById(series.Id) ?? throw new NotFoundException($"No series with ID = {series.Id}");
         oldSeries.Name = series.Name;
-        oldSeries.LastModified = DateTime.Now;
     }
 
     #region query

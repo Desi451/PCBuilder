@@ -1,7 +1,7 @@
 ﻿
 namespace Domain.Common;
 
-public abstract class AuditableEntity
+public abstract class AuditableEntity : IAuditable
 {
     public DateTime Created { get; set; }
     public DateTime? LastModified { get; set; }

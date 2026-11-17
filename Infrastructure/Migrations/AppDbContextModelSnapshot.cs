@@ -164,9 +164,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("CaseSize")
                         .HasColumnType("int");
 
-                    b.Property<int>("CaseSizeId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -221,9 +218,6 @@ namespace Infrastructure.Migrations
                     b.Property<double>("Capacity")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ComputerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -256,8 +250,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ComputerId");
-
                     b.HasIndex("SeriesId");
 
                     b.HasIndex("SlotInterfaceId");
@@ -275,9 +267,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<double>("Capacity")
                         .HasColumnType("float");
-
-                    b.Property<int?>("ComputerId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -313,8 +302,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ComputerId");
 
                     b.HasIndex("SeriesId");
 
@@ -414,7 +401,8 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("MemoryId");
 
-                    b.HasIndex("MotherBoardId");
+                    b.HasIndex("MotherBoardId", "MemoryId")
+                        .IsUnique();
 
                     b.ToTable("MotherboardMemories");
                 });
@@ -428,9 +416,6 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CaseSize")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CaseSizeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Chipset")
@@ -668,7 +653,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GpuId")
+                    b.Property<int?>("GpuId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -728,9 +713,10 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ComputerId");
-
                     b.HasIndex("HddId");
+
+                    b.HasIndex("ComputerId", "HddId")
+                        .IsUnique();
 
                     b.ToTable("ComputerHdds");
                 });
@@ -751,9 +737,10 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ComputerId");
-
                     b.HasIndex("SsdId");
+
+                    b.HasIndex("ComputerId", "SsdId")
+                        .IsUnique();
 
                     b.ToTable("ComputerSsds");
                 });
@@ -863,7 +850,8 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("GpuId");
 
-                    b.HasIndex("SlotId");
+                    b.HasIndex("SlotId", "GpuId")
+                        .IsUnique();
 
                     b.ToTable("SlotGpus");
                 });
@@ -1055,13 +1043,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Components.CPU.SocketCPU", "SocketCPU")
                         .WithMany()
                         .HasForeignKey("SocketCpuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Series");
@@ -1093,20 +1081,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Components.Drives.Hdd", b =>
                 {
-                    b.HasOne("Domain.Entities.Computer.Computer", null)
-                        .WithMany("Drives")
-                        .HasForeignKey("ComputerId");
-
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Slots.SlotInterface", "Slot")
                         .WithMany()
                         .HasForeignKey("SlotInterfaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Series");
@@ -1116,20 +1100,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Components.Drives.Ssd", b =>
                 {
-                    b.HasOne("Domain.Entities.Computer.Computer", null)
-                        .WithMany("Ssds")
-                        .HasForeignKey("ComputerId");
-
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Slots.SlotInterface", "Slot")
                         .WithMany()
                         .HasForeignKey("SlotInterfaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Series");
@@ -1148,7 +1128,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ChipsetSeries");
@@ -1161,7 +1141,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Components.RamMemory.RamSpeed", "Memory")
                         .WithMany()
                         .HasForeignKey("MemoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Components.Motherboard.Motherboard", "Motherboard")
@@ -1180,13 +1160,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Components.CPU.SocketCPU", "SocketCPU")
                         .WithMany()
                         .HasForeignKey("SocketCpuId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Series");
@@ -1199,7 +1179,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Series", "Series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Series");
@@ -1210,13 +1190,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Components.RamMemory.RamSpeed", "MemorySpeed")
                         .WithMany()
                         .HasForeignKey("MemorySpeedId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Series", "series")
                         .WithMany()
                         .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("MemorySpeed");
@@ -1241,8 +1221,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Components.GPU.GPU", "Gpu")
                         .WithMany()
                         .HasForeignKey("GpuId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.Components.Motherboard.Motherboard", "Mobo")
                         .WithMany()
@@ -1294,7 +1273,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Components.Drives.Hdd", "Hdd")
                         .WithMany()
                         .HasForeignKey("HddId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Computer");
@@ -1313,7 +1292,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Components.Drives.Ssd", "Ssd")
                         .WithMany()
                         .HasForeignKey("SsdId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Computer");
@@ -1343,7 +1322,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.Slots.SlotInterface", "Slot")
                         .WithMany()
                         .HasForeignKey("SlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Gpu");
@@ -1405,13 +1384,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Components.Motherboard.Motherboard", b =>
                 {
                     b.Navigation("Memories");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Computer.Computer", b =>
-                {
-                    b.Navigation("Drives");
-
-                    b.Navigation("Ssds");
                 });
 #pragma warning restore 612, 618
         }

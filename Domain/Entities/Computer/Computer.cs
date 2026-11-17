@@ -20,7 +20,7 @@ public class Computer : AuditableEntity
     public required int MotherboardId { get; set; }
     public required int RamMemoryId { get; set; }
     public required int PsuId { get; set; }
-    public int GpuId { get; set; }
+    public int? GpuId { get; set; }
 
 
     public User User { get; set; }
@@ -29,7 +29,7 @@ public class Computer : AuditableEntity
     public Motherboard Mobo { get; set; }
     public RamMemories RamMemory { get; set; }
     public PowerSupply Psu { get; set; }
-    public GPU Gpu { get; set; }
+    public GPU? Gpu { get; set; }
 
     public List<Hdd> Drives { get; set; }
     public List<Ssd> Ssds { get; set; }

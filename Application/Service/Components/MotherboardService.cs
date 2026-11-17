@@ -1,6 +1,7 @@
 ﻿using Application.DTO.Components.Motherboard;
 using Application.DTO.Components.RAM;
 using Application.Interfaces.Components;
+using Application.Service.Common;
 using AutoMapper;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
@@ -29,16 +30,14 @@ public class MotherboardService : IMotherBoardService
     {
         var res = _mapper.Map<Motherboard>(mobo);
         await _repo.Add(res);
-        await _saveData.Save();
-        foreach(var item in mobo.Memories)
+        foreach (var memoryId in mobo.Memories.Select(x => x.Id).Distinct())
         {
-            MotheboardMemory mem = new MotheboardMemory();
-            var ram = await _ramRepository.GetSpeedById(item.Id);
-            mem.Memory = ram;
-            mem.MemoryId = ram.Id;
-            mem.Motherboard = res;
-            mem.MotherBoardId = res.Id;
-            await _repo.AddMemory(mem);
+            var ram = await _ramRepository.GetSpeedById(memoryId) ?? throw new AppException($"No RAM speed with ID = {memoryId}");
+            await _repo.AddMemory(new MotheboardMemory
+            {
+                Memory = ram,
+                Motherboard = res
+            });
         }
         await _saveData.Save();
     }
@@ -53,7 +52,6 @@ public class MotherboardService : IMotherBoardService
     public async Task Delete(int id)
     {
         await _repo.Delete(id);
-        await _repo.DeleteMemory(id);
         await _saveData.Save();
     }
 
@@ -65,7 +63,7 @@ public class MotherboardService : IMotherBoardService
 
     public async Task<MotherboardDTO> GetById(int id)
     {
-        var res = await _repo.GetById(id);
+        var res = await _repo.GetById(id) ?? throw new NotFoundException($"No motherboard with ID = {id}");
         var mobo = _mapper.Map<MotherboardDTO>(res);
         mobo.Memories = await GetMemories(id);
         return mobo;
@@ -78,6 +76,11 @@ public class MotherboardService : IMotherBoardService
         foreach (var mem in res)
         {
             var item = await _ramRepository.GetSpeedById(mem.MemoryId);
+            if (item is null)
+            {
+                continue;
+            }
+
             var speed = _mapper.Map<RamSpeedDTO>(item);
             memories.Add(speed);
         }

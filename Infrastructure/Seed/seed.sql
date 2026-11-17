@@ -11,7 +11,7 @@ BEGIN TRANSACTION;
 IF EXISTS (SELECT 1 FROM [AspNetRoles]) OR EXISTS (SELECT 1 FROM [Brands]) OR EXISTS (SELECT 1 FROM [AspNetUsers]) OR EXISTS (SELECT 1 FROM [CPUs])
     THROW 50000, 'Seed aborted: the database already contains data.', 1;
 
-DECLARE @now datetime2 = SYSDATETIME();
+DECLARE @now datetime2 = SYSUTCDATETIME();
 
 -- AspNetRoles
 SET IDENTITY_INSERT [AspNetRoles] ON;
@@ -164,14 +164,14 @@ SET IDENTITY_INSERT [RAMs] OFF;
 
 -- Motherboards
 SET IDENTITY_INSERT [Motherboards] ON;
-INSERT INTO [Motherboards] (Id, Name, Model, SeriesId, SocketCpuId, Chipset, MaxMemory, SATASlots, M2Slots, RamSlots, CaseSizeId, CaseSize, Description, Created, IsDeleted, LastModified) VALUES
-    (1, N'MSI MAG B550 TOMAHAWK', N'MAG B550 TOMAHAWK', 16, 2, N'B550', 128, 6, 2, 4, 1, 1, N'ATX board for AM4 with DDR4 support.', @now, 0, NULL),
-    (2, N'ASUS TUF GAMING B550-PLUS', N'TUF GAMING B550-PLUS', 12, 2, N'B550', 128, 6, 2, 4, 1, 1, N'ATX board for AM4 with DDR4 support.', @now, 0, NULL),
-    (3, N'ASUS ROG STRIX B550-I GAMING', N'ROG STRIX B550-I GAMING', 13, 2, N'B550', 64, 4, 2, 2, 3, 3, N'Mini-ITX board for AM4 with DDR4 support.', @now, 0, NULL),
-    (4, N'ASUS ROG STRIX B650-A GAMING WIFI', N'ROG STRIX B650-A GAMING WIFI', 13, 3, N'B650', 192, 4, 3, 4, 1, 1, N'ATX board for AM5 with DDR5 support.', @now, 0, NULL),
-    (5, N'Gigabyte B650M DS3H', N'B650M DS3H', 19, 3, N'B650', 192, 4, 2, 4, 2, 2, N'Micro-ATX board for AM5 with DDR5 support.', @now, 0, NULL),
-    (6, N'ASUS PRIME B760M-A D4', N'PRIME B760M-A D4', 15, 1, N'B760', 128, 4, 2, 4, 2, 2, N'Micro-ATX board for LGA1700 with DDR4 support.', @now, 0, NULL),
-    (7, N'MSI MAG B760 TOMAHAWK WIFI DDR4', N'MAG B760 TOMAHAWK WIFI DDR4', 16, 1, N'B760', 128, 4, 3, 4, 1, 1, N'ATX board for LGA1700 with DDR4 support.', @now, 0, NULL);
+INSERT INTO [Motherboards] (Id, Name, Model, SeriesId, SocketCpuId, Chipset, MaxMemory, SATASlots, M2Slots, RamSlots, CaseSize, Description, Created, IsDeleted, LastModified) VALUES
+    (1, N'MSI MAG B550 TOMAHAWK', N'MAG B550 TOMAHAWK', 16, 2, N'B550', 128, 6, 2, 4, 1, N'ATX board for AM4 with DDR4 support.', @now, 0, NULL),
+    (2, N'ASUS TUF GAMING B550-PLUS', N'TUF GAMING B550-PLUS', 12, 2, N'B550', 128, 6, 2, 4, 1, N'ATX board for AM4 with DDR4 support.', @now, 0, NULL),
+    (3, N'ASUS ROG STRIX B550-I GAMING', N'ROG STRIX B550-I GAMING', 13, 2, N'B550', 64, 4, 2, 2, 3, N'Mini-ITX board for AM4 with DDR4 support.', @now, 0, NULL),
+    (4, N'ASUS ROG STRIX B650-A GAMING WIFI', N'ROG STRIX B650-A GAMING WIFI', 13, 3, N'B650', 192, 4, 3, 4, 1, N'ATX board for AM5 with DDR5 support.', @now, 0, NULL),
+    (5, N'Gigabyte B650M DS3H', N'B650M DS3H', 19, 3, N'B650', 192, 4, 2, 4, 2, N'Micro-ATX board for AM5 with DDR5 support.', @now, 0, NULL),
+    (6, N'ASUS PRIME B760M-A D4', N'PRIME B760M-A D4', 15, 1, N'B760', 128, 4, 2, 4, 2, N'Micro-ATX board for LGA1700 with DDR4 support.', @now, 0, NULL),
+    (7, N'MSI MAG B760 TOMAHAWK WIFI DDR4', N'MAG B760 TOMAHAWK WIFI DDR4', 16, 1, N'B760', 128, 4, 3, 4, 1, N'ATX board for LGA1700 with DDR4 support.', @now, 0, NULL);
 SET IDENTITY_INSERT [Motherboards] OFF;
 
 -- MotherboardMemories
@@ -204,14 +204,14 @@ INSERT INTO [MotherboardMemories] (MemoryId, MotherBoardId) VALUES
 
 -- Cases
 SET IDENTITY_INSERT [Cases] ON;
-INSERT INTO [Cases] (Id, Name, Model, Height, Width, Deepth, CaseSizeId, CaseSize, SeriesId, Description, Created, IsDeleted, LastModified) VALUES
-    (1, N'NZXT H510', N'CA-H510B-B1', 460, 210, 428, 1, 1, 41, N'Compact ATX mid tower.', @now, 0, NULL),
-    (2, N'Fractal Design Meshify C', N'FD-CA-MESH-C-BKO', 440, 212, 453, 1, 1, 42, N'Compact ATX mid tower with a mesh front panel.', @now, 0, NULL),
-    (3, N'Corsair 4000D Airflow', N'CC-9011200-WW', 453, 230, 466, 1, 1, 26, N'ATX mid tower focused on airflow.', @now, 0, NULL),
-    (4, N'Cooler Master MasterBox NR200P', N'MCB-NR200P-KGNN-S00', 376, 185, 292, 3, 3, 45, N'Small form factor Mini-ITX case.', @now, 0, NULL),
-    (5, N'be quiet! Pure Base 500', N'BG034', 463, 231, 450, 1, 1, 43, N'Quiet ATX mid tower.', @now, 0, NULL),
-    (6, N'Lian Li O11 Dynamic EVO', N'O11DEX', 465, 285, 459, 0, 0, 48, N'Dual-chamber E-ATX mid tower.', @now, 0, NULL),
-    (7, N'Cooler Master MasterBox Q300L', N'MCB-Q300L-KANN-S00', 404, 230, 387, 2, 2, 45, N'Compact Micro-ATX case.', @now, 0, NULL);
+INSERT INTO [Cases] (Id, Name, Model, Height, Width, Deepth, CaseSize, SeriesId, Description, Created, IsDeleted, LastModified) VALUES
+    (1, N'NZXT H510', N'CA-H510B-B1', 460, 210, 428, 1, 41, N'Compact ATX mid tower.', @now, 0, NULL),
+    (2, N'Fractal Design Meshify C', N'FD-CA-MESH-C-BKO', 440, 212, 453, 1, 42, N'Compact ATX mid tower with a mesh front panel.', @now, 0, NULL),
+    (3, N'Corsair 4000D Airflow', N'CC-9011200-WW', 453, 230, 466, 1, 26, N'ATX mid tower focused on airflow.', @now, 0, NULL),
+    (4, N'Cooler Master MasterBox NR200P', N'MCB-NR200P-KGNN-S00', 376, 185, 292, 3, 45, N'Small form factor Mini-ITX case.', @now, 0, NULL),
+    (5, N'be quiet! Pure Base 500', N'BG034', 463, 231, 450, 1, 43, N'Quiet ATX mid tower.', @now, 0, NULL),
+    (6, N'Lian Li O11 Dynamic EVO', N'O11DEX', 465, 285, 459, 0, 48, N'Dual-chamber E-ATX mid tower.', @now, 0, NULL),
+    (7, N'Cooler Master MasterBox Q300L', N'MCB-Q300L-KANN-S00', 404, 230, 387, 2, 45, N'Compact Micro-ATX case.', @now, 0, NULL);
 SET IDENTITY_INSERT [Cases] OFF;
 
 -- PSUs
@@ -280,9 +280,9 @@ SET IDENTITY_INSERT [Ssds] OFF;
 -- AspNetUsers
 SET IDENTITY_INSERT [AspNetUsers] ON;
 INSERT INTO [AspNetUsers] (Id, UserName, NormalizedUserName, Email, NormalizedEmail, EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount, Created, IsDeleted, LastModified) VALUES
-    (1, N'headadmin', N'HEADADMIN', N'headadmin@pcbuilder.local', N'HEADADMIN@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEMnijNbxamOa97JSFX63nfogRAOPFHzGoJ6zNALyjvSWC7u+G6MwjXsLe95NIhc7/g==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, 0, @now, 0, NULL),
-    (2, N'admin', N'ADMIN', N'admin@pcbuilder.local', N'ADMIN@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEC1oKpfs1sI5hO6FNVSgGaiZTnUpI/XJtvNSVNkczdCBOZV2VDAJiMDE33Ek3FSo1g==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, 0, @now, 0, NULL),
-    (3, N'user', N'USER', N'user@pcbuilder.local', N'USER@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEEdQBJr61X+4R0L8fIRhDLwMSnz6ondLtlNQZvwAydCwWExXd3Jn1FW5ZhBHI4ph8A==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, 0, @now, 0, NULL);
+    (1, N'headadmin', N'HEADADMIN', N'headadmin@pcbuilder.local', N'HEADADMIN@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEMnijNbxamOa97JSFX63nfogRAOPFHzGoJ6zNALyjvSWC7u+G6MwjXsLe95NIhc7/g==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, @now, 0, NULL),
+    (2, N'admin', N'ADMIN', N'admin@pcbuilder.local', N'ADMIN@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEC1oKpfs1sI5hO6FNVSgGaiZTnUpI/XJtvNSVNkczdCBOZV2VDAJiMDE33Ek3FSo1g==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, @now, 0, NULL),
+    (3, N'user', N'USER', N'user@pcbuilder.local', N'USER@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEEdQBJr61X+4R0L8fIRhDLwMSnz6ondLtlNQZvwAydCwWExXd3Jn1FW5ZhBHI4ph8A==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, @now, 0, NULL);
 SET IDENTITY_INSERT [AspNetUsers] OFF;
 
 -- AspNetUserRoles

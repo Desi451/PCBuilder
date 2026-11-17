@@ -1,7 +1,6 @@
 ﻿using Application.Service.Common;
 using Domain.Entities.Components.Drives;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +17,6 @@ public class SsdRepository : ISsdRepository
 
     public async Task Add(Ssd ssd)
     {
-        ssd.IsDeleted = false;
-        ssd.Created = DateTime.Now;
         await _context.AddAsync(ssd);
     }
 
@@ -45,7 +42,13 @@ public class SsdRepository : ISsdRepository
     public async Task Update(Ssd ssd)
     {
         Ssd oldSsd = await GetById(ssd.Id);
-        Helper.CopyProperties(ssd, oldSsd);
-        oldSsd.LastModified = DateTime.Now;
+        oldSsd.Name = ssd.Name;
+        oldSsd.Model = ssd.Model;
+        oldSsd.Description = ssd.Description;
+        oldSsd.Capacity = ssd.Capacity;
+        oldSsd.MaxRead = ssd.MaxRead;
+        oldSsd.MaxWrite = ssd.MaxWrite;
+        oldSsd.SlotInterfaceId = ssd.SlotInterfaceId;
+        oldSsd.SeriesId = ssd.SeriesId;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Service.Common;
+using Domain.Entities;
 using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
@@ -7,7 +8,6 @@ using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 using Domain.Entities.Computer;
 using Domain.Interfaces.Repository;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,33 +25,9 @@ public class ComputerRepository : IComputerRepository
 
     public async Task Add(Computer computer, List<Hdd> Hdds, List<Ssd> Ssds)
     {
-        computer.IsDeleted = false;
-        computer.Created = DateTime.Now;
-        _context.Add(computer);
-
-        await _context.SaveChangesAsync();
-
-        foreach (var i in Hdds)
-        {
-            ComputerHdds item = new ComputerHdds
-            {
-                ComputerId = computer.Id,
-                HddId = i.Id
-            };
-
-            await AddHdd(item);
-        }
-
-        foreach (var i in Ssds)
-        {
-            ComputerSsds item = new ComputerSsds
-            {
-                ComputerId = computer.Id,
-                SsdId = i.Id
-            };
-
-            await AddSsd(item);
-        }
+        await _context.Computers.AddAsync(computer);
+        await SyncHdds(computer, Hdds.Select(hdd => hdd.Id).ToList());
+        await SyncSsds(computer, Ssds.Select(ssd => ssd.Id).ToList());
     }
 
     public async Task Delete(int id)
@@ -71,56 +47,48 @@ public class ComputerRepository : IComputerRepository
 
     public async Task<List<Computer>> GetComputersView()
     {
-        var computer = await _context.Computers
-        .Include(c => c.Case)
-        .Include(c => c.Cpu)
-        .Include(c => c.RamMemory)
-        .ToListAsync();
-
-        return computer;
+        return await QueryComputersWithComponents()
+            .Include(c => c.Cpu)
+            .Include(c => c.RamMemory)
+            .ToListAsync();
     }
 
     public async Task<List<Computer>> GetComputersViewByUser(int id)
     {
-        var computer = await _context.Computers
-            .Include(c => c.Case)
+        return await QueryComputersWithComponents()
             .Include(c => c.Cpu)
             .Include(c => c.RamMemory)
             .Where(x => x.UserId == id)
             .ToListAsync();
-
-        return computer;
     }
 
     public async Task<Computer> GetFullDataById(int id)
     {
-        var computer = await _context.Computers
-        .Include(c => c.Case)
-        .Include(c => c.Cpu)
-        .Include(c => c.Mobo)
-        .Include(c => c.RamMemory)
-        .Include(c => c.Psu)
-        .Include(c => c.Gpu)
-        .FirstOrDefaultAsync(x => x.Id == id);
+        var computer = await QueryComputersWithComponents()
+            .Include(c => c.Case)
+            .Include(c => c.Cpu)
+                .ThenInclude(cpu => cpu.Series)
+                .ThenInclude(series => series.Brand)
+            .Include(c => c.Mobo)
+            .Include(c => c.RamMemory)
+            .Include(c => c.Psu)
+            .Include(c => c.Gpu)
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         if (computer != null)
         {
             computer.Drives = await _context.ComputerHdds
-                .Where(ch => ch.ComputerId == id)
-                .Join(
-                    _context.Hdds,
-                    computerHdd => computerHdd.HddId,
-                    hdd => hdd.Id,
-                    (computerHdd, hdd) => hdd)
+                .IgnoreQueryFilters()
+                .AsNoTracking()
+                .Where(link => link.ComputerId == id)
+                .Select(link => link.Hdd!)
                 .ToListAsync();
 
             computer.Ssds = await _context.ComputerSsds
-                .Where(cssd => cssd.ComputerId == id)
-                .Join(
-                    _context.Ssds,
-                    computerSsd => computerSsd.SsdId,
-                    ssd => ssd.Id,
-                    (computerSsd, ssd) => ssd)
+                .IgnoreQueryFilters()
+                .AsNoTracking()
+                .Where(link => link.ComputerId == id)
+                .Select(link => link.Ssd!)
                 .ToListAsync();
         }
 
@@ -129,71 +97,23 @@ public class ComputerRepository : IComputerRepository
 
     public async Task<List<Computer>> GetComputers()
     {
-        var res = await _context.Computers
-            .Where(x => x.IsDeleted == false)
-            .ToListAsync();
-        return res;
+        return await _context.Computers.AsNoTracking().ToListAsync();
     }
 
     public async Task Update(Computer computer, List<Hdd> Hdds, List<Ssd> Ssds)
     {
-        var res = await GetById(computer.Id);
+        var res = await GetById(computer.Id) ?? throw new NotFoundException($"No computer with ID = {computer.Id}");
 
-        Helper.CopyProperties(computer, res);
-        res.LastModified = DateTime.Now;
-        var oldHdds = await _context.ComputerHdds
-            .Where(x => x.ComputerId == computer.Id)
-            .Select(x => x.HddId)
-            .ToListAsync();
+        res.Name = computer.Name;
+        res.CaseId = computer.CaseId;
+        res.CpuId = computer.CpuId;
+        res.MotherboardId = computer.MotherboardId;
+        res.RamMemoryId = computer.RamMemoryId;
+        res.PsuId = computer.PsuId;
+        res.GpuId = computer.GpuId;
 
-        var newHddsInOld = Hdds.Select(hdd => hdd.Id).Except(oldHdds).ToList();
-
-        foreach (var ramId in newHddsInOld)
-        {
-            ComputerHdds item = new ComputerHdds
-            {
-                ComputerId = computer.Id,
-                HddId = ramId
-            };
-
-            await AddHdd(item);
-        }
-
-        var oldHddsNotInHdds = oldHdds.Except(Hdds.Select(hdd => hdd.Id)).ToList();
-
-        var hddsToRemove = await _context.ComputerHdds
-            .Where(x => x.ComputerId == computer.Id && oldHddsNotInHdds.Contains(x.HddId))
-            .ToListAsync();
-
-        _context.ComputerHdds.RemoveRange(hddsToRemove);
-
-        var oldSsds = await _context.ComputerSsds
-       .Where(x => x.ComputerId == computer.Id)
-       .Select(x => x.SsdId)
-       .ToListAsync();
-
-        var  newSsdsNotInOld = Hdds.Select(ssd => ssd.Id).Except(oldSsds).ToList();
-
-        foreach (var ssdId in newSsdsNotInOld)
-        {
-            ComputerSsds item = new ComputerSsds
-            {
-                ComputerId = computer.Id,
-                SsdId = ssdId
-            };
-
-            await AddSsd(item);
-        }
-
-        var oldSsdsNotInSsd = oldSsds.Except(Ssds.Select(ssd => ssd.Id)).ToList();
-
-        var memoriesToRemove = await _context.ComputerSsds
-            .Where(x => x.ComputerId == computer.Id && oldSsdsNotInSsd.Contains(x.SsdId))
-            .ToListAsync();
-
-        _context.ComputerSsds.RemoveRange(memoriesToRemove);
-        
-        await _context.SaveChangesAsync();
+        await SyncHdds(res, Hdds.Select(hdd => hdd.Id).ToList());
+        await SyncSsds(res, Ssds.Select(ssd => ssd.Id).ToList());
     }
 
     public async Task AddHdd(ComputerHdds hdd)
@@ -201,23 +121,27 @@ public class ComputerRepository : IComputerRepository
         await _context.AddAsync(hdd);
     }
 
-    public async Task AddSsd(ComputerSsds hdd)
+    public async Task AddSsd(ComputerSsds ssd)
     {
-        await _context.AddAsync(hdd);
+        await _context.AddAsync(ssd);
     }
 
     public async Task DeleteHdd(int id)
     {
-        await _context.ComputerHdds
-            .Where(x => x.Id == id)
-            .ExecuteDeleteAsync();
+        var link = await _context.ComputerHdds.FirstOrDefaultAsync(x => x.Id == id);
+        if (link != null)
+        {
+            _context.ComputerHdds.Remove(link);
+        }
     }
 
     public async Task DeleteSsd(int id)
     {
-        await _context.ComputerSsds
-            .Where(x => x.Id == id)
-            .ExecuteDeleteAsync();
+        var link = await _context.ComputerSsds.FirstOrDefaultAsync(x => x.Id == id);
+        if (link != null)
+        {
+            _context.ComputerSsds.Remove(link);
+        }
     }
 
     /// <summary>
@@ -226,62 +150,97 @@ public class ComputerRepository : IComputerRepository
 
     public async Task<List<Brand>> GetBrandsForCPUSocketsAsync()
     {
-        var brandsForCPUSockets = await _context.Brands
+        return await _context.Brands
+            .AsNoTracking()
             .Where(b => _context.CPUs.Any(cpu => cpu.Series.BrandId == b.Id))
             .ToListAsync();
-
-        return brandsForCPUSockets;
     }
 
     public async Task<List<CPU>> GetCPUsByBrandIdAsync(int brandId)
     {
-        var cpusForBrand = await _context.CPUs
+        return await _context.CPUs
+            .AsNoTracking()
             .Where(cpu => cpu.Series.BrandId == brandId)
             .ToListAsync();
-
-        return cpusForBrand;
     }
 
     public async Task<List<Motherboard>> GetMotherBoardsBySocket(int socketId)
     {
-        var res = await _context.Motherboards
+        return await _context.Motherboards
+            .AsNoTracking()
             .Where(x => x.SocketCpuId == socketId)
             .ToListAsync();
-
-        return res;
     }
 
     public async Task<List<RamMemories>> GetRamsByMotherboard(int motherboardId)
     {
-        var res = await _context.MotherboardMemories
-            .Where(x => x.MotherBoardId == motherboardId)
+        return await _context.RAMs
+            .AsNoTracking()
+            .Where(ram => _context.MotherboardMemories
+                .Any(link => link.MotherBoardId == motherboardId && link.MemoryId == ram.MemorySpeedId))
             .ToListAsync();
-
-        List<RamMemories> ret = new List<RamMemories>();
-        if (res != null)
-        {
-            foreach (var mem in res)
-            {
-                var mems = await _context.RAMs
-                    .Where(x => x.MemorySpeed.Id == mem.MemoryId)
-                    .ToListAsync();
-                ret.AddRange(mems);
-            }
-        }
-
-        return ret;
-
     }
 
     public async Task<List<PowerSupply>> GetPsusByWattage(int watt)
     {
-        return await _context.PSUs.Where(x => x.Power >= watt).ToListAsync();
+        return await _context.PSUs.AsNoTracking().Where(x => x.Power >= watt).ToListAsync();
     }
 
     public async Task<List<Case>> GetCasesBySize(int caseSizeId, double gpuLength)
     {
-        return await _context.Cases.Where(x => x.CaseSizeId <= caseSizeId && (gpuLength + 2)*10 < x.Width).ToListAsync();
+        return await _context.Cases
+            .AsNoTracking()
+            .Where(x => (int)x.CaseSize <= caseSizeId && (gpuLength + 2) * 10 < x.Width)
+            .ToListAsync();
     }
 
+    // A computer keeps showing components that were soft-deleted after it was built,
+    // so component filters are ignored here and only the computer's own flag is applied.
+    private IQueryable<Computer> QueryComputersWithComponents()
+    {
+        return _context.Computers
+            .IgnoreQueryFilters()
+            .AsNoTracking()
+            .Where(c => !c.IsDeleted);
+    }
 
+    private async Task SyncHdds(Computer computer, List<int> hddIds)
+    {
+        List<ComputerHdds> links = computer.Id == 0
+            ? []
+            : await _context.ComputerHdds.Where(x => x.ComputerId == computer.Id).ToListAsync();
+
+        var linksToRemove = links.Where(x => !hddIds.Contains(x.HddId)).ToList();
+        _context.ComputerHdds.RemoveRange(linksToRemove);
+
+        var newHddIds = hddIds.Except(links.Select(x => x.HddId)).ToList();
+        foreach (var hddId in newHddIds)
+        {
+            await AddHdd(new ComputerHdds
+            {
+                Computer = computer,
+                HddId = hddId
+            });
+        }
+    }
+
+    private async Task SyncSsds(Computer computer, List<int> ssdIds)
+    {
+        List<ComputerSsds> links = computer.Id == 0
+            ? []
+            : await _context.ComputerSsds.Where(x => x.ComputerId == computer.Id).ToListAsync();
+
+        var linksToRemove = links.Where(x => !ssdIds.Contains(x.SsdId)).ToList();
+        _context.ComputerSsds.RemoveRange(linksToRemove);
+
+        var newSsdIds = ssdIds.Except(links.Select(x => x.SsdId)).ToList();
+        foreach (var ssdId in newSsdIds)
+        {
+            await AddSsd(new ComputerSsds
+            {
+                Computer = computer,
+                SsdId = ssdId
+            });
+        }
+    }
 }

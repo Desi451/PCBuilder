@@ -18,23 +18,17 @@ namespace Application.Service;
 public class ComputerService : IComputerService
 {
     private IComputerRepository _repository;
-    private IBrandRepository _brandRepository;
-    private ISeriesRepository _seriesRepository;
     private readonly ISaveData _saveData;
     private readonly IMapper _mapper;
     private readonly ICurrentUser _currentUser;
 
     public ComputerService(
         IComputerRepository repository,
-        ISeriesRepository seriesRepository,
-        IBrandRepository brandRepository,
         ISaveData saveData,
         IMapper mapper,
         ICurrentUser currentUser)
     {
         _currentUser = currentUser;
-        _brandRepository = brandRepository;
-        _seriesRepository = seriesRepository;
         _repository = repository;
         _saveData = saveData;
         _mapper = mapper;
@@ -71,23 +65,13 @@ public class ComputerService : IComputerService
 
     public async Task Update(ComputerDTO pc)
     {
-        var existing = await GetOwnedComputer(pc.Id);
+        await GetOwnedComputer(pc.Id);
 
-        try
-        {
-            var res = _mapper.Map<Computer>(pc);
-            res.UserId = existing.UserId;
-            res.Created = existing.Created;
-            res.IsDeleted = existing.IsDeleted;
-            var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
-            var ssds = _mapper.Map<List<Ssd>>(pc.Ssds);
-            await _repository.Update(res, hdds, ssds);
-            await _saveData.Save();
-        }
-        catch
-        {
-            throw;
-        }
+        var res = _mapper.Map<Computer>(pc);
+        var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
+        var ssds = _mapper.Map<List<Ssd>>(pc.Ssds);
+        await _repository.Update(res, hdds, ssds);
+        await _saveData.Save();
     }
 
     public async Task<List<BrandDTO>> GetCpuBrands()
@@ -128,12 +112,10 @@ public class ComputerService : IComputerService
 
     public async Task<ComputerFormDTO> GetFullDataById(int id)
     {
-        var pc = await _repository.GetFullDataById(id);
+        var pc = await _repository.GetFullDataById(id) ?? throw new NotFoundException($"No computer with ID = {id}");
         var res = _mapper.Map<ComputerFormDTO>(pc);
-        var series = await _seriesRepository.GetById(res.Cpu.SeriesId);
-        var cpuBrand = await _brandRepository.GetById(series.BrandId);
-        res.cpuBrand = _mapper.Map<BrandDTO>(cpuBrand);
-        return _mapper.Map<ComputerFormDTO>(res);
+        res.cpuBrand = _mapper.Map<BrandDTO>(pc.Cpu.Series.Brand);
+        return res;
     }
 
     public async Task<List<ComputerViewDTO>> GetComputersView()

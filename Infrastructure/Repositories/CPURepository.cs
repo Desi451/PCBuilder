@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Components.CPU;
+﻿using Application.Service.Common;
+using Domain.Entities.Components.CPU;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +17,11 @@ public class CPURepository : ICPURepository
 
     public async Task Add(CPU Cpu)
     {
-        Cpu.IsDeleted = false;
-        Cpu.Created = DateTime.Now;
         await _context.AddAsync(Cpu);
     }
 
     public async Task AddSocket(SocketCPU socket)
     {
-        socket.IsDeleted = false;
         await _context.AddAsync(socket);
     }
 
@@ -78,16 +75,28 @@ public class CPURepository : ICPURepository
 
     public async Task Update(CPU Cpu)
     {
-        var oldCpu = await _context.CPUs
-            .FirstOrDefaultAsync(r => r.Id == Cpu.Id);
-        Helper.CopyProperties(Cpu, oldCpu);
-        oldCpu.LastModified = DateTime.Now;
+        var oldCpu = await GetById(Cpu.Id) ?? throw new NotFoundException($"No CPU with ID = {Cpu.Id}");
+        oldCpu.Name = Cpu.Name;
+        oldCpu.Model = Cpu.Model;
+        oldCpu.Cores = Cpu.Cores;
+        oldCpu.Threads = Cpu.Threads;
+        oldCpu.MinFreq = Cpu.MinFreq;
+        oldCpu.MaxFreq = Cpu.MaxFreq;
+        oldCpu.L2Cache = Cpu.L2Cache;
+        oldCpu.L3Cache = Cpu.L3Cache;
+        oldCpu.MaxRam = Cpu.MaxRam;
+        oldCpu.IsAPU = Cpu.IsAPU;
+        oldCpu.Technology = Cpu.Technology;
+        oldCpu.TDP = Cpu.TDP;
+        oldCpu.SeriesId = Cpu.SeriesId;
+        oldCpu.SocketCpuId = Cpu.SocketCpuId;
+        oldCpu.Description = Cpu.Description;
     }
 
     public async Task UpdateSocket(SocketCPU socket)
     {
-        var oldCpu = await _context.SocketCPUs
-            .FirstOrDefaultAsync(r => r.Id == socket.Id);
-        Helper.CopyProperties(socket, oldCpu);
+        var oldSocket = await GetSocketById(socket.Id) ?? throw new NotFoundException($"No socket with ID = {socket.Id}");
+        oldSocket.Name = socket.Name;
+        oldSocket.BrandId = socket.BrandId;
     }
 }

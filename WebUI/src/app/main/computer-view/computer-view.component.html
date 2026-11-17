@@ -6,7 +6,11 @@
   <p>CPU: {{res.cpu.name}}</p>
   <p>Motherboard: {{res.mobo.name}}</p>
   <p>RAM: {{res.ramMemory.name}} {{res.ramMemory.capacity}}GB</p>
-  <p>GPU: {{res.gpu.name}} {{res.gpu.memorySize}}GB {{res.gpu.memoryType}}</p>
+  @if (res.gpu) {
+    <p>GPU: {{res.gpu.name}} {{res.gpu.memorySize}}GB {{res.gpu.memoryType}}</p>
+  } @else {
+    <p>GPU: integrated graphics</p>
+  }
   <p class="text-center"> Selected Drives </p>
   <div class="row">
 

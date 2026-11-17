@@ -1,7 +1,6 @@
 ﻿using Application.Service.Common;
 using Domain.Entities.Components.Case;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +17,6 @@ public class CaseRepository : ICaseRepository
 
     public async Task Add(Case box)
     {
-        box.IsDeleted = false;
-        box.Created = DateTime.Now;
         await _context.AddAsync(box);
     }
 
@@ -31,16 +28,7 @@ public class CaseRepository : ICaseRepository
 
     public async Task<List<Case>> GetCases()
     {
-        try
-        {
-            return await _context.Cases
-            .Where(x => x.IsDeleted == false)
-            .ToListAsync();
-        }
-        catch
-        {
-            throw;
-        }
+        return await _context.Cases.AsNoTracking().ToListAsync();
     }
 
     public async Task<Case> GetById(int id)
@@ -54,7 +42,13 @@ public class CaseRepository : ICaseRepository
     public async Task Update(Case box)
     {
         Case oldBox = await GetById(box.Id);
-        Helper.CopyProperties(box, oldBox);
-        oldBox.LastModified = DateTime.Now;
+        oldBox.Name = box.Name;
+        oldBox.Model = box.Model;
+        oldBox.Height = box.Height;
+        oldBox.Width = box.Width;
+        oldBox.Deepth = box.Deepth;
+        oldBox.Description = box.Description;
+        oldBox.CaseSize = box.CaseSize;
+        oldBox.SeriesId = box.SeriesId;
     }
 }

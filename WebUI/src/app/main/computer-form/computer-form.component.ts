@@ -145,7 +145,7 @@ export class ComputerFormComponent implements OnInit {
           this.updateCpu(res.cpu);
           this.updateMotherboard(res.mobo);
           this.updateRam(res.ramMemory);
-          this.updateGpu(res.gpu);
+          this.updateGpu(res.gpu ?? new gpu());
           for (let item of res.drives) {
             this.updateHdd(item,this.selectedHdd);
            }
@@ -281,7 +281,7 @@ export class ComputerFormComponent implements OnInit {
     if (this.gpu.id) {
       this.gpu.name = "selected: " + gpu.name;
     }
-    const minPow = Math.round((this.gpu.tdp + this.cpu.tdp + 50) * 1.25);
+    const minPow = Math.round(((this.gpu.tdp ?? 0) + this.cpu.tdp + 50) * 1.25);
     console.log(minPow);
     this._computerService.getPsus(minPow).subscribe(
       (ram: psu[]) => {
@@ -305,12 +305,12 @@ export class ComputerFormComponent implements OnInit {
     if (psuVal > this.mobo.caseSizeId) {
       caseReq = {
         caseId: psuVal,
-        gpuLenght: this.gpu.length/10,
+        gpuLenght: (this.gpu.length ?? 0)/10,
       };
     } else {
       caseReq = {
         caseId: this.mobo.caseSizeId,
-        gpuLenght: this.gpu.length/10,
+        gpuLenght: (this.gpu.length ?? 0)/10,
       };
     }
     console.log(caseReq);

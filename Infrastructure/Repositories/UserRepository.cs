@@ -24,9 +24,6 @@ public class UserRepository : IUserRepository
 
     public async Task<User> Create(User user, string password)
     {
-        user.Created = DateTime.Now;
-        user.IsDeleted = false;
-
         await using var transaction = await _context.Database.BeginTransactionAsync();
         ThrowIfFailed(await _userManager.CreateAsync(user, password));
         ThrowIfFailed(await _userManager.AddToRoleAsync(user, Roles.User));
@@ -43,7 +40,6 @@ public class UserRepository : IUserRepository
 
         user.UserName = login;
         user.Email = email;
-        user.LastModified = DateTime.Now;
         ThrowIfFailed(await _userManager.UpdateAsync(user));
 
         if (!string.IsNullOrEmpty(newPassword))
@@ -70,7 +66,6 @@ public class UserRepository : IUserRepository
         }
 
         user.IsDeleted = true;
-        user.LastModified = DateTime.Now;
         user.SecurityStamp = Guid.NewGuid().ToString();
     }
 

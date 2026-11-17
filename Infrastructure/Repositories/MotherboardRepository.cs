@@ -1,7 +1,7 @@
-﻿using Domain.Entities.Components.Motherboard;
+﻿using Application.Service.Common;
+using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +18,6 @@ public class MotherboardRepository : IMotherBoardRepository
 
     public async Task Add(Motherboard mobo)
     {
-        mobo.IsDeleted = false;
-        mobo.Created = DateTime.Now;
         await _context.AddAsync(mobo);
     }
 
@@ -39,10 +37,10 @@ public class MotherboardRepository : IMotherBoardRepository
 
     public async Task DeleteMemory(int id)
     {
-        var res = await GetById(id);
-        if (res != null)
+        var link = await GetMemoryById(id);
+        if (link != null)
         {
-            res.IsDeleted = true;
+            _context.MotherboardMemories.Remove(link);
         }
     }
 
@@ -67,53 +65,50 @@ public class MotherboardRepository : IMotherBoardRepository
 
     public async Task<List<Motherboard>> GetMotherboards()
     {
-        var res = await _context.Motherboards
-            .Where(x  => x.IsDeleted == false)
-            .ToListAsync();
-        return res;
+        return await _context.Motherboards.AsNoTracking().ToListAsync();
     }
 
     public async Task Update(Motherboard mobo, List<RamSpeed> Rams)
     {
-        var res = await GetById(mobo.Id);
+        var res = await GetById(mobo.Id) ?? throw new NotFoundException($"No motherboard with ID = {mobo.Id}");
 
-        Helper.CopyProperties(mobo, res);
-        res.LastModified = DateTime.Now;
-        var oldRams = await _context.MotherboardMemories
-            .Where(x => x.MotherBoardId == mobo.Id)
-            .Select(x => x.MemoryId)
-            .ToListAsync();
+        res.Name = mobo.Name;
+        res.Model = mobo.Model;
+        res.SeriesId = mobo.SeriesId;
+        res.SocketCpuId = mobo.SocketCpuId;
+        res.Chipset = mobo.Chipset;
+        res.MaxMemory = mobo.MaxMemory;
+        res.SATASlots = mobo.SATASlots;
+        res.M2Slots = mobo.M2Slots;
+        res.RamSlots = mobo.RamSlots;
+        res.CaseSize = mobo.CaseSize;
+        res.Description = mobo.Description;
 
-        var newRamsNotInOldRams = Rams.Select(ram => ram.Id).Except(oldRams).ToList();
-
-        foreach (var ramId in newRamsNotInOldRams)
-        {
-            MotheboardMemory item = new MotheboardMemory
-            {
-                MotherBoardId = mobo.Id,
-                MemoryId = ramId
-            };
-
-            await AddMemory(item);
-        }
-
-        var oldRamsNotInRams = oldRams.Except(Rams.Select(ram => ram.Id)).ToList();
-
-        var memoriesToRemove = await _context.MotherboardMemories
-            .Where(x => x.MotherBoardId == mobo.Id && oldRamsNotInRams.Contains(x.MemoryId))
-            .ToListAsync();
-
-        _context.MotherboardMemories.RemoveRange(memoriesToRemove);
-        await _context.SaveChangesAsync();
+        await SyncMemories(res.Id, Rams.Select(ram => ram.Id).ToList());
     }
-
 
     public async Task UpdateMemory(List<MotheboardMemory> mobo, int id)
     {
-        var res = await GetMemories(id);
-        foreach (var i in res)
+        await SyncMemories(id, mobo.Select(memory => memory.MemoryId).ToList());
+    }
+
+    private async Task SyncMemories(int motherboardId, List<int> memoryIds)
+    {
+        var links = await _context.MotherboardMemories
+            .Where(x => x.MotherBoardId == motherboardId)
+            .ToListAsync();
+
+        var linksToRemove = links.Where(x => !memoryIds.Contains(x.MemoryId)).ToList();
+        _context.MotherboardMemories.RemoveRange(linksToRemove);
+
+        var newMemoryIds = memoryIds.Except(links.Select(x => x.MemoryId)).ToList();
+        foreach (var memoryId in newMemoryIds)
         {
-            Helper.CopyProperties(mobo, res);
+            await AddMemory(new MotheboardMemory
+            {
+                MotherBoardId = motherboardId,
+                MemoryId = memoryId
+            });
         }
     }
 }

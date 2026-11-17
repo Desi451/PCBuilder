@@ -1,6 +1,6 @@
-﻿using Domain.Entities.Components;
+﻿using Application.Service.Common;
+using Domain.Entities.Components;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +15,6 @@ public class PowerSupplyRepository : IPowerSupplyRepository
     }
     public async Task Add(PowerSupply psu)
     {
-        psu.IsDeleted = false;
-        psu.Created = DateTime.Now;
         await _context.AddAsync(psu);
     }
 
@@ -41,8 +39,22 @@ public class PowerSupplyRepository : IPowerSupplyRepository
 
     public async Task Update(PowerSupply psu)
     {
-        var oldPsu = await _context.PSUs.FirstOrDefaultAsync(r => r.Id == psu.Id);
-        Helper.CopyProperties(psu, oldPsu);
-        oldPsu.LastModified = DateTime.Now;
+        var oldPsu = await GetById(psu.Id) ?? throw new NotFoundException($"No power supply with ID = {psu.Id}");
+        oldPsu.Name = psu.Name;
+        oldPsu.Model = psu.Model;
+        oldPsu.standard = psu.standard;
+        oldPsu.Power = psu.Power;
+        oldPsu.Fans = psu.Fans;
+        oldPsu.HasPFC = psu.HasPFC;
+        oldPsu.MainConnPins = psu.MainConnPins;
+        oldPsu.PCIExpressConn = psu.PCIExpressConn;
+        oldPsu.HasSLI = psu.HasSLI;
+        oldPsu.HasCrossFire = psu.HasCrossFire;
+        oldPsu.Voltage = psu.Voltage;
+        oldPsu.Freq = psu.Freq;
+        oldPsu.Connectors = psu.Connectors;
+        oldPsu.Description = psu.Description;
+        oldPsu.Dimensions = psu.Dimensions;
+        oldPsu.SeriesId = psu.SeriesId;
     }
 }

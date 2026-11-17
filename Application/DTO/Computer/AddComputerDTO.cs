@@ -17,7 +17,7 @@ public class AddComputerDTO
     public required int MotherboardId { get; set; }
     public required int RamMemoryId { get; set; }
     public required int PsuId { get; set; }
-    public int GpuId { get; set; }
+    public int? GpuId { get; set; }
 
     public List<HddDTO> Drives { get; set; }
     public List<SsdDTO> Ssds { get; set; }

@@ -1,7 +1,6 @@
 ﻿using Application.Service.Common;
 using Domain.Entities.Components.GPU;
 using Domain.Interfaces.Repository.Components;
-using Infrastructure.Common;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +17,6 @@ public class GpuRepository : IGPURepository
 
     public async Task Add(GPU gpu)
     {
-        gpu.IsDeleted = false;
-        gpu.Created = DateTime.Now;
         await _context.AddAsync(gpu);
     }
 
@@ -44,8 +41,19 @@ public class GpuRepository : IGPURepository
 
     public async Task Update(GPU gpu)
     {
-        GPU oldBox = await GetById(gpu.Id);
-        Helper.CopyProperties(gpu, oldBox);
-        oldBox.LastModified = DateTime.Now;
+        GPU oldGpu = await GetById(gpu.Id);
+        oldGpu.SeriesId = gpu.SeriesId;
+        oldGpu.ChipsetSeriesId = gpu.ChipsetSeriesId;
+        oldGpu.Name = gpu.Name;
+        oldGpu.CoreClock = gpu.CoreClock;
+        oldGpu.MemorySize = gpu.MemorySize;
+        oldGpu.MemoryInterface = gpu.MemoryInterface;
+        oldGpu.MemoryType = gpu.MemoryType;
+        oldGpu.DirectX = gpu.DirectX;
+        oldGpu.OpenGL = gpu.OpenGL;
+        oldGpu.TDP = gpu.TDP;
+        oldGpu.RecommendedPsuPower = gpu.RecommendedPsuPower;
+        oldGpu.Length = gpu.Length;
+        oldGpu.Description = gpu.Description;
     }
 }
