@@ -66,8 +66,9 @@ export class ComputerService {
     return this.http.get<ram[]>(`${environment.apiUrl}Computer/rams/` + id);
   }
 
-  getPsus(id: number): Observable<psu[]> {
-    return this.http.get<psu[]>(`${environment.apiUrl}Computer/psus/` + id);
+  getPsus(cpuId: number, gpuId?: number | null): Observable<psu[]> {
+    const query = gpuId ? `?gpuId=${gpuId}` : '';
+    return this.http.get<psu[]>(`${environment.apiUrl}Computer/psus/` + cpuId + query);
   }
 
   getCases(req: caseRequest): Observable<casePc[]> {

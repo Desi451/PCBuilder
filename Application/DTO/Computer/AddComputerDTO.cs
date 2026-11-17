@@ -4,21 +4,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTO.Computer;
 
 public class AddComputerDTO
 {
+    [Required]
+    [StringLength(200, MinimumLength = 1)]
     public required string Name { get; set; }
     public bool isCompleted { get; set; }
 
+    [Range(1, int.MaxValue)]
     public required int CaseId { get; set; }
+    [Range(1, int.MaxValue)]
     public required int CpuId { get; set; }
+    [Range(1, int.MaxValue)]
     public required int MotherboardId { get; set; }
+    [Range(1, int.MaxValue)]
     public required int RamMemoryId { get; set; }
+    [Range(1, int.MaxValue)]
     public required int PsuId { get; set; }
+    [Range(1, int.MaxValue)]
     public int? GpuId { get; set; }
 
-    public List<HddDTO> Drives { get; set; }
-    public List<SsdDTO> Ssds { get; set; }
+    public List<HddDTO>? Drives { get; set; }
+    public List<SsdDTO>? Ssds { get; set; }
 }

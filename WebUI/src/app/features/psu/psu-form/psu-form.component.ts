@@ -46,7 +46,7 @@ export class PsuFormComponent implements OnInit {
     this.psuForm = this.formBuilder.group({
       name: ['', Validators.required],
       model: ['', Validators.required],
-      type: ['', Validators.required],
+      standard: ['', Validators.required],
       power: ['', [Validators.required, Validators.min(1)]],
       fans: ['', Validators.required],
       hasPFC: [false],

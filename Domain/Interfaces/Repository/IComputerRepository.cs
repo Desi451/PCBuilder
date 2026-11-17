@@ -3,6 +3,7 @@ using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
 using Domain.Entities.Components.Drives;
+using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 using Domain.Entities.Computer;
@@ -34,5 +35,17 @@ public interface IComputerRepository
     Task<List<Motherboard>> GetMotherBoardsBySocket(int socketId);
     Task<List<RamMemories>> GetRamsByMotherboard(int motherboardId);
     Task<List<PowerSupply>> GetPsusByWattage(int watt);
-    Task<List<Case>> GetCasesBySize(int caseSizeId, double gpuLength);
+    Task<List<Case>> GetCasesBySize(CaseSize maxCaseSize, int minDepthMm);
+
+    //compatibility (soft-deleted components included)
+    Task<Case?> FindCase(int id);
+    Task<CPU?> FindCpu(int id);
+    Task<Motherboard?> FindMotherboard(int id);
+    Task<RamMemories?> FindRam(int id);
+    Task<PowerSupply?> FindPsu(int id);
+    Task<GPU?> FindGpu(int id);
+    Task<List<Hdd>> FindHdds(List<int> ids);
+    Task<List<Ssd>> FindSsds(List<int> ids);
+    Task<List<int>> GetHddIds(int computerId);
+    Task<List<int>> GetSsdIds(int computerId);
 }

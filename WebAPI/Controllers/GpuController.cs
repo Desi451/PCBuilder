@@ -50,7 +50,7 @@ public class GpuController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("delete")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.Delete(id);

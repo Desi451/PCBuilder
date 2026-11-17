@@ -48,7 +48,7 @@ public class CPUController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("delete")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.Delete(id);
@@ -93,7 +93,7 @@ public class CPUController : ControllerBase
         return Ok();
     }
 
-    [HttpDelete("deletesocket")]
+    [HttpDelete("deletesocket/{id}")]
     public async Task<IActionResult> DeleteSocket(int id)
     {
         await _service.DeleteSocket(id);

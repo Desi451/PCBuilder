@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- NuGet audit warnings (AutoMapper 14.0.0, RestSharp 110.2.0) break Update-Database in Package Manager Console -->
+    <NoWarn>$(NoWarn);NU1901;NU1902;NU1903;NU1904</NoWarn>
+  </PropertyGroup>
+</Project>

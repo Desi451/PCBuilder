@@ -4,6 +4,7 @@ using Domain.Entities.Components;
 using Domain.Entities.Components.Case;
 using Domain.Entities.Components.CPU;
 using Domain.Entities.Components.Drives;
+using Domain.Entities.Components.GPU;
 using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 using Domain.Entities.Computer;
@@ -186,12 +187,86 @@ public class ComputerRepository : IComputerRepository
         return await _context.PSUs.AsNoTracking().Where(x => x.Power >= watt).ToListAsync();
     }
 
-    public async Task<List<Case>> GetCasesBySize(int caseSizeId, double gpuLength)
+    public async Task<List<Case>> GetCasesBySize(CaseSize maxCaseSize, int minDepthMm)
     {
         return await _context.Cases
             .AsNoTracking()
-            .Where(x => (int)x.CaseSize <= caseSizeId && (gpuLength + 2) * 10 < x.Width)
+            .Where(x => x.CaseSize <= maxCaseSize && x.Deepth >= minDepthMm)
             .ToListAsync();
+    }
+
+    public async Task<Case?> FindCase(int id)
+    {
+        return await _context.Cases.IgnoreQueryFilters().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<CPU?> FindCpu(int id)
+    {
+        return await _context.CPUs.IgnoreQueryFilters().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Motherboard?> FindMotherboard(int id)
+    {
+        return await _context.Motherboards
+            .IgnoreQueryFilters()
+            .AsNoTracking()
+            .Include(x => x.Memories)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<RamMemories?> FindRam(int id)
+    {
+        return await _context.RAMs.IgnoreQueryFilters().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<PowerSupply?> FindPsu(int id)
+    {
+        return await _context.PSUs.IgnoreQueryFilters().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<GPU?> FindGpu(int id)
+    {
+        return await _context.GPUs.IgnoreQueryFilters().AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<List<Hdd>> FindHdds(List<int> ids)
+    {
+        if (ids.Count == 0)
+        {
+            return [];
+        }
+
+        return await _context.Hdds
+            .IgnoreQueryFilters()
+            .AsNoTracking()
+            .Include(x => x.Slot)
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+    }
+
+    public async Task<List<Ssd>> FindSsds(List<int> ids)
+    {
+        if (ids.Count == 0)
+        {
+            return [];
+        }
+
+        return await _context.Ssds
+            .IgnoreQueryFilters()
+            .AsNoTracking()
+            .Include(x => x.Slot)
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+    }
+
+    public async Task<List<int>> GetHddIds(int computerId)
+    {
+        return await _context.ComputerHdds.AsNoTracking().Where(x => x.ComputerId == computerId).Select(x => x.HddId).ToListAsync();
+    }
+
+    public async Task<List<int>> GetSsdIds(int computerId)
+    {
+        return await _context.ComputerSsds.AsNoTracking().Where(x => x.ComputerId == computerId).Select(x => x.SsdId).ToListAsync();
     }
 
     // A computer keeps showing components that were soft-deleted after it was built,

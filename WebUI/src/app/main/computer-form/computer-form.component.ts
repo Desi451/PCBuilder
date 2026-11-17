@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -9,7 +10,7 @@ import { HddService } from "src/app/core/service/hdd.service";
 import { SlotService } from "src/app/core/service/slot.service";
 import { SsdService } from "src/app/core/service/ssd.service";
 import { brand } from "src/app/shared/models/brand.model";
-import { casePc, CaseSizes } from "src/app/shared/models/case.model";
+import { casePc } from "src/app/shared/models/case.model";
 import { addComputer, caseRequest, computer, computerForm } from "src/app/shared/models/computer.model";
 import { cpu } from "src/app/shared/models/cpu.model";
 import { gpu } from "src/app/shared/models/gpu.model";
@@ -77,6 +78,7 @@ export class ComputerFormComponent implements OnInit {
   driveSlot: slot;
 
   res: computer = new computer();
+  saveErrors: string[] = [];
 
   constructor(
     private _route: ActivatedRoute,
@@ -281,9 +283,11 @@ export class ComputerFormComponent implements OnInit {
     if (this.gpu.id) {
       this.gpu.name = "selected: " + gpu.name;
     }
-    const minPow = Math.round(((this.gpu.tdp ?? 0) + this.cpu.tdp + 50) * 1.25);
-    console.log(minPow);
-    this._computerService.getPsus(minPow).subscribe(
+    if (!this.cpu.id) {
+      this.psuList = [];
+      return;
+    }
+    this._computerService.getPsus(this.cpu.id, this.gpu.id).subscribe(
       (ram: psu[]) => {
         this.psuList = ram;
       },
@@ -300,20 +304,15 @@ export class ComputerFormComponent implements OnInit {
     if (this.psu.id) {
       this.psu.name = "selected: " + psu.name;
     }
-    const psuVal = getCaseSizeValue(this.psu.standard) || this.mobo.caseSizeId;
-    let caseReq: caseRequest;
-    if (psuVal > this.mobo.caseSizeId) {
-      caseReq = {
-        caseId: psuVal,
-        gpuLenght: (this.gpu.length ?? 0)/10,
-      };
-    } else {
-      caseReq = {
-        caseId: this.mobo.caseSizeId,
-        gpuLenght: (this.gpu.length ?? 0)/10,
-      };
+    if (!this.mobo.id || !this.psu.id) {
+      this.caseList = [];
+      return;
     }
-    console.log(caseReq);
+    const caseReq: caseRequest = {
+      motherboardId: this.mobo.id,
+      psuId: this.psu.id,
+      gpuId: this.gpu.id,
+    };
     this._computerService.getCases(caseReq).subscribe(
       (cases: casePc[]) => {
         this.caseList = cases;
@@ -339,15 +338,15 @@ export class ComputerFormComponent implements OnInit {
       (slot: slot) => {
         this.driveSlot = slot;
 
-        if (this.driveSlot.name.includes("M2")) {
+        if (classifyDriveSlot(this.driveSlot.name) === 'M2') {
 
-          if (this.m2Index <= this.mobo.m2Slots) {
+          if (this.m2Index < this.mobo.m2Slots) {
             this.m2Index++;
             tab.push(hdd);
           }
-        } else if (this.driveSlot.name.includes("SATA")) {
+        } else if (classifyDriveSlot(this.driveSlot.name) === 'SATA') {
 
-          if (this.sataIndex <= this.mobo.sataSlots) {
+          if (this.sataIndex < this.mobo.sataSlots) {
             this.sataIndex++;
             tab.push(hdd);
           }
@@ -368,9 +367,9 @@ export class ComputerFormComponent implements OnInit {
         (slot: slot) => {
           this.driveSlot = slot;
 
-          if (this.driveSlot.name.includes("M2")) {
+          if (classifyDriveSlot(this.driveSlot.name) === 'M2') {
             this.m2Index--;
-          } else if (this.driveSlot.name.includes("SATA")) {
+          } else if (classifyDriveSlot(this.driveSlot.name) === 'SATA') {
             this.sataIndex--;
           }
         },
@@ -389,13 +388,13 @@ export class ComputerFormComponent implements OnInit {
       (slot: slot) => {
         this.driveSlot = slot;
 
-        if (this.driveSlot.name.includes("M2")) {
+        if (classifyDriveSlot(this.driveSlot.name) === 'M2') {
 
           if (this.m2Index < this.mobo.m2Slots) {
             this.m2Index++;
             tab.push(ssd);
           }
-        } else if (this.driveSlot.name.includes("SATA")) {
+        } else if (classifyDriveSlot(this.driveSlot.name) === 'SATA') {
 
           if (this.sataIndex < this.mobo.sataSlots) {
             this.sataIndex++;
@@ -418,9 +417,9 @@ export class ComputerFormComponent implements OnInit {
         (slot: slot) => {
           this.driveSlot = slot;
 
-          if (this.driveSlot.name.includes("M2")) {
+          if (classifyDriveSlot(this.driveSlot.name) === 'M2') {
             this.m2Index--;
-          } else if (this.driveSlot.name.includes("SATA")) {
+          } else if (classifyDriveSlot(this.driveSlot.name) === 'SATA') {
             this.sataIndex--;
           }
         },
@@ -445,7 +444,7 @@ export class ComputerFormComponent implements OnInit {
     this.res.ssds = this.selectedSsd;
 
     const noneIsNull = Object.values(this.res).every(value => value !== null);
-    debugger;
+    this.saveErrors = [];
     if (this.id && noneIsNull) {
         this.res.id = this.id;
 
@@ -453,8 +452,8 @@ export class ComputerFormComponent implements OnInit {
           this.toastr.success('Computer updated Successfully!', 'Computer Updated');
           this._router.navigateByUrl(`computer`);
         },
-        (error) => {
-          this.toastr.error('Error updating Computer', 'Server Error');
+        (error: HttpErrorResponse) => {
+          this.showSaveErrors(error);
         });
 
     } else {
@@ -464,10 +463,15 @@ export class ComputerFormComponent implements OnInit {
         this.toastr.success('Computer updated Successfully!', 'Computer Updated');
         this._router.navigateByUrl(`computer`);
       },
-      (error) => {
-        this.toastr.error('Error updating Computer', 'Server Error');
+      (error: HttpErrorResponse) => {
+        this.showSaveErrors(error);
       });
     }
+  }
+
+  showSaveErrors(error: HttpErrorResponse): void {
+    this.saveErrors = getProblemMessages(error);
+    this.toastr.error('The computer could not be saved.', 'Server Error');
   }
 
   delete(id: number): void {
@@ -482,7 +486,32 @@ export class ComputerFormComponent implements OnInit {
   }
 }
 
-function getCaseSizeValue(enumName: string): number | undefined {
-  const sizeValue = CaseSizes[enumName as keyof typeof CaseSizes];
-  return sizeValue !== undefined ? sizeValue : undefined;
+type DriveSlotType = 'M2' | 'SATA' | 'UNKNOWN';
+
+function classifyDriveSlot(slotName: string | undefined): DriveSlotType {
+  const tokens = (slotName ?? '')
+    .replace(/\./g, '')
+    .toUpperCase()
+    .split(/[\s\-_/]+/)
+    .filter(token => token.length > 0);
+
+  if (tokens.includes('M2')) {
+    return 'M2';
+  }
+  if (tokens.some(token => token.startsWith('SATA'))) {
+    return 'SATA';
+  }
+  return 'UNKNOWN';
+}
+
+function getProblemMessages(error: HttpErrorResponse): string[] {
+  const problem = error.error;
+  const errors = problem?.errors as Record<string, string[]> | undefined;
+  if (errors) {
+    return Object.values(errors).flat();
+  }
+  if (problem?.detail) {
+    return [problem.detail];
+  }
+  return ['Unexpected server error.'];
 }

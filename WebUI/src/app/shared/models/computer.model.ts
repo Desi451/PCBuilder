@@ -59,8 +59,9 @@ export type addComputer = {
 }
 
 export type caseRequest = {
-  caseId: number,
-  gpuLenght: number,
+  motherboardId: number,
+  psuId: number,
+  gpuId?: number | null,
 }
 
 export type computerView = {

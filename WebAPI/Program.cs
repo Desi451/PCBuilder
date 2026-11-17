@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.Interfaces.Components;
 using Application.Mappings;
 using Application.Service;
+using Application.Service.Compatibility;
 using Application.Service.Components;
 using Domain.Common;
 using Domain.Entities;
@@ -18,10 +19,10 @@ using WebAPI.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("PCBuilder");
 if (string.IsNullOrWhiteSpace(connectionString))
 {
-    throw new InvalidOperationException("Missing connection string. Set 'ConnectionStrings:DefaultConnection' in the application configuration.");
+    throw new InvalidOperationException("Missing connection string. Set 'ConnectionStrings:PCBuilder' in the application configuration.");
 }
 
 var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
@@ -97,6 +98,7 @@ builder.Services.AddScoped<ISlotService, SlotService>();
 //Computer
 builder.Services.AddScoped<IComputerService, ComputerService>();
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
+builder.Services.AddScoped<IComputerCompatibilityValidator, ComputerCompatibilityValidator>();
 
 #region Components
 

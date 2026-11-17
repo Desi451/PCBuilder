@@ -5,6 +5,7 @@ using Application.DTO.Components.Motherboard;
 using Application.DTO.Components.PowerSupllyDTOs;
 using Application.DTO.Components.RAM;
 using Application.DTO.Computer;
+using Application.Service.Compatibility;
 using Domain.Entities.Components.RamMemory;
 using Domain.Entities.Computer;
 
@@ -26,6 +27,7 @@ public interface IComputerService
     public Task<List<CpuDTO>> GetCPUsByBrandId(int brandId);
     public Task<List<MotherboardDTO>> GetMotherBoardsBySocket(int socketId);
     public Task<List<RamDTO>> GetRamsByMotherboard(int motherboardId);
-    public Task<List<PowerSupplyDTO>> GetPsuByWattage(int wattage);
-    public Task<List<CaseDTO>> GetCasesByStandard(int caseSizeId, double gpuLength);
+    public Task<List<PowerSupplyDTO>> GetPsusForBuild(int cpuId, int? gpuId);
+    public Task<List<CaseDTO>> GetCasesForBuild(CaseRequest request);
+    public Task<List<CompatibilityViolation>> Validate(AddComputerDTO pc);
 }

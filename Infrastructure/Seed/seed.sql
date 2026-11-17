@@ -96,7 +96,8 @@ INSERT INTO [Series] (Id, Name, BrandId, Created, IsDeleted, LastModified) VALUE
     (45, N'MasterBox', 18, @now, 0, NULL),
     (46, N'MWE', 18, @now, 0, NULL),
     (47, N'Focus', 19, @now, 0, NULL),
-    (48, N'O11', 20, @now, 0, NULL);
+    (48, N'O11', 20, @now, 0, NULL),
+    (49, N'SF', 7, @now, 0, NULL);
 SET IDENTITY_INSERT [Series] OFF;
 
 -- SocketCPUs
@@ -214,15 +215,16 @@ INSERT INTO [Cases] (Id, Name, Model, Height, Width, Deepth, CaseSize, SeriesId,
     (7, N'Cooler Master MasterBox Q300L', N'MCB-Q300L-KANN-S00', 404, 230, 387, 2, 45, N'Compact Micro-ATX case.', @now, 0, NULL);
 SET IDENTITY_INSERT [Cases] OFF;
 
--- PSUs
+-- PSUs (standard = form factor as a CaseSize name; SFX units use ITX)
 SET IDENTITY_INSERT [PSUs] ON;
 INSERT INTO [PSUs] (Id, Name, Model, standard, Power, Fans, HasPFC, MainConnPins, PCIExpressConn, HasSLI, HasCrossFire, Voltage, Freq, Connectors, Description, Dimensions, SeriesId, Created, IsDeleted, LastModified) VALUES
-    (1, N'Corsair CV550', N'CP-9020210-EU', N'80 PLUS Bronze', 550, N'1x 120 mm', 1, N'24-pin (20+4)', N'2x 6+2-pin', 0, 0, N'100-240 V', N'50-60 Hz', N'6x SATA, 3x Molex, 1x 4+4-pin CPU', N'Entry-level non-modular PSU.', N'8.6 x 15 x 14', 25, @now, 0, NULL),
-    (2, N'Cooler Master MWE 650 Bronze V2', N'MPE-6501-ACAAB-EU', N'80 PLUS Bronze', 650, N'1x 120 mm', 1, N'24-pin (20+4)', N'2x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'6x SATA, 3x Molex, 1x 4+4-pin CPU', N'Non-modular PSU for mainstream builds.', N'8.6 x 15 x 14', 46, @now, 0, NULL),
-    (3, N'be quiet! Pure Power 11 600W', N'BN294', N'80 PLUS Gold', 600, N'1x 120 mm', 1, N'24-pin (20+4)', N'2x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'6x SATA, 3x Molex, 1x 4+4-pin CPU', N'Quiet non-modular PSU.', N'8.6 x 15 x 14', 44, @now, 0, NULL),
-    (4, N'Seasonic FOCUS GX-750', N'SSR-750FX', N'80 PLUS Gold', 750, N'1x 120 mm', 1, N'24-pin (20+4)', N'4x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'8x SATA, 4x Molex, 2x 4+4-pin CPU', N'Fully modular PSU.', N'8.6 x 15 x 14', 47, @now, 0, NULL),
-    (5, N'Corsair RM750e', N'CP-9020248-EU', N'80 PLUS Gold', 750, N'1x 135 mm', 1, N'24-pin (20+4)', N'4x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'8x SATA, 4x Molex, 2x 4+4-pin CPU', N'Fully modular, low-noise PSU.', N'8.6 x 15 x 14', 24, @now, 0, NULL),
-    (6, N'Corsair RM1000x', N'CP-9020201-EU', N'80 PLUS Gold', 1000, N'1x 135 mm', 1, N'24-pin (20+4)', N'6x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'12x SATA, 4x Molex, 2x 4+4-pin CPU', N'Fully modular high-wattage PSU.', N'8.6 x 15 x 14', 24, @now, 0, NULL);
+    (1, N'Corsair CV550', N'CP-9020210-EU', N'ATX', 550, N'1x 120 mm', 1, N'24-pin (20+4)', N'2x 6+2-pin', 0, 0, N'100-240 V', N'50-60 Hz', N'6x SATA, 3x Molex, 1x 4+4-pin CPU', N'80 PLUS Bronze. Entry-level non-modular PSU.', N'8.6 x 15 x 14', 25, @now, 0, NULL),
+    (2, N'Cooler Master MWE 650 Bronze V2', N'MPE-6501-ACAAB-EU', N'ATX', 650, N'1x 120 mm', 1, N'24-pin (20+4)', N'2x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'6x SATA, 3x Molex, 1x 4+4-pin CPU', N'80 PLUS Bronze. Non-modular PSU for mainstream builds.', N'8.6 x 15 x 14', 46, @now, 0, NULL),
+    (3, N'be quiet! Pure Power 11 600W', N'BN294', N'ATX', 600, N'1x 120 mm', 1, N'24-pin (20+4)', N'2x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'6x SATA, 3x Molex, 1x 4+4-pin CPU', N'80 PLUS Gold. Quiet non-modular PSU.', N'8.6 x 15 x 14', 44, @now, 0, NULL),
+    (4, N'Seasonic FOCUS GX-750', N'SSR-750FX', N'ATX', 750, N'1x 120 mm', 1, N'24-pin (20+4)', N'4x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'8x SATA, 4x Molex, 2x 4+4-pin CPU', N'80 PLUS Gold. Fully modular PSU.', N'8.6 x 15 x 14', 47, @now, 0, NULL),
+    (5, N'Corsair RM750e', N'CP-9020248-EU', N'ATX', 750, N'1x 135 mm', 1, N'24-pin (20+4)', N'4x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'8x SATA, 4x Molex, 2x 4+4-pin CPU', N'80 PLUS Gold. Fully modular, low-noise PSU.', N'8.6 x 15 x 14', 24, @now, 0, NULL),
+    (6, N'Corsair RM1000x', N'CP-9020201-EU', N'ATX', 1000, N'1x 135 mm', 1, N'24-pin (20+4)', N'6x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'12x SATA, 4x Molex, 2x 4+4-pin CPU', N'80 PLUS Gold. Fully modular high-wattage PSU.', N'8.6 x 15 x 14', 24, @now, 0, NULL),
+    (7, N'Corsair SF750', N'CP-9020186-EU', N'ITX', 750, N'1x 92 mm', 1, N'24-pin (20+4)', N'4x 6+2-pin', 1, 1, N'100-240 V', N'50-60 Hz', N'8x SATA, 2x 4+4-pin CPU', N'80 PLUS Platinum. Fully modular SFX PSU for small form factor builds.', N'6.3 x 12.5 x 10', 49, @now, 0, NULL);
 SET IDENTITY_INSERT [PSUs] OFF;
 
 -- GPUs
@@ -297,7 +299,7 @@ INSERT INTO [Computers] (Id, UserId, Name, CaseId, CpuId, MotherboardId, RamMemo
     (1, 3, N'Budget 1080p (AM4)', 1, 5, 1, 1, 2, 1, @now, 0, NULL),
     (2, 3, N'Gaming 1440p (AM5)', 3, 8, 4, 5, 5, 4, @now, 0, NULL),
     (3, 3, N'Intel Midrange (LGA1700)', 2, 2, 7, 2, 4, 3, @now, 0, NULL),
-    (4, 3, N'Compact ITX (AM4)', 4, 6, 3, 4, 4, 8, @now, 0, NULL),
+    (4, 3, N'Compact ITX (AM4)', 4, 6, 3, 4, 7, 8, @now, 0, NULL),
     (5, 2, N'Workstation (AM5)', 6, 10, 4, 9, 6, 7, @now, 0, NULL);
 SET IDENTITY_INSERT [Computers] OFF;
 

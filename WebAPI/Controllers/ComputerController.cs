@@ -65,6 +65,13 @@ public class ComputerController : ControllerBase
     }
 
     [Authorize]
+    [HttpPost("validate")]
+    public async Task<IActionResult> Validate(AddComputerDTO pc)
+    {
+        return Ok(await _service.Validate(pc));
+    }
+
+    [Authorize]
     [HttpPut("update")]
     public async Task<IActionResult> Update(ComputerDTO pc)
     {
@@ -112,17 +119,17 @@ public class ComputerController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpGet("psus/{id}")]
-    public async Task<IActionResult> GetPsusByWattage(int id)
+    [HttpGet("psus/{cpuId}")]
+    public async Task<IActionResult> GetPsusForBuild(int cpuId, [FromQuery] int? gpuId)
     {
-        return Ok(await _service.GetPsuByWattage(id));
+        return Ok(await _service.GetPsusForBuild(cpuId, gpuId));
     }
 
     [AllowAnonymous]
     [HttpPost("cases")]
-    public async Task<IActionResult> GetCasesBySize(CaseRequest req)
+    public async Task<IActionResult> GetCasesForBuild(CaseRequest req)
     {
-        var res = await _service.GetCasesByStandard(req.CaseId, req.GpuLenght);
+        var res = await _service.GetCasesForBuild(req);
         return Ok(res);
     }
 }

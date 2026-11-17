@@ -73,6 +73,12 @@ public class GlobalExceptionHandler : IExceptionHandler
                 Title = "Forbidden",
                 Detail = exception.Message
             },
+            CompatibilityException compatibility => new ValidationProblemDetails(GroupViolations(compatibility))
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Incompatible configuration",
+                Detail = exception.Message
+            },
             AppException => new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,
@@ -86,5 +92,12 @@ public class GlobalExceptionHandler : IExceptionHandler
                 Detail = InternalErrorDetail
             }
         };
+    }
+
+    private static Dictionary<string, string[]> GroupViolations(CompatibilityException exception)
+    {
+        return exception.Violations
+            .GroupBy(violation => violation.Rule)
+            .ToDictionary(group => group.Key, group => group.Select(violation => violation.Message).ToArray());
     }
 }

@@ -7,6 +7,7 @@ using Application.DTO.Components.RAM;
 using Application.DTO.Computer;
 using Application.Interfaces;
 using Application.Service.Common;
+using Application.Service.Compatibility;
 using AutoMapper;
 using Domain.Entities.Components.Drives;
 using Domain.Entities.Computer;
@@ -21,14 +22,17 @@ public class ComputerService : IComputerService
     private readonly ISaveData _saveData;
     private readonly IMapper _mapper;
     private readonly ICurrentUser _currentUser;
+    private readonly IComputerCompatibilityValidator _validator;
 
     public ComputerService(
         IComputerRepository repository,
         ISaveData saveData,
         IMapper mapper,
-        ICurrentUser currentUser)
+        ICurrentUser currentUser,
+        IComputerCompatibilityValidator validator)
     {
         _currentUser = currentUser;
+        _validator = validator;
         _repository = repository;
         _saveData = saveData;
         _mapper = mapper;
@@ -36,6 +40,8 @@ public class ComputerService : IComputerService
 
     public async Task Add(AddComputerDTO pc)
     {
+        await _validator.EnsureCompatible(ComputerBuild.From(pc), null);
+
         var res = _mapper.Map<Computer>(pc);
         res.UserId = _currentUser.Id;
         var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
@@ -65,7 +71,9 @@ public class ComputerService : IComputerService
 
     public async Task Update(ComputerDTO pc)
     {
-        await GetOwnedComputer(pc.Id);
+        var existing = await GetOwnedComputer(pc.Id);
+        var current = ComputerBuild.From(existing, await _repository.GetHddIds(pc.Id), await _repository.GetSsdIds(pc.Id));
+        await _validator.EnsureCompatible(ComputerBuild.From(pc), current);
 
         var res = _mapper.Map<Computer>(pc);
         var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
@@ -98,15 +106,44 @@ public class ComputerService : IComputerService
         return _mapper.Map<List<RamDTO>>(res);
     }
 
-    public async Task<List<PowerSupplyDTO>> GetPsuByWattage(int wattage)
+    public async Task<List<CompatibilityViolation>> Validate(AddComputerDTO pc)
     {
-        var res = await _repository.GetPsusByWattage(wattage);
+        return await _validator.Validate(ComputerBuild.From(pc), null);
+    }
+
+    public async Task<List<PowerSupplyDTO>> GetPsusForBuild(int cpuId, int? gpuId)
+    {
+        var cpu = await _repository.FindCpu(cpuId) ?? throw new NotFoundException($"No processor with ID = {cpuId}");
+        int? gpuTdp = null;
+        if (gpuId is not null)
+        {
+            var gpu = await _repository.FindGpu(gpuId.Value) ?? throw new NotFoundException($"No graphics card with ID = {gpuId}");
+            gpuTdp = gpu.TDP;
+        }
+
+        var res = await _repository.GetPsusByWattage(CompatibilityRules.RequiredPsuPower(cpu.TDP, gpuTdp));
         return _mapper.Map<List<PowerSupplyDTO>>(res);
     }
 
-    public async Task<List<CaseDTO>> GetCasesByStandard(int caseSizeId, double gpuLength)
+    public async Task<List<CaseDTO>> GetCasesForBuild(CaseRequest request)
     {
-        var res = await _repository.GetCasesBySize(caseSizeId, gpuLength);
+        var motherboard = await _repository.FindMotherboard(request.MotherboardId) ?? throw new NotFoundException($"No motherboard with ID = {request.MotherboardId}");
+        var psu = await _repository.FindPsu(request.PsuId) ?? throw new NotFoundException($"No power supply with ID = {request.PsuId}");
+        int? gpuLength = null;
+        if (request.GpuId is not null)
+        {
+            var gpu = await _repository.FindGpu(request.GpuId.Value) ?? throw new NotFoundException($"No graphics card with ID = {request.GpuId}");
+            gpuLength = gpu.Length;
+        }
+
+        var maxCaseSize = motherboard.CaseSize;
+        var psuSize = CompatibilityRules.ParsePsuFormFactor(psu.standard);
+        if (psuSize is not null)
+        {
+            maxCaseSize = CompatibilityRules.LargestFormFactor(maxCaseSize, psuSize.Value);
+        }
+
+        var res = await _repository.GetCasesBySize(maxCaseSize, CompatibilityRules.RequiredCaseDepth(gpuLength));
         return _mapper.Map<List<CaseDTO>>(res);
     }
 

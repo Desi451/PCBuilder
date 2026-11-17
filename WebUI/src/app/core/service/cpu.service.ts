@@ -51,6 +51,6 @@ export class CpuService {
   }
 
   deleteSocket(id: number): Observable<Object> {
-    return this.http.delete(`${environment.apiUrl}Cpu/delete/sockets/` + id);
+    return this.http.delete(`${environment.apiUrl}Cpu/deletesocket/` + id);
   }
 }

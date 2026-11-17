@@ -399,6 +399,14 @@
       id="brandName" name="brandName" [(ngModel)]="res.name" placeholder="Computer name">
     </div>
 
+    @if (saveErrors.length > 0) {
+      <ul class="alert alert-danger my-2 ps-4" style="max-width: 600px;">
+        @for (message of saveErrors; track $index) {
+          <li>{{ message }}</li>
+        }
+      </ul>
+    }
+
     <button (click)="executeForm()" type="submit"
     class="btn btn-dark my-2 border border-primary">Submit</button>
     @if (res.id != null) {
