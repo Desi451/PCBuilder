@@ -4,8 +4,6 @@ using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Web.Http;
 
 namespace Infrastructure.Repositories;
 
@@ -58,12 +56,7 @@ public class UserRepository : IUserRepository
         }
         else
         {
-            var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
-            {
-                Content = new StringContent(string.Format("No user with ID = {0}", user.Id)),
-                ReasonPhrase = "Product ID Not Found"
-            };
-            throw new HttpResponseException(resp);
+            throw new NotFoundException($"No user with ID = {user.Id}");
         }
     }
 
@@ -87,12 +80,7 @@ public class UserRepository : IUserRepository
         }
         else
         {
-            var resp = new HttpResponseMessage(HttpStatusCode.NotFound)
-            {
-                Content = new StringContent(string.Format("No user with ID = {0}", id)),
-                ReasonPhrase = "Product ID Not Found"
-            };
-            throw new HttpResponseException(resp);
+            throw new NotFoundException($"No user with ID = {id}");
         }
     }
 

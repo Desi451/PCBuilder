@@ -1,7 +1,6 @@
 ﻿using Application.DTO.Computer;
 using Application.DTO.UserDTOs;
 using Application.Interfaces;
-using Application.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Common;
@@ -21,7 +20,6 @@ public class AuthService : IAuthService
         _repository = repository;
         _mapper = mapper;
         _saveData = saveData;
-        AutoMapperConfig.Initialize();
     }
 
     public async Task<UserDTO> Login(LoginUserDTO user)

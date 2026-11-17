@@ -86,14 +86,6 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);            
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial " +
-            "Catalog=PCBuilder;Integrated " +
-            "Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True");
-    }
-
     public DbSet<User> Users { get; set; }
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Series> Series { get; set; }

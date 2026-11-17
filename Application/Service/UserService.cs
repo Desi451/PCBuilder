@@ -1,6 +1,5 @@
 ﻿using Application.DTO.UserDTOs;
 using Application.Interfaces;
-using Application.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Common;
@@ -20,7 +19,6 @@ public class UserService : IUserService
         _repository = repository;
         _mapper = mapper;
         _saveData = saveData;
-        AutoMapperConfig.Initialize();
     }
 
     public async Task<List<UserDTO>> GetAll()
