@@ -30,10 +30,8 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         //user
-        CreateMap<User, UserDTO>();
-        CreateMap<UserDTO, User>();
-        CreateMap<AddUserDTO, User>();
-        CreateMap<LoginUserDTO, User>();
+        CreateMap<User, UserDTO>().ForMember(dest => dest.Login, opt => opt.MapFrom(src => src.UserName));
+        CreateMap<AddUserDTO, User>().ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Login));
 
         //brand & series
         CreateMap<Brand, BrandDTO>();

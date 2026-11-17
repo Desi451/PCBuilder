@@ -1,4 +1,4 @@
-﻿using Application.DTO.UserDTOs;
+using Application.DTO.UserDTOs;
 using Application.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -29,38 +29,19 @@ public class UserService : IUserService
 
     public async Task<UserDTO> GetById(int id)
     {
-        try
-        {
-            var res = await _repository.GetById(id);
-            res.Password = "";
-            return _mapper.Map<UserDTO>(res);
-        }
-        catch
-        {
-            throw;
-        }
+        var res = await _repository.GetById(id);
+        return _mapper.Map<UserDTO>(res);
     }
 
     public async Task<UserDTO> Add(AddUserDTO user)
     {
-        var res = _mapper.Map<User>(user);
-        await _repository.Add(res);
-        await _saveData.Save();
+        var res = await _repository.Create(_mapper.Map<User>(user), user.Password);
         return _mapper.Map<UserDTO>(res);
     }
 
     public async Task Update(UserDTO updateUser)
     {
-        try
-        {
-            var res = _mapper.Map<User>(updateUser);
-            await _repository.Update(res, updateUser.Id);
-            await _saveData.Save();
-        }
-        catch
-        {
-            throw;
-        }
+        await _repository.UpdateProfile(updateUser.Id, updateUser.Login, updateUser.Email, null, null);
     }
 
     public async Task Delete(int id)

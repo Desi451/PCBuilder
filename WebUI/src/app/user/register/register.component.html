@@ -3,6 +3,7 @@
   <div class="form-outline mb-4 mt-5 mx-4">
     <input type="text" id="login" class="form-control" formControlName="login" />
     <label class="form-label" for="login">Username</label>
+    <div class="form-text">Letters, digits, dot, dash and underscore only.</div>
   </div>
 
   <div class="form-outline mb-4 mx-4">
@@ -11,8 +12,9 @@
   </div>
 
   <div class="form-outline mb-4 mx-4">
-    <input type="password" id="password" class="form-control" formControlName="password" placeholder="password min 8 characters" />
+    <input type="password" id="password" class="form-control" formControlName="password" />
     <label class="form-label" for="password">Password</label>
+    <div class="form-text">{{ passwordHint }}</div>
   </div>
 
   <div class="form-outline mb-4 mx-4">

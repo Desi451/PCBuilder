@@ -8,11 +8,12 @@ using Domain.Entities.Components.Motherboard;
 using Domain.Entities.Components.RamMemory;
 using Domain.Entities.Computer;
 using Domain.Entities.Slots;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Context;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<User, Role, int>
 {
     public AppDbContext() { }
 
@@ -21,8 +22,21 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
+
         modelBuilder.Entity<User>()
-            .HasOne(u => u.Rank);
+            .HasIndex(u => u.NormalizedUserName)
+            .HasDatabaseName("UserNameIndex")
+            .IsUnique()
+            .HasFilter("[IsDeleted] = 0");
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.NormalizedEmail)
+            .HasDatabaseName("EmailIndex")
+            .IsUnique()
+            .HasFilter("[IsDeleted] = 0");
 
         modelBuilder.Entity<Case>()
             .HasOne(b => b.Series)
@@ -82,14 +96,10 @@ public class AppDbContext : DbContext
             .WithMany()
             .HasForeignKey(c => c.CpuId)
             .OnDelete(DeleteBehavior.NoAction);
-
-        base.OnModelCreating(modelBuilder);            
     }
 
-    public DbSet<User> Users { get; set; }
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Series> Series { get; set; }
-    public DbSet<Rank> Ranks { get; set; }
     public DbSet<Case> Cases { get; set; }
     public DbSet<RamMemories> RAMs {  get; set; }
     public DbSet <RamSpeed> RamSpeeds { get; set; }

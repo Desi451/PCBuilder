@@ -1,14 +1,10 @@
-﻿using Domain.Common;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities;
 
-public class User : AuditableEntity
+public class User : IdentityUser<int>
 {
-    public int Id { get; set; }
-    public string Login { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
-    //public bool IsEmailConfirmed { get; set; }
-    public int RankId { get; set; }
-    public Rank Rank { get; set; }
+    public DateTime Created { get; set; }
+    public DateTime? LastModified { get; set; }
+    public bool IsDeleted { get; set; }
 }

@@ -1,112 +1,128 @@
-﻿using Application.DTO.UserDTOs;
 using Application.Service.Common;
+using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces.Repository;
 using Infrastructure.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    private readonly AppDbContext _context;
+    private const string DuplicateUserNameCode = "DuplicateUserName";
+    private const string DuplicateEmailCode = "DuplicateEmail";
 
-    public UserRepository(AppDbContext context)
+    private readonly AppDbContext _context;
+    private readonly UserManager<User> _userManager;
+
+    public UserRepository(AppDbContext context, UserManager<User> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
-    public async Task Add(User user)
+    public async Task<User> Create(User user, string password)
     {
-        Rank r = await _context.Ranks.FirstOrDefaultAsync(x => x.Id == 1); // 2 => normal user
-        try
+        user.Created = DateTime.Now;
+        user.IsDeleted = false;
+
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+        ThrowIfFailed(await _userManager.CreateAsync(user, password));
+        ThrowIfFailed(await _userManager.AddToRoleAsync(user, Roles.User));
+        await transaction.CommitAsync();
+
+        return user;
+    }
+
+    public async Task UpdateProfile(int id, string login, string email, string? currentPassword, string? newPassword)
+    {
+        var user = await GetById(id);
+
+        await using var transaction = await _context.Database.BeginTransactionAsync();
+
+        user.UserName = login;
+        user.Email = email;
+        user.LastModified = DateTime.Now;
+        ThrowIfFailed(await _userManager.UpdateAsync(user));
+
+        if (!string.IsNullOrEmpty(newPassword))
         {
-            user.IsDeleted = false;
-            //user.IsEmailConfirmed = false;
-            user.Rank = r;
-            user.RankId = r.Id;
-            user.Password = HashPassword(user.Password);
-            await _context.AddAsync(user);
+            if (string.IsNullOrEmpty(currentPassword))
+            {
+                throw new AppException("Current password is required to change the password.");
+            }
+
+            ThrowIfFailed(await _userManager.ChangePasswordAsync(user, currentPassword, newPassword));
         }
-        catch
-        {
-            throw;
-        }
+
+        await transaction.CommitAsync();
     }
 
     public async Task Delete(int id)
     {
-        User res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        if (res.RankId == 5)
+        var user = await GetById(id);
+        var roles = await _userManager.GetRolesAsync(user);
+
+        if (roles.Contains(Roles.HeadAdmin))
+        {
             throw new AppException("Cannot Delete An HeadAdmin");
-        else if (res.IsDeleted == true)
-            throw new AppException("User has already the deleted status");
-        else
-            res.IsDeleted = true;
-    }
-
-    public async Task Update(User user, int id)
-    {
-        var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        if(res != null)
-        {
-            res.Login = user.Login;
-            res.Email = user.Email;
-            res.Password = HashPassword(user.Password);
         }
-        else
-        {
-            throw new NotFoundException($"No user with ID = {user.Id}");
-        }
-    }
 
-    //public async Task ChangeMailStatus(int id)
-    //{
-    //    var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-    //    if(res != null)
-    //    {
-    //        res.IsEmailConfirmed = true;
-    //    }
-    //}
+        user.IsDeleted = true;
+        user.LastModified = DateTime.Now;
+        user.SecurityStamp = Guid.NewGuid().ToString();
+    }
 
     #region query
     public async Task<User> GetById(int id)
     {
-        var res = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-        if(res != null)
-        {
-            res.Password = "";
-            return res;
-        }
-        else
+        var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+        if (user == null)
         {
             throw new NotFoundException($"No user with ID = {id}");
         }
+
+        return user;
     }
 
-    public async Task<User> GetByLoginMail(User log)
+    public async Task<User?> FindByLoginOrEmail(string loginOrEmail)
     {
-        var res = await _context.Users.FirstOrDefaultAsync(x => x.Login == log.Login || x.Email == log.Email);
+        if (loginOrEmail.Contains('@'))
+        {
+            return await _userManager.FindByEmailAsync(loginOrEmail);
+        }
 
-        if (res != null && VerifyPassword(res.Password, log.Password) && res.IsDeleted == false)
-            return res;
-        else
-            throw new Exception();
+        return await _userManager.FindByNameAsync(loginOrEmail);
+    }
+
+    public async Task<string?> GetRole(User user)
+    {
+        var roles = await _userManager.GetRolesAsync(user);
+        return roles.FirstOrDefault();
     }
 
     public async Task<List<User>> GetUsers()
     {
-        return await _context.Users.ToListAsync();
+        return await _userManager.Users.ToListAsync();
     }
     #endregion
 
-    private static string HashPassword(string password)
+    private static void ThrowIfFailed(IdentityResult result)
     {
-        return BCrypt.Net.BCrypt.HashPassword(password);
-    }
+        if (result.Succeeded)
+        {
+            return;
+        }
 
-    private static bool VerifyPassword(string hashedPassword, string providedPassword)
-    {
-        return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword);
+        var message = string.Join(" ", result.Errors.Select(x => x.Description));
+        var isDuplicate = result.Errors.Any(x => x.Code == DuplicateUserNameCode || x.Code == DuplicateEmailCode);
+
+        if (isDuplicate)
+        {
+            throw new ConflictException(message);
+        }
+
+        throw new AppException(message);
     }
 }

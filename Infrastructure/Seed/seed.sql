@@ -8,18 +8,18 @@ SET NOCOUNT ON;
 
 BEGIN TRANSACTION;
 
-IF EXISTS (SELECT 1 FROM [Ranks]) OR EXISTS (SELECT 1 FROM [Brands]) OR EXISTS (SELECT 1 FROM [Users]) OR EXISTS (SELECT 1 FROM [CPUs])
+IF EXISTS (SELECT 1 FROM [AspNetRoles]) OR EXISTS (SELECT 1 FROM [Brands]) OR EXISTS (SELECT 1 FROM [AspNetUsers]) OR EXISTS (SELECT 1 FROM [CPUs])
     THROW 50000, 'Seed aborted: the database already contains data.', 1;
 
 DECLARE @now datetime2 = SYSDATETIME();
 
--- Ranks
-SET IDENTITY_INSERT [Ranks] ON;
-INSERT INTO [Ranks] (Id, Name) VALUES
-    (1, N'User'),
-    (2, N'Admin'),
-    (5, N'HeadAdmin');
-SET IDENTITY_INSERT [Ranks] OFF;
+-- AspNetRoles
+SET IDENTITY_INSERT [AspNetRoles] ON;
+INSERT INTO [AspNetRoles] (Id, Name, NormalizedName, ConcurrencyStamp) VALUES
+    (1, N'User', N'USER', CONVERT(nvarchar(36), NEWID())),
+    (2, N'Admin', N'ADMIN', CONVERT(nvarchar(36), NEWID())),
+    (3, N'HeadAdmin', N'HEADADMIN', CONVERT(nvarchar(36), NEWID()));
+SET IDENTITY_INSERT [AspNetRoles] OFF;
 
 -- Brands
 SET IDENTITY_INSERT [Brands] ON;
@@ -277,13 +277,19 @@ INSERT INTO [Ssds] (Id, Name, Model, Description, Capacity, MaxRead, MaxWrite, S
     (9, N'Crucial T700 1TB', N'CT1000T700SSD3', N'M.2 NVMe PCIe 5.0 x4 solid state drive.', 1000, 11700, 9500, 4, 34, @now, 0, NULL);
 SET IDENTITY_INSERT [Ssds] OFF;
 
--- Users
-SET IDENTITY_INSERT [Users] ON;
-INSERT INTO [Users] (Id, Login, Email, Password, RankId, Created, IsDeleted, LastModified) VALUES
-    (1, N'headadmin', N'headadmin@pcbuilder.local', N'$2a$11$h6O7KtNyYb09awRJDqKDnuTN5yvwTNhFSM51E05b9jSoph6elxo3a', 5, @now, 0, NULL),
-    (2, N'admin', N'admin@pcbuilder.local', N'$2a$11$h6O7KtNyYb09awRJDqKDnuTN5yvwTNhFSM51E05b9jSoph6elxo3a', 2, @now, 0, NULL),
-    (3, N'user', N'user@pcbuilder.local', N'$2a$11$h6O7KtNyYb09awRJDqKDnuTN5yvwTNhFSM51E05b9jSoph6elxo3a', 1, @now, 0, NULL);
-SET IDENTITY_INSERT [Users] OFF;
+-- AspNetUsers
+SET IDENTITY_INSERT [AspNetUsers] ON;
+INSERT INTO [AspNetUsers] (Id, UserName, NormalizedUserName, Email, NormalizedEmail, EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount, Created, IsDeleted, LastModified) VALUES
+    (1, N'headadmin', N'HEADADMIN', N'headadmin@pcbuilder.local', N'HEADADMIN@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEMnijNbxamOa97JSFX63nfogRAOPFHzGoJ6zNALyjvSWC7u+G6MwjXsLe95NIhc7/g==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, 0, @now, 0, NULL),
+    (2, N'admin', N'ADMIN', N'admin@pcbuilder.local', N'ADMIN@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEC1oKpfs1sI5hO6FNVSgGaiZTnUpI/XJtvNSVNkczdCBOZV2VDAJiMDE33Ek3FSo1g==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, 0, @now, 0, NULL),
+    (3, N'user', N'USER', N'user@pcbuilder.local', N'USER@PCBUILDER.LOCAL', 1, N'AQAAAAIAAYagAAAAEEdQBJr61X+4R0L8fIRhDLwMSnz6ondLtlNQZvwAydCwWExXd3Jn1FW5ZhBHI4ph8A==', CONVERT(nvarchar(36), NEWID()), CONVERT(nvarchar(36), NEWID()), 0, 0, 0, 0, 0, @now, 0, NULL);
+SET IDENTITY_INSERT [AspNetUsers] OFF;
+
+-- AspNetUserRoles
+INSERT INTO [AspNetUserRoles] (UserId, RoleId) VALUES
+    (1, 3),
+    (2, 2),
+    (3, 1);
 
 -- Computers
 SET IDENTITY_INSERT [Computers] ON;
@@ -314,7 +320,7 @@ INSERT INTO [ComputerSsds] (ComputerId, SsdId) VALUES
 COMMIT TRANSACTION;
 
 SELECT t.[Table], t.[Rows] FROM (VALUES
-    (N'Ranks', (SELECT COUNT(*) FROM [Ranks])),
+    (N'AspNetRoles', (SELECT COUNT(*) FROM [AspNetRoles])),
     (N'Brands', (SELECT COUNT(*) FROM [Brands])),
     (N'Series', (SELECT COUNT(*) FROM [Series])),
     (N'SocketCPUs', (SELECT COUNT(*) FROM [SocketCPUs])),
@@ -330,7 +336,8 @@ SELECT t.[Table], t.[Rows] FROM (VALUES
     (N'SlotGpus', (SELECT COUNT(*) FROM [SlotGpus])),
     (N'Hdds', (SELECT COUNT(*) FROM [Hdds])),
     (N'Ssds', (SELECT COUNT(*) FROM [Ssds])),
-    (N'Users', (SELECT COUNT(*) FROM [Users])),
+    (N'AspNetUsers', (SELECT COUNT(*) FROM [AspNetUsers])),
+    (N'AspNetUserRoles', (SELECT COUNT(*) FROM [AspNetUserRoles])),
     (N'Computers', (SELECT COUNT(*) FROM [Computers])),
     (N'ComputerHdds', (SELECT COUNT(*) FROM [ComputerHdds])),
     (N'ComputerSsds', (SELECT COUNT(*) FROM [ComputerSsds]))

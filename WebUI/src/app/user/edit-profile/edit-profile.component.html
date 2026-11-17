@@ -1,16 +1,26 @@
 <h3 class="m-2">Profile Edit</h3>
 
 <form [formGroup]="userForm" (ngSubmit)="executeForm()" style="max-width: 450px" class="mx-auto py-4 my-5 rounded border border-2 border-primary">
-  <!-- First row -->
-
   <div class="form-outline mb-4 mx-4 my-2">
-    <input type="text" id="login" class="form-control my-3" formControlName="login"  placeholder="login"/>
-    <input type="text" id="email" class="form-control my-3" formControlName="email"  placeholder="email"/>
-    <input type="password" id="password" class="form-control my-3" formControlName="password"  placeholder="new password password min 8 characters"/>
-    <input type="password" id="passwordRepeat" class="form-control my-3" formControlName="passwordRepeat"  placeholder="repeat password"/>
+    <input type="text" id="login" class="form-control my-3" formControlName="login" placeholder="login"/>
+    <input type="email" id="email" class="form-control my-3" formControlName="email" placeholder="email"/>
+
+    @if (changePassword) {
+      <input type="password" id="currentPassword" class="form-control my-3" formControlName="currentPassword" placeholder="current password"/>
+      <input type="password" id="newPassword" class="form-control my-3" formControlName="newPassword" placeholder="new password"/>
+      <div class="form-text">{{ passwordHint }}</div>
+      <input type="password" id="newPasswordRepeat" class="form-control my-3" formControlName="newPasswordRepeat" placeholder="repeat new password"/>
+    }
   </div>
 
   <button type="submit" class="form-group btn btn-dark border border-primary btn-block ms-4">Submit</button>
+  <button type="button" class="btn btn-outline-primary ms-2" (click)="togglePasswordChange()">
+    @if (changePassword) {
+      Keep current password
+    } @else {
+      Change password
+    }
+  </button>
 </form>
 <h3 class="my-3">Your configurations <i class="bi bi-pc-display"></i> </h3>
 @if (isDataLoaded) {

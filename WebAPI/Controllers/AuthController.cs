@@ -1,5 +1,8 @@
-﻿using Application.DTO.UserDTOs;
+using System.Security.Claims;
+using Application.DTO.UserDTOs;
 using Application.Interfaces;
+using Application.Service.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -15,47 +18,26 @@ public class AuthController : ControllerBase
         _service = service;
     }
 
-    //[HttpPost("confirmemail")]
-    //public async Task<IActionResult> ConfirmMail(int id)
-    //{
-    //    await _service.ChangeMailStatus(id);
-    //    return Ok();
-    //}
-
-
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserDTO login)
     {
         var res = await _service.Login(login);
-        if (res is not null)
-        {
-           HttpContext.Session.SetInt32("UserId", res.Id);
-           HttpContext.Session.SetString("Username", res.Login);
-           HttpContext.Session.SetInt32("UserRank", res.RankId);
-
-            return Ok(res);
-        }
-        else
-            return BadRequest();
+        return Ok(res);
     }
 
+    [Authorize]
     [HttpGet("getUserInfo")]
-    public IActionResult GetUserInfo()
+    public async Task<IActionResult> GetUserInfo()
     {
-        var userId = HttpContext.Session.GetInt32("UserId");
-        var username = HttpContext.Session.GetString("Username");
-        var userRank = HttpContext.Session.GetInt32("UserRank");
-
-        return Ok(new { userId, username, userRank });
+        var res = await _service.GetCurrentUser(GetCurrentUserId());
+        return Ok(res);
     }
 
+    [Authorize]
     [HttpPost("logout")]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
-        HttpContext.Session.Remove("UserId");
-        HttpContext.Session.Remove("Username");
-        HttpContext.Session.Remove("UserRank");
-        Response.Cookies.Delete(".AspNetCore.Session");
+        await _service.Logout();
         return Ok("Logged out successfully");
     }
 
@@ -66,10 +48,22 @@ public class AuthController : ControllerBase
         return Ok();
     }
 
-    [HttpPatch("edit/{id}")]
-    public async Task<IActionResult> Edit(AddUserDTO user, int id)
+    [Authorize]
+    [HttpPatch("edit")]
+    public async Task<IActionResult> Edit(EditProfileDTO user)
     {
-        await _service.Edit(user,id);
-        return Ok();
+        var res = await _service.Edit(user, GetCurrentUserId());
+        return Ok(res);
+    }
+
+    private int GetCurrentUserId()
+    {
+        var value = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (!int.TryParse(value, out var userId))
+        {
+            throw new UnauthorizedException("Invalid user identity.");
+        }
+
+        return userId;
     }
 }

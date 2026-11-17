@@ -1,9 +1,12 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/core/auth/auth.service";
 import { addUser } from "src/app/shared/models/user.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
+import { passwordPolicyHint, passwordPolicyValidator } from "src/app/shared/validators/password.validator";
 
 @Component({
   selector: 'app-register',
@@ -13,6 +16,8 @@ import { addUser } from "src/app/shared/models/user.model";
   standalone: false
 })
 export class RegisterComponent {
+
+  readonly passwordHint = passwordPolicyHint;
 
   constructor(
     private _route: ActivatedRoute,
@@ -28,26 +33,26 @@ export class RegisterComponent {
 
   initForm() {
     this.registrationForm = this.formBuilder.group({
-      login: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+      login: ['', [Validators.required, Validators.maxLength(256), Validators.pattern(/^[A-Za-z0-9._-]+$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(256)]],
+      password: ['', [Validators.required, passwordPolicyValidator]],
+      confirmPassword: ['', Validators.required],
     }, { validator: this.passwordMatchValidator });
   }
 
   executeRegistrationForm() {
-    console.log(this.registrationForm.value);
     if(this.registrationForm.valid){
-      const res = this.registrationForm.value as addUser;
-      this._authService.register(res).subscribe(
-        (res: boolean) => {
+      const { login, email, password } = this.registrationForm.value;
+      const res: addUser = { login, email, password };
+      this._authService.register(res).subscribe({
+        next: () => {
           this.toastr.success('Registred Successfully!', 'Registration');
-          this._router.navigateByUrl(``);
+          this._router.navigateByUrl(`login`);
         },
-        (error) => {
-          this.toastr.success('Error fetching user', 'Registration');
+        error: (error: HttpErrorResponse) => {
+          this.toastr.error(getProblemMessage(error, 'Registration failed.'), 'Registration');
         }
-      );
+      });
     }else{
       this.toastr.error('Data not valid');
     }
