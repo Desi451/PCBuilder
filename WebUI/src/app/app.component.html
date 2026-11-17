@@ -39,7 +39,7 @@
       </a>
       <hr>
         <ul  class="nav nav-pills flex-column mb-auto">
-          @if (userRank==2) {
+          @if (userRank>=2) {
             <li class="nav-item">
               <a href="brand"
                 class="nav-link text-white"
@@ -113,7 +113,7 @@
               MOBO's
             </a>
           </li>
-          @if (userRank==2) {
+          @if (userRank>=2) {
             <li class="nav-item">
               <a href="slot"
                 class="nav-link text-white"

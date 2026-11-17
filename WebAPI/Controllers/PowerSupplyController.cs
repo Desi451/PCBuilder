@@ -2,10 +2,13 @@
 using Application.DTO.Components.PowerSupllyDTOs;
 using Application.Interfaces;
 using Application.Interfaces.Components;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
+[Authorize(Policy = Policies.AdminOrAbove)]
 [Route("api/[controller]")]
 [ApiController]
 public class PowerSupplyController : ControllerBase
@@ -16,6 +19,7 @@ public class PowerSupplyController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -23,6 +27,7 @@ public class PowerSupplyController : ControllerBase
         return Ok(brands);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {

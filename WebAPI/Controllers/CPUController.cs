@@ -1,9 +1,12 @@
 ﻿using Application.DTO.Components.CPU;
 using Application.Interfaces.Components;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
+[Authorize(Policy = Policies.AdminOrAbove)]
 [Route("api/[controller]")]
 [ApiController]
 public class CPUController : ControllerBase
@@ -15,6 +18,7 @@ public class CPUController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -22,6 +26,7 @@ public class CPUController : ControllerBase
         return Ok(brands);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -50,6 +55,7 @@ public class CPUController : ControllerBase
         return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpGet("sockets")]
     public async Task<IActionResult> GetAllSockets()
     {
@@ -57,6 +63,7 @@ public class CPUController : ControllerBase
         return Ok(brands);
     }
 
+    [AllowAnonymous]
     [HttpGet("socketsbrand/{id}")]
     public async Task<IActionResult> GetAllSocketsByBrand(int id)
     {
@@ -64,6 +71,7 @@ public class CPUController : ControllerBase
         return Ok(brands);
     }
 
+    [AllowAnonymous]
     [HttpGet("sockets/{id}")]
     public async Task<IActionResult> GetSocket(int id)
     {

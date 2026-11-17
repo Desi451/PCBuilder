@@ -1,10 +1,13 @@
 ﻿using Application.DTO.BrandDTOs;
 using Application.DTO.SeriesDTOs;
 using Application.Interfaces;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
+[Authorize(Policy = Policies.AdminOrAbove)]
 [Route("api/[controller]")]
 [ApiController]
 public class SeriesController : ControllerBase
@@ -15,6 +18,7 @@ public class SeriesController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -22,6 +26,7 @@ public class SeriesController : ControllerBase
         return Ok(brands);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -29,6 +34,7 @@ public class SeriesController : ControllerBase
         return Ok(res);
     }
 
+    [AllowAnonymous]
     [HttpGet("brandId/{id}")]
     public async Task<IActionResult> GetByBrand(int id)
     {

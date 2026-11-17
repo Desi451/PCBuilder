@@ -3,6 +3,7 @@ using Application.Interfaces.Components;
 using Application.Mappings;
 using Application.Service;
 using Application.Service.Components;
+using Domain.Common;
 using Domain.Entities;
 using Domain.Interfaces.Common;
 using Domain.Interfaces.Repository;
@@ -10,8 +11,10 @@ using Domain.Interfaces.Repository.Components;
 using Infrastructure.Common;
 using Infrastructure.Context;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.ExceptionHandling;
+using WebAPI.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,6 +70,11 @@ builder.Services.ConfigureApplicationCookie(options =>
         return Task.CompletedTask;
     };
 });
+
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())
+    .AddPolicy(Policies.AdminOrAbove, policy => policy.RequireRole(Roles.Admin, Roles.HeadAdmin))
+    .AddPolicy(Policies.HeadAdminOnly, policy => policy.RequireRole(Roles.HeadAdmin));
 
 // Add services to the container.
 
@@ -129,10 +137,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 var app = builder.Build();
 
 app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

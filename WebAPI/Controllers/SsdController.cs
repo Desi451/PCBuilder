@@ -2,11 +2,14 @@
 using Application.DTO.Components.Drive;
 using Application.Interfaces;
 using Application.Interfaces.Components;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize(Policy = Policies.AdminOrAbove)]
 [Route("api/[controller]")]
 [ApiController]
 public class SsdController : ControllerBase
@@ -17,6 +20,7 @@ public class SsdController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -24,6 +28,7 @@ public class SsdController : ControllerBase
         return Ok(brands);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {

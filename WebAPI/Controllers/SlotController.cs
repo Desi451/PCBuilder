@@ -1,9 +1,12 @@
 ﻿using Application.DTO.Components.Slot;
 using Application.Interfaces;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize(Policy = Policies.AdminOrAbove)]
 [Route("api/[controller]")]
 [ApiController]
 public class SlotController : ControllerBase
@@ -14,6 +17,7 @@ public class SlotController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -21,6 +25,7 @@ public class SlotController : ControllerBase
         return Ok(list);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {

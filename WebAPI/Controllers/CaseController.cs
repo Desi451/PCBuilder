@@ -1,10 +1,13 @@
 ﻿using Application.DTO.Components.Case;
 using Application.DTO.Components.Case_Size;
 using Application.Interfaces.Components;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
+[Authorize(Policy = Policies.AdminOrAbove)]
 [Route("api/[controller]")]
 [ApiController]
 public class CaseController : ControllerBase
@@ -16,6 +19,7 @@ public class CaseController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -23,6 +27,7 @@ public class CaseController : ControllerBase
         return Ok(brands);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {

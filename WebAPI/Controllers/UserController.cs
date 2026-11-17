@@ -1,9 +1,12 @@
-﻿using Application.DTO.UserDTOs;
+using Application.DTO.UserDTOs;
 using Application.Interfaces;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
 
+[Authorize(Policy = Policies.HeadAdminOnly)]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase

@@ -1,11 +1,14 @@
 ﻿using Application.DTO.Components.Drive;
 using Application.Interfaces.Components;
+using Domain.Common;
 using Domain.Entities.Components.Drives;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[Authorize(Policy = Policies.AdminOrAbove)]
 [Route("api/[controller]")]
 [ApiController]
 public class HddController : ControllerBase
@@ -16,6 +19,7 @@ public class HddController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -23,6 +27,7 @@ public class HddController : ControllerBase
         return Ok(res);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {

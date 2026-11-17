@@ -2,10 +2,13 @@
 using Application.DTO.Components.Case_Size;
 using Application.DTO.Components.RAM;
 using Application.Interfaces.Components;
+using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    [Authorize(Policy = Policies.AdminOrAbove)]
     [Route("api/[controller]")]
     [ApiController]
     public class RamController : ControllerBase
@@ -17,6 +20,7 @@ namespace WebAPI.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -24,6 +28,7 @@ namespace WebAPI.Controllers
             return Ok(brands);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -52,6 +57,7 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
+        [AllowAnonymous]
         [HttpGet("speed")]
         public async Task<IActionResult> GetAllSpeeds()
         {
@@ -59,6 +65,7 @@ namespace WebAPI.Controllers
             return Ok(brands);
         }
 
+        [AllowAnonymous]
         [HttpGet("speed/{id}")]
         public async Task<IActionResult> GetSpeed(int id)
         {

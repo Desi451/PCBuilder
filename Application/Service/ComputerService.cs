@@ -6,6 +6,7 @@ using Application.DTO.Components.PowerSupllyDTOs;
 using Application.DTO.Components.RAM;
 using Application.DTO.Computer;
 using Application.Interfaces;
+using Application.Service.Common;
 using AutoMapper;
 using Domain.Entities.Components.Drives;
 using Domain.Entities.Computer;
@@ -21,14 +22,17 @@ public class ComputerService : IComputerService
     private ISeriesRepository _seriesRepository;
     private readonly ISaveData _saveData;
     private readonly IMapper _mapper;
+    private readonly ICurrentUser _currentUser;
 
     public ComputerService(
         IComputerRepository repository,
         ISeriesRepository seriesRepository,
         IBrandRepository brandRepository,
         ISaveData saveData,
-        IMapper mapper)
+        IMapper mapper,
+        ICurrentUser currentUser)
     {
+        _currentUser = currentUser;
         _brandRepository = brandRepository;
         _seriesRepository = seriesRepository;
         _repository = repository;
@@ -39,6 +43,7 @@ public class ComputerService : IComputerService
     public async Task Add(AddComputerDTO pc)
     {
         var res = _mapper.Map<Computer>(pc);
+        res.UserId = _currentUser.Id;
         var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
         var ssds = _mapper.Map<List<Ssd>>(pc.Ssds);
         await _repository.Add(res, hdds, ssds);
@@ -47,6 +52,7 @@ public class ComputerService : IComputerService
 
     public async Task Delete(int id)
     {
+        await GetOwnedComputer(id);
         await _repository.Delete(id);
         await _saveData.Save();
     }
@@ -65,9 +71,14 @@ public class ComputerService : IComputerService
 
     public async Task Update(ComputerDTO pc)
     {
+        var existing = await GetOwnedComputer(pc.Id);
+
         try
         {
             var res = _mapper.Map<Computer>(pc);
+            res.UserId = existing.UserId;
+            res.Created = existing.Created;
+            res.IsDeleted = existing.IsDeleted;
             var hdds = _mapper.Map<List<Hdd>>(pc.Drives);
             var ssds = _mapper.Map<List<Ssd>>(pc.Ssds);
             await _repository.Update(res, hdds, ssds);
@@ -157,5 +168,21 @@ public class ComputerService : IComputerService
         }
 
         return res;
+    }
+
+    private async Task<Computer> GetOwnedComputer(int id)
+    {
+        var computer = await _repository.GetById(id);
+        if (computer is null || computer.IsDeleted)
+        {
+            throw new NotFoundException($"No computer with ID = {id}");
+        }
+
+        if (computer.UserId != _currentUser.Id && !_currentUser.IsAdminOrAbove)
+        {
+            throw new ForbiddenException("You can only modify your own computers.");
+        }
+
+        return computer;
     }
 }

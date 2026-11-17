@@ -1,5 +1,6 @@
 using Application.DTO.UserDTOs;
 using Application.Interfaces;
+using Application.Service.Common;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces.Common;
@@ -12,10 +13,12 @@ public class UserService : IUserService
     private IUserRepository _repository;
     private readonly IMapper _mapper;
     private readonly ISaveData _saveData;
+    private readonly ICurrentUser _currentUser;
 
     public UserService(IMapper mapper,
-        IUserRepository repository, ISaveData saveData)
+        IUserRepository repository, ISaveData saveData, ICurrentUser currentUser)
     {
+        _currentUser = currentUser;
         _repository = repository;
         _mapper = mapper;
         _saveData = saveData;
@@ -46,6 +49,11 @@ public class UserService : IUserService
 
     public async Task Delete(int id)
     {
+        if (id == _currentUser.Id)
+        {
+            throw new AppException("You cannot delete your own account.");
+        }
+
         await _repository.Delete(id);
         await _saveData.Save();
     }

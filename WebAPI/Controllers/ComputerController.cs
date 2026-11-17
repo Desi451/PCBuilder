@@ -1,5 +1,6 @@
-﻿using Application.DTO.Computer;
+using Application.DTO.Computer;
 using Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
@@ -15,6 +16,7 @@ public class ComputerController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -22,6 +24,7 @@ public class ComputerController : ControllerBase
         return Ok(res);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -29,6 +32,7 @@ public class ComputerController : ControllerBase
         return Ok(res);
     }
 
+    [AllowAnonymous]
     [HttpGet("views")]
     public async Task<IActionResult> GetViews()
     {
@@ -36,6 +40,7 @@ public class ComputerController : ControllerBase
         return Ok(res);
     }
 
+    [AllowAnonymous]
     [HttpGet("views/{id}")]
     public async Task<IActionResult> GetViewsByUser(int id)
     {
@@ -43,6 +48,7 @@ public class ComputerController : ControllerBase
         return Ok(res);
     }
 
+    [AllowAnonymous]
     [HttpGet("fulldata/{id}")]
     public async Task<IActionResult> GetFullData(int id)
     {
@@ -50,6 +56,7 @@ public class ComputerController : ControllerBase
         return Ok(res);
     }
 
+    [Authorize]
     [HttpPost("add")]
     public async Task<IActionResult> Create(AddComputerDTO pc)
     {
@@ -57,6 +64,7 @@ public class ComputerController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
     [HttpPut("update")]
     public async Task<IActionResult> Update(ComputerDTO pc)
     {
@@ -64,6 +72,7 @@ public class ComputerController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
@@ -73,6 +82,7 @@ public class ComputerController : ControllerBase
 
     // computer configuration
 
+    [AllowAnonymous]
     [HttpGet("cpubrands")]
     public async Task<IActionResult> GetCpuBrands()
     {
@@ -80,30 +90,35 @@ public class ComputerController : ControllerBase
         return Ok(res);
     }
 
+    [AllowAnonymous]
     [HttpGet("cpus/{id}")]
     public async Task<IActionResult> GetCpusForBrand(int id)
     {
         return Ok(await _service.GetCPUsByBrandId(id));
     }
 
+    [AllowAnonymous]
     [HttpGet("motherboards/{id}")]
     public async Task<IActionResult> GetMotherboardsForSocket(int id)
     {
         return Ok(await _service.GetMotherBoardsBySocket(id));
     }
 
+    [AllowAnonymous]
     [HttpGet("rams/{id}")]
     public async Task<IActionResult> GetRamsForMotherboard(int id)
     {
         return Ok(await _service.GetRamsByMotherboard(id));
     }
 
+    [AllowAnonymous]
     [HttpGet("psus/{id}")]
     public async Task<IActionResult> GetPsusByWattage(int id)
     {
         return Ok(await _service.GetPsuByWattage(id));
     }
 
+    [AllowAnonymous]
     [HttpPost("cases")]
     public async Task<IActionResult> GetCasesBySize(CaseRequest req)
     {

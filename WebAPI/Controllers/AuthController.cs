@@ -18,6 +18,7 @@ public class AuthController : ControllerBase
         _service = service;
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginUserDTO login)
     {
@@ -41,6 +42,7 @@ public class AuthController : ControllerBase
         return Ok("Logged out successfully");
     }
 
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register(AddUserDTO user)
     {
