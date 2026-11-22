@@ -38,7 +38,7 @@
                 <td>{{ row[column] }}</td>
               }
               <td class="col-sm-2 text-center">
-                @if (userRank>=2) {
+                @if (authStore.isAdmin()) {
                   <button type="button"
                     class="btn btn-link btn-sm px-1"
                     mdbRipple

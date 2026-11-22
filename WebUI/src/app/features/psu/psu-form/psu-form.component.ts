@@ -9,6 +9,7 @@ import { SlotService } from "src/app/core/service/slot.service";
 import { brand } from "src/app/shared/models/brand.model";
 import { psu } from "src/app/shared/models/psu.model";
 import { series } from "src/app/shared/models/series.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-psu-from',
@@ -116,7 +117,7 @@ export class PsuFormComponent implements OnInit {
           this._router.navigateByUrl(`psu`);
         },
           (error) => {
-            this.toastr.error('Error updating psu', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating psu'), 'Server Error');
           });
       } else {
         let addForm = this.psuForm.value as psu;
@@ -128,7 +129,7 @@ export class PsuFormComponent implements OnInit {
           this._router.navigateByUrl(`psu`);
         },
           (error) => {
-            this.toastr.error('Error adding psu', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding psu'), 'Server Error');
         });
       }
     }
@@ -140,7 +141,7 @@ export class PsuFormComponent implements OnInit {
         this.toastr.success('PSU deleted Successfully!', 'PSU deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting PSU', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting PSU'), 'Server Error');
       }
     );
   }

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { RamService } from "src/app/core/service/ram.service";
 import { addRam, ramSpeed } from "src/app/shared/models/ram.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-ram-speed-form',
@@ -60,7 +61,7 @@ export class RamSpeedFormComponent implements OnInit {
           this._router.navigateByUrl(`ram`);
         },
           (error) => {
-            this.toastr.error('Error updating RAM', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating RAM'), 'Server Error');
           });
       } else {
         let addForm = this.ramForm.value as addRam;
@@ -69,7 +70,7 @@ export class RamSpeedFormComponent implements OnInit {
           this._router.navigateByUrl(`ram`);
         },
           (error) => {
-            this.toastr.error('Error adding RAM speed', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding RAM speed'), 'Server Error');
           });
       }
     } else {
@@ -83,7 +84,7 @@ export class RamSpeedFormComponent implements OnInit {
         this.toastr.success('RAM deleted Successfully!', 'RAM deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting RAM', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting RAM'), 'Server Error');
       }
     );
   }

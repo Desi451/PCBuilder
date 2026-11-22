@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { SlotService } from "src/app/core/service/slot.service";
 import { addSlot, slot } from "src/app/shared/models/slot.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-slot-from',
@@ -48,7 +49,7 @@ export class SlotFormComponent implements OnInit {
           this._router.navigateByUrl(`slot`);
         },
           (error) => {
-            this.toastr.error('Error updating slot', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating slot'), 'Server Error');
           });
       } else {
         let res: addSlot = {
@@ -59,7 +60,7 @@ export class SlotFormComponent implements OnInit {
           this._router.navigateByUrl(`slot`);
         },
           (error) => {
-            this.toastr.error('Error adding slot', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding slot'), 'Server Error');
           });
       }
     }
@@ -72,7 +73,7 @@ export class SlotFormComponent implements OnInit {
         this.toastr.success('Slot deleted Successfully!', 'Brand deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting slot', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting slot'), 'Server Error');
       }
     );
   }

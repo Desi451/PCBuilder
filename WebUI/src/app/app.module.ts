@@ -1,13 +1,14 @@
-import { provideHttpClient, withInterceptorsFromDi, withXhr } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { provideHttpClient, withInterceptors, withXhr } from "@angular/common/http";
+import { inject, NgModule, provideAppInitializer } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrModule } from "ngx-toastr";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { AuthStore } from "./core/auth/auth.store";
+import { errorInterceptor } from "./core/auth/error.interceptor";
 import { FeaturesModule } from "./features/features.module";
 import { ComputerModule } from "./main/computer.module";
 import { UserModule } from "./user/user.module";
@@ -16,12 +17,14 @@ import { UserModule } from "./user/user.module";
         AppComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
         FeaturesModule,
         UserModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot({ preventDuplicates: true }),
         BrowserAnimationsModule,
         ComputerModule,
-        NgbModule,
-        FormsModule], providers: [provideHttpClient(withXhr(), withInterceptorsFromDi())] })
+        FormsModule,
+        AppRoutingModule], providers: [
+        provideHttpClient(withXhr(), withInterceptors([errorInterceptor])),
+        provideAppInitializer(() => inject(AuthStore).init())
+    ] })
 export class AppModule { }

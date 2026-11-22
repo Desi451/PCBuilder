@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgbModule, NgbPaginationModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgbPaginationModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { UniTableComponent } from "./uni-table.component";
 
@@ -10,7 +10,6 @@ import { UniTableComponent } from "./uni-table.component";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule,
     NgbPaginationModule
   ],
   declarations: [

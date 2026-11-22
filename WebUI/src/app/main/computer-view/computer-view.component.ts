@@ -19,6 +19,7 @@ export class ComputerViewComponent implements OnInit {
   }
 
   res: computerForm = new computerForm();
+  caseSizeName = '';
   id: number;
 
   constructor(
@@ -33,7 +34,7 @@ export class ComputerViewComponent implements OnInit {
     this._computerService.getFullData(this.id).subscribe(
       (res: computerForm) => {
         this.res = res;
-        console.log(res.userId)
+        this.caseSizeName = this.getCaseSizeName(res.case.caseSizeId);
       },
       (error) => {
         this.toastr.error('Error fetching PC configuration', 'Server Error');

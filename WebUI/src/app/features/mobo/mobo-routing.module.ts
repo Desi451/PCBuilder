@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { adminGuard } from "src/app/core/auth/auth.guards";
 
 import { MoboFormComponent } from "./mobo-form/mobo-form.component";
 import { MoboListComponent } from "./mobo-list/mobo-list.component";
@@ -13,10 +14,12 @@ const routes: Routes = [
   },
   {
     path: 'form',
+    canActivate: [adminGuard],
     component: MoboFormComponent
   },
   {
     path: 'form/:id',
+    canActivate: [adminGuard],
     component: MoboFormComponent
   },
   {

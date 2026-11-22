@@ -1,8 +1,10 @@
 import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { SeriesService } from "src/app/core/service/series.service";
 import { addSeries, series } from "src/app/shared/models/series.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-series-form',
@@ -23,7 +25,7 @@ export class SeriesFormComponent {
     private toastr: ToastrService
   ) {
     this.seriesId = this._route.snapshot.params['id'];
-    this._seriesService.currentBrandId.subscribe(brandId => {
+    this._seriesService.currentBrandId.pipe(takeUntilDestroyed()).subscribe(brandId => {
       this.brandId = brandId;
     });
   }
@@ -50,7 +52,7 @@ export class SeriesFormComponent {
         this._router.navigateByUrl(`brand`);
       },
       (error) => {
-        this.toastr.error('Error updating series', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error updating series'), 'Server Error');
       });
     } else {
       let res: addSeries = {};
@@ -61,7 +63,7 @@ export class SeriesFormComponent {
         this._router.navigateByUrl(`brand`);
       },
       (error) => {
-        this.toastr.error('Error adding series', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error adding series'), 'Server Error');
       });
     }
   }
@@ -72,7 +74,7 @@ export class SeriesFormComponent {
         this.toastr.success('Brand deleted Successfully!', 'Brand deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting series', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting series'), 'Server Error');
       }
     );
   }

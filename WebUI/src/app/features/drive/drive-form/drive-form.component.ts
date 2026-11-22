@@ -10,6 +10,7 @@ import { brand } from "src/app/shared/models/brand.model";
 import { hdd } from "src/app/shared/models/hdd.model";
 import { series } from "src/app/shared/models/series.model";
 import { slot } from "src/app/shared/models/slot.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-drive-from',
@@ -125,10 +126,10 @@ export class DriveFromComponent implements OnInit {
         updateForm.slotInterfaceId = this.slot.id;;
         this._hddService.update(updateForm).subscribe(() => {
           this.toastr.success('Drive updated Successfully!', 'Drive updated');
-          this._router.navigateByUrl(`hdd`);
+          this._router.navigateByUrl(`drive`);
         },
           (error) => {
-            this.toastr.error('Error updating drive', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating drive'), 'Server Error');
           });
       } else {
         let addForm = this.hddForm.value as hdd;
@@ -137,10 +138,10 @@ export class DriveFromComponent implements OnInit {
 
         this._hddService.add(addForm).subscribe(() => {
           this.toastr.success('Drive Added Successfully!', 'Drive Added');
-          this._router.navigateByUrl(`hdd`);
+          this._router.navigateByUrl(`drive`);
         },
           (error) => {
-            this.toastr.error('Error adding drive', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding drive'), 'Server Error');
           });
       }
     }
@@ -152,7 +153,7 @@ export class DriveFromComponent implements OnInit {
         this.toastr.success('Drive deleted Successfully!', 'Drive deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting drive', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting drive'), 'Server Error');
       }
     );
   }

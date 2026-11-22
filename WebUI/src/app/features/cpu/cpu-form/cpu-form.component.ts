@@ -8,6 +8,7 @@ import { SeriesService } from "src/app/core/service/series.service";
 import { brand } from "src/app/shared/models/brand.model";
 import { addCpu, cpu, socketCpu } from "src/app/shared/models/cpu.model";
 import { series } from "src/app/shared/models/series.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-cpu-form',
@@ -117,17 +118,15 @@ export class CpuFormComponent implements OnInit {
         updateForm.socketCpuId = this.socket.id;
         updateForm.id = this.id;
         updateForm.seriesId = this.srs.id;
-        console.log(updateForm);
         this._cpuService.update(updateForm).subscribe(() => {
           this.toastr.success('Cpu Updated Successfully!', 'Cpu Updated');
           this._router.navigateByUrl(`cpu`);
         },
           (error) => {
-            this.toastr.error('Error updating CPU', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating CPU'), 'Server Error');
           });
       } else {
         let addForm = this.cpuForm.value as addCpu;
-        console.log(addForm);
         addForm.socketCpuId = this.socket.id;
         addForm.seriesId = this.srs.id;
 
@@ -136,7 +135,7 @@ export class CpuFormComponent implements OnInit {
           this._router.navigateByUrl(`cpu`);
         },
           (error) => {
-            this.toastr.error('Error adding CPU', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding CPU'), 'Server Error');
           });
       }
     }
@@ -148,7 +147,7 @@ export class CpuFormComponent implements OnInit {
         this.toastr.success('Brand deleted Successfully!', 'Brand deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting brand', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting brand'), 'Server Error');
       }
     );
   }

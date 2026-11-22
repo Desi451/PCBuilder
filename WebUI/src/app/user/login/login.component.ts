@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/core/auth/auth.service";
+import { AuthStore } from "src/app/core/auth/auth.store";
 import { login, userInfo } from "src/app/shared/models/user.model";
 import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
@@ -23,6 +24,7 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private _authService: AuthService,
+    private _authStore: AuthStore,
   ) {
     this.initForm();
   }
@@ -39,8 +41,9 @@ export class LoginComponent {
       const log = this.loginForm.value as login;
       this._authService.login(log).subscribe({
         next: (res: userInfo) => {
+          this._authStore.setSession(res);
           this.toastr.success('Logged in Successfully!', 'Login');
-          this._router.navigateByUrl(``);
+          this._router.navigateByUrl(this.getReturnUrl());
         },
         error: (error: HttpErrorResponse) => {
           this.toastr.error(getProblemMessage(error, 'Login failed.'), 'Login');
@@ -50,5 +53,11 @@ export class LoginComponent {
     else{
       this.toastr.error('Data not valid');
     }
+  }
+
+  private getReturnUrl(): string {
+    const returnUrl = this._route.snapshot.queryParamMap.get('returnUrl');
+
+    return returnUrl && /^\/(?![\/\\])/.test(returnUrl) ? returnUrl : '/';
   }
 }

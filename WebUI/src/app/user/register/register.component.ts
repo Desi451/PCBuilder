@@ -37,7 +37,7 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email, Validators.maxLength(256)]],
       password: ['', [Validators.required, passwordPolicyValidator]],
       confirmPassword: ['', Validators.required],
-    }, { validator: this.passwordMatchValidator });
+    }, { validators: this.passwordMatchValidator });
   }
 
   executeRegistrationForm() {

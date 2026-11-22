@@ -1,9 +1,10 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { ChangeDetectorRef, Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/core/auth/auth.service";
+import { AuthStore } from "src/app/core/auth/auth.store";
 import { ComputerService } from "src/app/core/service/computer.service";
 import { computerView } from "src/app/shared/models/computer.model";
 import { updateUser, userInfo } from "src/app/shared/models/user.model";
@@ -21,10 +22,6 @@ export class EditProfileComponent implements OnInit{
 
   userForm!: FormGroup;
 
-  userId: number = 0;
-  username: string = '';
-  userRank: number = 0;
-
   changePassword = false;
   readonly passwordHint = passwordPolicyHint;
 
@@ -33,10 +30,10 @@ export class EditProfileComponent implements OnInit{
 
   constructor(
     private _route: ActivatedRoute,
-    private _router: Router,
     private toastr: ToastrService,
     private formBuilder: FormBuilder,
     private _authService: AuthService,
+    private _authStore: AuthStore,
     private _computerService: ComputerService,
     private cdr: ChangeDetectorRef,
   ) {
@@ -50,33 +47,27 @@ export class EditProfileComponent implements OnInit{
       currentPassword: [''],
       newPassword: [''],
       newPasswordRepeat: [''],
-    }, { validator: this.passwordMatchValidator });
+    }, { validators: this.passwordMatchValidator });
   }
 
   ngOnInit(): void {
-    this._authService.getUserInfo().subscribe(response => {
-      if (!response.userId) {
-        this._router.navigateByUrl('login');
-        return;
+    const session = this._authStore.session();
+    if (!session) {
+      return;
+    }
+
+    this.userForm.patchValue({ login: session.username, email: session.email });
+
+    this._computerService.getViewsByUser(session.userId).subscribe(
+      (res: computerView[]) => {
+        this.computerList = res;
+        this.isDataLoaded = true;
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        this.toastr.error('Error fetching computers', 'Profile Edit');
       }
-
-      this.userId = response.userId;
-      this.username = response.username;
-      this.userRank = response.userRank;
-      this.userForm.patchValue({ login: response.username, email: response.email });
-
-      this._computerService.getViewsByUser(response.userId).subscribe(
-        (res: computerView[]) => {
-          this.computerList = res;
-          this.isDataLoaded = true;
-          this.cdr.detectChanges();
-          this.toastr.success('Computers loaded Successfully!', 'Profile Edit');
-        },
-        (error) => {
-          this.toastr.error('Error fetching computers', 'Profile Edit');
-        }
-      );
-    });
+    );
   }
 
   togglePasswordChange() {
@@ -109,7 +100,7 @@ export class EditProfileComponent implements OnInit{
 
       this._authService.update(res).subscribe({
         next: (info: userInfo) => {
-          this.username = info.login;
+          this._authStore.setSession(info);
           this.toastr.success('Profile Updated Successfully!', 'Profile Edit');
           if (this.changePassword) {
             this.togglePasswordChange();

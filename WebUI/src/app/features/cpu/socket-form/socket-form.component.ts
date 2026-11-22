@@ -5,6 +5,7 @@ import { BrandService } from "src/app/core/service/brand.service";
 import { CpuService } from "src/app/core/service/cpu.service";
 import { brand } from "src/app/shared/models/brand.model";
 import { addSocketCpu, socketCpu } from "src/app/shared/models/cpu.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-socket-form',
@@ -73,7 +74,7 @@ export class SocketFormComponent {
             this._router.navigateByUrl(`cpu`);
           },
             (error) => {
-              this.toastr.error('Error updating socket', 'Server Error');
+              this.toastr.error(getProblemMessage(error, 'Error updating socket'), 'Server Error');
           });
       }
       else{
@@ -84,7 +85,7 @@ export class SocketFormComponent {
             this._router.navigateByUrl(`cpu`);
           },
             (error) => {
-              this.toastr.error('Error adding socket', 'Server Error');
+              this.toastr.error(getProblemMessage(error, 'Error adding socket'), 'Server Error');
           });
       }
 
@@ -101,7 +102,7 @@ export class SocketFormComponent {
         this.toastr.success('Socket deleted Successfully!', 'Socket deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting socket', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting socket'), 'Server Error');
       }
     );
   }

@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { adminGuard } from "src/app/core/auth/auth.guards";
 
 import { RamFormComponent } from "./ram-form/ram-form.component";
 import { RamListComponent } from "./ram-list/ram-list.component";
@@ -14,10 +15,12 @@ const routes: Routes = [
   },
   {
     path: 'form',
+    canActivate: [adminGuard],
     component: RamFormComponent
   },
   {
     path: 'form/:id',
+    canActivate: [adminGuard],
     component: RamFormComponent
   },
   {
@@ -26,10 +29,12 @@ const routes: Routes = [
   },
   {
     path: 'speedform',
+    canActivate: [adminGuard],
     component: RamSpeedFormComponent
   },
   {
     path: 'speedform/:id',
+    canActivate: [adminGuard],
     component: RamSpeedFormComponent
   }
 ];

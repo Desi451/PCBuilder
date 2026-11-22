@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { BrandService } from "src/app/core/service/brand.service";
 import { addBrand, brand } from "src/app/shared/models/brand.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-brand-form',
@@ -48,7 +49,7 @@ export class BrandFormComponent implements OnInit {
           this._router.navigateByUrl(`brand`);
         },
           (error) => {
-            this.toastr.error('Error updating brand', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating brand'), 'Server Error');
           });
       } else {
         let res: addBrand = {};
@@ -58,7 +59,7 @@ export class BrandFormComponent implements OnInit {
           this._router.navigateByUrl(`brand`);
         },
           (error) => {
-            this.toastr.error('Error sending brand', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error sending brand'), 'Server Error');
           });
       }
     } else {
@@ -73,7 +74,7 @@ export class BrandFormComponent implements OnInit {
         this.toastr.success('Brand deleted Successfully!', 'Brand deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting brand', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting brand'), 'Server Error');
       }
     );
   }

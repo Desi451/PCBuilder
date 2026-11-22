@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { adminGuard } from "src/app/core/auth/auth.guards";
 
 import { CpuFormComponent } from "./cpu-form/cpu-form.component";
 import { CpuListComponent } from "./cpu-list/cpu-list.component";
@@ -14,10 +15,12 @@ const routes: Routes = [
   },
   {
     path: 'form',
+    canActivate: [adminGuard],
     component: CpuFormComponent
   },
   {
     path: 'form/:id',
+    canActivate: [adminGuard],
     component: CpuFormComponent
   },
   {
@@ -26,10 +29,12 @@ const routes: Routes = [
   },
   {
     path: 'formsocket',
+    canActivate: [adminGuard],
     component: SocketFormComponent
   },
   {
     path: 'formsocket/:id',
+    canActivate: [adminGuard],
     component: SocketFormComponent
   }
 ];

@@ -8,6 +8,7 @@ import { SeriesService } from "src/app/core/service/series.service";
 import { brand } from "src/app/shared/models/brand.model";
 import { addRam, ram, ramSpeed } from "src/app/shared/models/ram.model";
 import { series } from "src/app/shared/models/series.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-ram-form',
@@ -122,7 +123,7 @@ export class RamFormComponent implements OnInit {
           this._router.navigateByUrl(`ram`);
         },
           (error) => {
-            this.toastr.error('Error updating RAM', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating RAM'), 'Server Error');
           });
       } else {
         let addForm = this.ramForm.value as addRam;
@@ -133,7 +134,7 @@ export class RamFormComponent implements OnInit {
           this._router.navigateByUrl(`ram`);
         },
           (error) => {
-            this.toastr.error('Error adding RAM', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding RAM'), 'Server Error');
           });
       }
     }
@@ -145,7 +146,7 @@ export class RamFormComponent implements OnInit {
         this.toastr.success('RAM deleted Successfully!', 'RAM deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting RAM', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting RAM'), 'Server Error');
       }
     );
   }

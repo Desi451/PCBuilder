@@ -8,6 +8,7 @@ import { SeriesService } from "src/app/core/service/series.service";
 import { brand } from "src/app/shared/models/brand.model";
 import { addCase, casePc, CaseSize, CaseSizes } from "src/app/shared/models/case.model";
 import { series } from "src/app/shared/models/series.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-case-form',
@@ -120,7 +121,7 @@ export class CaseFormComponent implements OnInit {
           this._router.navigateByUrl(`case`);
         },
           (error) => {
-            this.toastr.error('Error adding case', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding case'), 'Server Error');
           });
       } else {
         let addForm = this.caseForm.value as addCase;
@@ -132,7 +133,7 @@ export class CaseFormComponent implements OnInit {
           this._router.navigateByUrl(`case`);
         },
           (error) => {
-            this.toastr.error('Error editing case', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error editing case'), 'Server Error');
           });
       }
     }
@@ -144,7 +145,7 @@ export class CaseFormComponent implements OnInit {
         this.toastr.success('Case Deleted Successfully!', 'Case Deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting case', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting case'), 'Server Error');
       }
     );
   }

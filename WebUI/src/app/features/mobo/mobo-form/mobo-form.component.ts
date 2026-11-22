@@ -13,6 +13,7 @@ import { socketCpu } from "src/app/shared/models/cpu.model";
 import { addMobo, mobo } from "src/app/shared/models/mobo.model";
 import { ramSpeed } from "src/app/shared/models/ram.model";
 import { series } from "src/app/shared/models/series.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-mobo-form',
@@ -166,7 +167,7 @@ export class MoboFormComponent implements OnInit {
               this._router.navigateByUrl(`mobo`);
             },
               (error) => {
-                this.toastr.error('Error updating motherboard', 'Server Error');
+                this.toastr.error(getProblemMessage(error, 'Error updating motherboard'), 'Server Error');
             });
           }
           else{
@@ -180,7 +181,7 @@ export class MoboFormComponent implements OnInit {
               this._router.navigateByUrl(`mobo`);
             },
               (error) => {
-                this.toastr.error('Error adding motherboard', 'Server Error');
+                this.toastr.error(getProblemMessage(error, 'Error adding motherboard'), 'Server Error');
             });
           }
     }
@@ -195,7 +196,7 @@ export class MoboFormComponent implements OnInit {
         this.toastr.success('Motherboard deleted Successfully!', 'Motherboard deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting Motherboard', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting Motherboard'), 'Server Error');
       }
     );
   }

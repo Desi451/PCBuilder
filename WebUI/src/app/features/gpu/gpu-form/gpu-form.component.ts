@@ -8,6 +8,7 @@ import { SeriesService } from "src/app/core/service/series.service";
 import { brand } from "src/app/shared/models/brand.model";
 import { addGpu, gpu } from "src/app/shared/models/gpu.model";
 import { series } from "src/app/shared/models/series.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-gpu-from',
@@ -126,7 +127,7 @@ export class GpuFormComponent implements OnInit {
           this._router.navigateByUrl(`gpu`);
         },
           (error) => {
-            this.toastr.error('Error updating GPU', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating GPU'), 'Server Error');
           });
       } else {
         this.gpuForm.value.isApu = false;
@@ -138,7 +139,7 @@ export class GpuFormComponent implements OnInit {
           this._router.navigateByUrl(`gpu`);
         },
           (error) => {
-            this.toastr.error('Error updating GPU', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating GPU'), 'Server Error');
           });
       }
     }
@@ -150,7 +151,7 @@ export class GpuFormComponent implements OnInit {
         this.toastr.success('GPU deleted Successfully!', 'GPU deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting GPU', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting GPU'), 'Server Error');
       }
     );
   }

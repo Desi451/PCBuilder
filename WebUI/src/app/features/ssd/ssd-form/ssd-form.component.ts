@@ -10,6 +10,7 @@ import { brand } from "src/app/shared/models/brand.model";
 import { series } from "src/app/shared/models/series.model";
 import { slot } from "src/app/shared/models/slot.model";
 import { addSsd, ssd } from "src/app/shared/models/ssd.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-ssd-form',
@@ -128,7 +129,7 @@ export class SsdFormComponent implements OnInit {
           this._router.navigateByUrl(`ssd`);
         },
           (error) => {
-            this.toastr.error('Error updating SSD', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error updating SSD'), 'Server Error');
           });
       } else {
         let addForm = this.ssdForm.value as addSsd;
@@ -139,7 +140,7 @@ export class SsdFormComponent implements OnInit {
           this._router.navigateByUrl(`ssd`);
         },
           (error) => {
-            this.toastr.error('Error adding SSD', 'Server Error');
+            this.toastr.error(getProblemMessage(error, 'Error adding SSD'), 'Server Error');
           });
       }
     }
@@ -151,7 +152,7 @@ export class SsdFormComponent implements OnInit {
         this.toastr.success('SSD deleted Successfully!', 'SSD deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting SSD', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting SSD'), 'Server Error');
       }
     );
   }

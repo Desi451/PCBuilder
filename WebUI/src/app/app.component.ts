@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 
 import { AuthService } from "./core/auth/auth.service";
+import { AuthStore } from "./core/auth/auth.store";
 
 @Component({
   selector: 'app-root',
@@ -10,39 +12,22 @@ import { AuthService } from "./core/auth/auth.service";
   changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
-export class AppComponent implements OnInit {
-
-  userId: number = 0;
-  username: string = '';
-  userRank: number = 0;
+export class AppComponent {
 
   constructor(
+    public authStore: AuthStore,
     private _authService: AuthService,
+    private _router: Router,
     private toastr: ToastrService
   ) { }
 
-  ngOnInit() {
-    this.refreshUserInfo();
-  }
-
   logout() {
-    this._authService.logout().subscribe(response => {
-      this.toastr.success(response);
-
-      this.userId = 0;
-      this.username = '';
-      this.userRank = 0;
-    });
-  }
-
-  refreshUserInfo() {
-    this._authService.getUserInfo().subscribe(response => {
-      console.log(response);
-      if (response.userId) {
-        this.userId = response.userId;
-        this.username = response.username;
-        this.userRank = response.userRank;
-      }
+    this._authService.logout().subscribe({
+      next: response => {
+        this.toastr.success(response);
+        this.finishLogout();
+      },
+      error: () => this.finishLogout()
     });
   }
 
@@ -54,7 +39,8 @@ export class AppComponent implements OnInit {
     this.isOffcanvasOpen = false;
   }
 
-  deleteCookie(name: string) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  private finishLogout() {
+    this.authStore.clear();
+    this._router.navigateByUrl('/login');
   }
 }

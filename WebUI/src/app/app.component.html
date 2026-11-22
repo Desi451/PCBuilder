@@ -3,7 +3,7 @@
 
   <nav class="navbar navbar-light bg-dark border-bottom border-info-subtle">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" routerLink="/">
         <div>
           <i class="bi bi-pc-display"></i>
           <small class="fw-bold p-3 text-light"> PCBuilder</small>
@@ -11,14 +11,11 @@
       </a>
 
       <div class="d-flex">
-        @if (!userId) {
-          <a href="login" type="button" class="btn btn-primary">Login</a>
-        }
-        @if (userId) {
-          <a [href]="'editprofile/' + userId" type="button" class="btn btn-primary ms-2">Profile</a>
-        }
-        @if (userId) {
+        @if (authStore.isAuthenticated()) {
+          <a routerLink="/profile" type="button" class="btn btn-primary ms-2">Profile</a>
           <a (click)="logout()" type="button" class="btn btn-primary ms-2">Logout</a>
+        } @else {
+          <a routerLink="/login" type="button" class="btn btn-primary">Login</a>
         }
       </div>
     </div>
@@ -29,7 +26,7 @@
 
     <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark"
       style="width: 240px; position: sticky; top: 0; overflow-y: auto;">
-      <a href="/"
+      <a routerLink="/"
         class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <svg class="bi pe-none me-2"
           width="40"
@@ -39,94 +36,105 @@
       </a>
       <hr>
         <ul  class="nav nav-pills flex-column mb-auto">
-          @if (userRank>=2) {
+          @if (authStore.isAdmin()) {
             <li class="nav-item">
-              <a href="brand"
-                class="nav-link text-white"
-                aria-current="page">
+              <a routerLink="/brand"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                class="nav-link text-white">
                 <i class="bi bi-building"></i>
                 Brand's
               </a>
             </li>
           }
           <li class="nav-item">
-            <a href="case"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/case"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-pc"></i>
               Case's
             </a>
           </li>
           <li class="nav-item">
-            <a href="cpu"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/cpu"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-cpu"></i>
               CPU's
             </a>
           </li>
           <li class="nav-item">
-            <a href="gpu"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/gpu"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-gpu-card"></i>
               GPU's
             </a>
           </li>
           <li class="nav-item">
-            <a href="ram"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/ram"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-memory"></i>
               RAM memories
             </a>
           </li>
           <li class="nav-item">
-            <a href="ssd"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/ssd"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-device-ssd"></i>
               SSD's
             </a>
           </li>
           <li class="nav-item">
-            <a href="drive"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/drive"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-device-hdd"></i>
               HDD's
             </a>
           </li>
           <li class="nav-item">
-            <a href="psu"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/psu"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-battery-charging"></i>
               PSU's
             </a>
           </li>
           <li class="nav-item">
-            <a href="mobo"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/mobo"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-motherboard"></i>
               MOBO's
             </a>
           </li>
-          @if (userRank>=2) {
+          @if (authStore.isAdmin()) {
             <li class="nav-item">
-              <a href="slot"
-                class="nav-link text-white"
-                aria-current="page">
+              <a routerLink="/slot"
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page"
+                class="nav-link text-white">
                 <i class="bi bi-hdmi"></i>
                 Interfaces
               </a>
             </li>
           }
           <li class="nav-item">
-            <a href="computer"
-              class="nav-link text-white"
-              aria-current="page">
+            <a routerLink="/computer"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              class="nav-link text-white">
               <i class="bi bi-pc-display"></i>
               Computers
             </a>

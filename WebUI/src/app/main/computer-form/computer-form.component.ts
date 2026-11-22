@@ -3,7 +3,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
-import { AuthService } from "src/app/core/auth/auth.service";
+import { AuthStore } from "src/app/core/auth/auth.store";
 import { ComputerService } from "src/app/core/service/computer.service";
 import { GpuService } from "src/app/core/service/gpu.service";
 import { HddService } from "src/app/core/service/hdd.service";
@@ -20,6 +20,7 @@ import { psu } from "src/app/shared/models/psu.model";
 import { ram } from "src/app/shared/models/ram.model";
 import { slot } from "src/app/shared/models/slot.model";
 import { ssd } from "src/app/shared/models/ssd.model";
+import { getProblemMessage } from "src/app/shared/utils/problem-details";
 
 @Component({
   selector: 'app-computer-form',
@@ -32,10 +33,6 @@ export class ComputerFormComponent implements OnInit {
 
   computerForm!: FormGroup;
   id: number;
-
-  userId: number = 0;
-  username: string = '';
-  userRank: number = 0;
 
   //html
   BrandCollapsed = false;
@@ -90,7 +87,7 @@ export class ComputerFormComponent implements OnInit {
     private _hddService: HddService,
     private _ssdService: SsdService,
     private _slotService: SlotService,
-    private _authService: AuthService
+    private _authStore: AuthStore
   ) {
     this.initForm();
     this.id = this._route.snapshot.params['id'];
@@ -103,15 +100,7 @@ export class ComputerFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._authService.getUserInfo().subscribe(response => {
-      console.log(response);
-      if (response.userId) {
-        this.userId = response.userId;
-        this.res.userId = response.userId;
-        this.username = response.username;
-        this.userRank = response.userRank;
-      }
-    });
+    this.res.userId = this._authStore.userId();
 
     this._computerService.getCpuBrands().subscribe(
       (brands: brand[]) => {
@@ -316,7 +305,6 @@ export class ComputerFormComponent implements OnInit {
     this._computerService.getCases(caseReq).subscribe(
       (cases: casePc[]) => {
         this.caseList = cases;
-        console.log(this.caseList);
       },
       (error) => {
         this.toastr.error('Error fetching psus', 'Server Error');
@@ -458,7 +446,6 @@ export class ComputerFormComponent implements OnInit {
 
     } else {
       const res = this.res as unknown as addComputer;
-      console.log(res);
       this._computerService.add(res).subscribe(() => {
         this.toastr.success('Computer updated Successfully!', 'Computer Updated');
         this._router.navigateByUrl(`computer`);
@@ -480,7 +467,7 @@ export class ComputerFormComponent implements OnInit {
         this.toastr.success('Computer deleted Successfully!', 'Computer deleted');
       },
       (error) => {
-        this.toastr.error('Error deleting computer', 'Server Error');
+        this.toastr.error(getProblemMessage(error, 'Error deleting computer'), 'Server Error');
       }
     );
   }

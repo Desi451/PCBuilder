@@ -44,7 +44,6 @@ export class PsuViewComponent implements OnInit {
       (res: psu) => {
         this.res.id = res.id;
         this.res = res;
-        console.log(res);
         this._seriesService.getSeriesById(res.seriesId).subscribe(
           (resSeries: series) => {
             this.srs = res;

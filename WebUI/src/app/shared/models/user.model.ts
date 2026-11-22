@@ -19,7 +19,7 @@ export type sessionInfo =
   userId: number;
   username: string;
   email: string;
-  userRank: number;
+  role: string;
 }
 
 export type addUser =

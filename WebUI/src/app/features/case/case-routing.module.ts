@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { adminGuard } from "src/app/core/auth/auth.guards";
 
 import { CaseFormComponent } from "./case-form/case-form.component";
 import { CaseListComponent } from "./case-list/case-list.component";
@@ -13,10 +14,12 @@ const routes: Routes = [
   },
   {
     path: 'form',
+    canActivate: [adminGuard],
     component: CaseFormComponent
   },
   {
     path: 'form/:id',
+    canActivate: [adminGuard],
     component: CaseFormComponent
   },
   {
